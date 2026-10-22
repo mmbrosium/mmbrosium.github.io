@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Case · Paulo Veiga</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <img class="orn l" src="assets/ornamento.png" alt="">
+  <img class="orn r" src="assets/ornamento-esp.png" alt="">
+
+  <nav class="topbar" aria-label="Categorias">
+    <div class="topbar-in">
+      <a class="brand" href="index.html" id="brand">…</a>
+      <div class="topnav" id="topnav"></div>
+      <button type="button" class="snd" id="snd" aria-pressed="false" title="Som de interface (desligado)">♪</button>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <a class="back" href="index.html">Voltar aos cases</a>
+    <header class="case-head" id="topo">
+      <p class="cat" id="c-cat"></p>
+      <h1 id="c-titulo">…</h1>
+      <p class="meta" id="c-meta"></p>
+      <span class="destaque" id="c-destaque" hidden></span>
+    </header>
+    <article class="md" id="md"><p style="color:var(--muted)">Carregando…</p></article>
+    <footer class="foot">
+      <a class="back" href="index.html" style="margin:0">Voltar aos cases</a>
+      <span id="foot-nome"></span>
+    </footer>
+  </main>
+
+  <div class="lb" id="lb" role="dialog" aria-label="Imagem ampliada"><img id="lb-img" alt=""></div>
+
+  <script src="assets/marked.min.js"></script>
+  <script src="cases.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
