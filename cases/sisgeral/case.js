@@ -28,3 +28,33 @@ Medir o ganho em atendimentos reais e, se a empresa permitir, avaliar a sincroni
 *Telas e repositório em preparação.*
 
 `;
+
+// English version (shown when the visitor picks EN-US).
+window.CASE_MD_EN = window.CASE_MD_EN || {};
+window.CASE_MD_EN["sisgeral"] = `
+## Problem
+
+On plan cancellations, a contact took about 5 to 10 minutes, not counting data confirmation. Part of that time was writing the log, which is practically the same for every cancellation. Since you cannot type while listening to the customer, you had to ask them to hold. Tagging in the company system also had to be done by hand.
+
+## Action
+
+- Created text templates by subject. On a cancellation, the agent ticks a procedure and the log comes out ready, with the standard sentence, the protocol and the agent. When the customer asks about two or three subjects, the procedures are combined in the chosen order.
+- Linked every contact to its procedure by identifier. Renaming a procedure updates history and panel at once, and the same subject never shows twice in reports.
+- Built a panel by calendar weeks and TXT reports by month or week.
+- Treated privacy as a design decision: the beneficiary's name is not stored (only the initial), data stays in the browser and there is a retention rule.
+- Used the environment's constraints as design criteria. Extensions and integrations would likely be blocked by company policy, so the tool opens with a double click, no install, no internet. That is why tagging stays manual: automating it would require an extension or integration outside the rules.
+- Covered the core with 41 automated tests, plus browser tests of the screen.
+
+## Result
+
+- Before: about 5 to 10 minutes per cancellation contact, not counting data confirmation. After: under 5 minutes.
+- The log stopped being typed text and became one click, without asking the customer to wait.
+- Standardized records, the same subject always under the same title, which gives a reliable basis for analysis.
+- A tool working within the rules of the corporate environment.
+
+## Next step
+
+Measure the gain on real contacts and, if the company allows, evaluate syncing between agents. Today data lives only in each computer's browser.
+
+*Screens and repository in preparation.*
+`;

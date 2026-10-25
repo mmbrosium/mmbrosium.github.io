@@ -28,3 +28,33 @@ Depois, automatizei o resto:
 *Telas em preparação.*
 
 `;
+
+// English version (shown when the visitor picks EN-US).
+window.CASE_MD_EN = window.CASE_MD_EN || {};
+window.CASE_MD_EN["abs"] = `
+## Problem
+
+The daily attendance check (adherence) was the slowest procedure in the operation, 1 to 2 hours. It required two logging systems (Zendesk and CallFlex) and several manual steps: export the report, cross it with the staff base (MOP), check name by name whether the person had left or was on vacation, cross it with the supervisors' excused-absence sheet and copy column by column into the final spreadsheet.
+
+## Action
+
+The first decision was about process, not spreadsheets: **I removed the CallFlex check**. A contact logged in Zendesk already proves the agent was working, so the second system added no information.
+
+Then I automated the rest:
+
+- The two data cleanups: the match between Zendesk and MOP, and the automatic identification of leavers, vacations, suspensions and excused or unexcused absences.
+- Consolidated all supervisors' excused absences in a helper tab.
+- Built a converter tab: pick day and month and the columns come out ready to feed the dashboard.
+- Kept the raw base with each day's status, which preserves history and allows auditing.
+- Followed up on supervisors' input and escalated to coordination when it was late.
+- Built from scratch a visual adherence dashboard fed by that base, replacing an old, slow and imprecise one. It covers Chat, Voice and the Diamond/Gold customer team, with adherence by supervision, coordination, segment, channel and agent, current vs. previous month with a date filter, absences in the month against target, present agents and contact and call volume.
+
+## Result
+
+- Check from 1–2 hours to 10–20 minutes a day.
+- No more manual name-by-name checking.
+- Reliable, auditable daily history.
+- Delivered in about a month, alongside other coordination demands.
+
+*Screens in preparation.*
+`;

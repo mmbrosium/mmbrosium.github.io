@@ -76,3 +76,81 @@ A versão foi apresentada à coordenação e não chegou a ser implementada na o
 *As telas acima usam dados fictícios gerados para o portfólio, com a mesma estrutura da planilha original.*
 
 `;
+
+// English version (shown when the visitor picks EN-US). Same images, same structure.
+window.CASE_MD_EN = window.CASE_MD_EN || {};
+window.CASE_MD_EN["psat"] = `
+## Context
+
+A customer service operation (Chat and Voice) with over 80,000 contacts a month, split into two coordinations and eight supervision teams. Management needed to know who was being rated well and who was not, by agent, supervisor and coordination, following the trend day by day. I owned the metric definition, the data structure and the views.
+
+![Overview: PSAT by supervision team, a whole month as a heat map](01-visao-geral-supervisao.png)
+
+## The metric
+
+The rating scale goes from Terrible to Excellent, and only Good and Excellent count as positive.
+
+- **PSAT** = (Excellent + Good) ÷ answered surveys.
+- **DSAT** = (Bad + Terrible) ÷ answered surveys. Same logic, inverted: the higher, the worse.
+- Average counts in neither.
+- A day with no rating stays **blank, not zero**, so it does not distort the average.
+
+Example: 5 contacts, 3 rated (2 excellent, 1 average) → PSAT of 2/3.
+
+## How it was built
+
+The raw base has one contact per row. Instead of every view querying the whole base, I built an **aggregation layer**: a sheet that reads the base once and stores, per agent and per day of the selected month, the number of respondents, positives and the count of each rating. All views read from that layer, which has 150 rows, not from the base, which has hundreds of thousands. One month selector drives every tab.
+
+![Aggregation layer: month totals per agent, read once from the base](08-agg-totais.png)
+
+On top of it, five views:
+
+- **Overview** for coordination: PSAT by supervision team, by coordination (overall, Voice, Chat, Gold/Diamond, Bronze/Silver/Visitor), by segment and by work location, each as a 31-day heat map.
+
+![Overview: PSAT by coordination, with cuts by channel and customer type](02-visao-geral-coordenacao.png)
+
+![Overview: PSAT by work location and DSAT by supervision team](03-visao-geral-local-dsat.png)
+
+- **Individual by agent**: all 150 agents, day by day, with segment, status (vacation and notice period highlighted) and supervisor, with column filters.
+
+![Individual by agent](04-operadores.png)
+
+- **Agents by supervisor**: each supervisor picks their name and sees their own team filtered, with the eight supervision bands above for comparison.
+
+![Agents by supervisor: selector and filtered list](05-supervisores.png)
+
+- **Contacts**: volume, respondents, % of respondents, distribution from Excellent to Terrible, agent with the most contacts and best-rated agent.
+
+![Contacts and ratings by supervisor](06-atendimentos.png)
+
+- **Summary**: totals and percentage distribution by supervisor, coordination and segment, with PSAT and DSAT side by side.
+
+![Summary by supervisor](07-resumo-supervisor.png)
+
+## Result
+
+- Adopted for individual follow-up of every agent and team by supervisors and coordinators of the Chat and Voice channels.
+- The metric entered the bonus scheme, with targets between 90% and 95% depending on the channel.
+- Presented to directors and other leaders.
+- Built in about a month.
+
+## Dashboard
+
+With the aggregation layer in place, I built a first dashboard for coordination, with combinable filters (month, coordination, supervisor, channel, customer type and shift) and three readings:
+
+1. **Quality**: PSAT and DSAT by month, one line per channel, against the 90% target.
+2. **Response**: who did not rate, separating *declined to rate* from *did not rate*. Two different diagnoses: the first is the agent's approach, the second is the channel or the survey. Each calls for a different action.
+3. **Detail**: a table by coordination, supervisor or agent in the chosen cut.
+
+![Dashboard: combinable filters and month indicators](09-dash-filtros-kpis.png)
+
+![Dashboard: PSAT and DSAT by month, by channel, against the target](10-dash-qualidade.png)
+
+![Dashboard: response, distribution and detail by supervisor](11-dash-resposta-tabela.png)
+
+This version was presented to coordination and was not rolled out to the operation. The dashboard reads from the aggregated layer, not the raw base, which keeps it light even with the whole year loaded.
+
+---
+
+*The screens above use fictitious data generated for the portfolio, with the same structure as the original spreadsheet.*
+`;

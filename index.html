@@ -3,20 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Paulo Veiga · Cases</title>
+  <title>Paulo Guilherme Veiga · Cases</title>
   <meta name="description" content="Portfólio de cases de dados e processos: planilhas, dashboards e sistemas em produção.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <img class="orn l" src="assets/ornamento.png" alt="">
-  <img class="orn r" src="assets/ornamento-esp.png" alt="">
+  <div class="orn l" aria-hidden="true"></div>
+  <div class="orn r" aria-hidden="true"></div>
 
   <nav class="topbar" id="topbar" aria-label="Categorias">
     <div class="topbar-in">
       <a class="brand" href="#hero" id="brand">…</a>
       <div class="topnav" id="topnav"></div>
+      <button type="button" class="lang" id="lang" title="English"><img src="assets/flag-br.png" alt=""><span>PT-BR</span></button>
       <button type="button" class="snd" id="snd" aria-pressed="false" title="Som de interface (desligado)">♪</button>
     </div>
   </nav>
@@ -33,10 +34,11 @@
 
     <footer class="foot">
       <span id="foot-nome"></span>
-      <span>Feito em HTML, CSS e JavaScript, sem framework. Abre em qualquer navegador.</span>
+      <span data-ui="foot">Feito em HTML, CSS e JavaScript, sem framework. Abre em qualquer navegador.</span>
     </footer>
   </main>
 
+  <script src="assets/ornamentos.js"></script>
   <script src="cases.js"></script>
   <script src="app.js"></script>
 </body>

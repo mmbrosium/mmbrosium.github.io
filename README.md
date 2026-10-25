@@ -5,8 +5,8 @@ Site estático em HTML, CSS e JavaScript. Sem framework, sem build. Abre em qual
 ## Como publicar no GitHub Pages (uma vez)
 
 1. No GitHub, crie um repositório **público** chamado exatamente `mmbrosium.github.io`.
-2. Clique em **Add file → Upload files**, arraste todos os arquivos e pastas deste pacote (`index.html`, `case.html`, `style.css`, `app.js`, `cases.js`, `README.md`, pastas `assets/` e `cases/`) e clique em **Commit changes**.
-3. Em **Settings → Pages**, em "Build and deployment", escolha **Deploy from a branch**, branch `main`, pasta `/ (root)`. Salve.
+2. Clique em **Add file → Upload files**, arraste todos os arquivos e pastas deste pacote (`index.html`, `case.html`, `style.css`, `app.js`, `cases.js`, `README.md`, pastas `assets/`, `cases/` e `dashboards/`) e clique em **Commit changes**.
+3. Em **Settings → Pages**, confira que está em **Deploy from a branch**, branch `main`, pasta `/ (root)`. Para repositório com esse nome o GitHub já deixa assim sozinho; não precisa salvar nada.
 4. Em um ou dois minutos o site está em `https://mmbrosium.github.io`.
 
 Link de um case: `https://mmbrosium.github.io/case.html?c=psat`.
@@ -68,13 +68,27 @@ Link direto para uma seção: `https://mmbrosium.github.io/case.html?c=psat#dash
 
 5. Commit. O site atualiza sozinho em um ou dois minutos.
 
+## Dois idiomas (PT-BR / EN-US)
+
+O botão com a bandeira na barra troca o idioma e o navegador lembra a escolha. Os textos em inglês ficam no mesmo arquivo dos textos em português:
+
+- `cases.js`: campos com sufixo `_en` (`titulo_en`, `curto_en`, `resumo_en`, `destaque_en`, `ferramentas_en`; nas categorias, `titulo_en` e `sub_en`; no autor, `cargo_en` e `descricao_en`).
+- `cases/<id>/case.js`: um segundo bloco `window.CASE_MD_EN["id"] = \`...\`` depois do bloco em português. Mesmas imagens, legendas traduzidas.
+- `sobre.js`: `window.SOBRE_MD_EN`.
+
+Se faltar a tradução de alguma coisa, o site mostra o português no lugar. Os dashboards e as planilhas ficam em português.
+
 ## Testar no computador antes de publicar
 
-Duplo clique no `index.html`. Tudo funciona local, inclusive as páginas dos cases e as imagens. A única coisa que depende de internet é a fonte (Cinzel); sem ela o site usa a fonte do sistema.
+Use sempre o pacote completo (`portfolio.zip`), nunca só uma pasta de atualização: as páginas dependem de `assets/` e das pastas de todos os cases. Duplo clique no `index.html`. Tudo funciona local, inclusive as páginas dos cases e as imagens. A única coisa que depende de internet é a fonte (Cinzel); sem ela o site usa a fonte do sistema.
 
 ## Som de interface
 
 O botão ♪ na barra liga um som curto ao passar o mouse e ao clicar. Vem desligado e o navegador lembra a escolha. É gerado pelo próprio navegador (Web Audio), sem arquivo de áudio. Para remover de vez, apague o bloco "Som de interface" no `app.js` e o botão `#snd` nos dois HTML.
+
+## Página "Sobre"
+
+O texto está em `sobre.js`, em Markdown, igual aos cases. Cada `##` vira uma seção e um item da barra fixa. Para a barra usar um rótulo mais curto que o título, escreva entre chaves: `## Como cheguei aqui {Trajetória}`. Para tirar o "Sobre" do site, acrescente `"sobre": false` no bloco `"autor"` do `cases.js`.
 
 ## Como trocar uma imagem
 
@@ -93,6 +107,7 @@ Categorias: bloco `"categorias"` do `cases.js`. Cores: as três variáveis `--pl
 ```
 index.html      página inicial (três colunas)
 case.html       página de um case (lê ?c=id)
+sobre.html      página "Sobre" (texto em sobre.js)
 style.css       visual
 app.js          lê cases.js e os case.js de cada case e monta as páginas
 cases.js      lista de cases e dados do cabeçalho

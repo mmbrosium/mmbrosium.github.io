@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sobre · Paulo Guilherme Veiga</title>
+  <meta name="description" content="Quem é Paulo Guilherme de Souza Veiga: trajetória, jeito de trabalhar, ferramentas e o que busca.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="pg-sobre">
+  <div class="orn l" aria-hidden="true"></div>
+  <div class="orn r" aria-hidden="true"></div>
+
+  <nav class="topbar" aria-label="Seções">
+    <div class="topbar-in">
+      <a class="brand" href="index.html" id="brand">…</a>
+      <div class="topnav" id="topnav"></div>
+      <button type="button" class="lang" id="lang" title="English"><img src="assets/flag-br.png" alt=""><span>PT-BR</span></button>
+      <button type="button" class="snd" id="snd" aria-pressed="false" title="Som de interface (desligado)">♪</button>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <a class="back" href="index.html" data-ui="back">Voltar aos cases</a>
+    <header class="case-head" id="topo" style="--c:var(--sobre)">
+      <p class="cat" data-ui="about">Sobre</p>
+      <h1 id="s-nome">…</h1>
+      <p class="meta" id="s-cargo"></p>
+    </header>
+    <article class="md sobre" id="sobre-md"><p style="color:var(--muted)" data-ui="loading">Carregando…</p></article>
+    <footer class="foot">
+      <a class="back" href="index.html" style="margin:0" data-ui="back">Voltar aos cases</a>
+      <span id="foot-nome"></span>
+    </footer>
+  </main>
+
+  <script src="assets/marked.min.js"></script>
+  <script src="assets/ornamentos.js"></script>
+  <script src="cases.js"></script>
+  <script src="sobre.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

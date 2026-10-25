@@ -6,8 +6,10 @@
 <title>Esteira de Vendas e Retenção · Projeto Smiles</title>
 <style>
   :root {
-    --bg: #0b1324; --panel: #111c33; --panel-2: #16243f; --panel-3: #1b2c4d; --line: #24334f; --fg: #e8edf7; --muted: #93a1bd;
-    --navy: #1f3f78; --blue: #2f6bd6; --blue-2: #7fa6e8; --sky: #a9c4f2; --amber: #d9962e; --red: #d8574a; --green: #3fae7a; --grey: #7d8aa3;
+    --bg: #14110c; --panel: #1d1811; --panel-2: #262016; --panel-3: #30281b; --line: #3d3324; --fg: #f4eee2; --muted: #b5a88f;
+    --navy: #5a3d0c; --blue: #f5a623; --blue-2: #ffc857; --sky: #ffe29a; --amber: #ff8c42; --red: #e4574a; --green: #4cbf7e; --grey: #8c8370;
+    /* cores semânticas dos filtros: bate o olho e sabe o recorte */
+    --chat: #4cc9f0; --voz: #f5a623; --manha: #ffd166; --tarde: #f3722c; --do: #ffd700; --bpv: #c9a27a;
     --font: "Source Sans 3", "Segoe UI", system-ui, sans-serif; --side: 200px;
   }
   * { box-sizing: border-box; }
@@ -15,11 +17,13 @@
   body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font); font-size: 15px; line-height: 1.45; font-variant-numeric: tabular-nums; }
   a { color: inherit; }
   /* header fixo */
-  .top { position: sticky; top: 0; z-index: 20; background: rgba(11,19,36,.94); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); padding: 12px max(16px, env(safe-area-inset-right, 0px)) 10px max(16px, env(safe-area-inset-left, 0px)); }
+  .top { position: sticky; top: 0; z-index: 20; background: rgba(20,17,12,.94); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); padding: 12px max(16px, env(safe-area-inset-right, 0px)) 10px max(16px, env(safe-area-inset-left, 0px)); }
   .top-in { max-width: 1400px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px; }
   .title-row { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 16px; align-items: stretch; }
   @media (max-width: 900px) { .title-row { grid-template-columns: 1fr; } }
   h1 { margin: 0; font-size: 1.3rem; font-weight: 600; }
+  .back-port { display: inline-block; font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); text-decoration: none; border: 1px solid var(--line); border-radius: 6px; padding: 2px 8px; margin-bottom: 6px; }
+  .back-port:hover { color: var(--fg); border-color: var(--fg); }
   .sub { margin: 3px 0 0; color: var(--muted); font-size: .92rem; max-width: 70ch; }
   /* ticker */
   .ticker { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; display: flex; align-items: stretch; min-height: 52px; }
@@ -42,6 +46,14 @@
   .seg button { border-radius: 0; border-right-width: 0; }
   .seg button:last-child { border-right-width: 1px; }
   .seg button[aria-pressed="true"] { background: var(--fg); color: var(--bg); font-weight: 600; }
+  .seg button[data-v]::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; background: var(--dot, transparent); vertical-align: 1px; }
+  .seg button[data-v=""]::before { display: none; }
+  .seg button[data-v="Chat"] { --dot: var(--chat); } .seg button[data-v="Voz"] { --dot: var(--voz); }
+  .seg button[data-v="Manhã"] { --dot: var(--manha); } .seg button[data-v="Tarde"] { --dot: var(--tarde); }
+  .seg button[data-v="D+O"] { --dot: var(--do); } .seg button[data-v="BPV"] { --dot: var(--bpv); }
+  .seg button[data-v]:not([data-v=""])[aria-pressed="true"] { background: var(--dot); color: #14110c; }
+  /* o recorte ativo colore o cabeçalho (barra fina sob o título) */
+  .title-row > div:first-child { border-left: 4px solid var(--rec, var(--blue)); padding-left: 12px; }
   .crumb { font-size: .82rem; color: var(--muted); }
   .crumb b { color: var(--fg); font-weight: 600; }
   /* corpo: lateral + painéis */
@@ -123,6 +135,7 @@
   <div class="top-in">
     <div class="title-row">
       <div>
+        <a class="back-port" href="../index.html">← Portfólio</a>
         <h1>Esteira de Vendas e Retenção · Projeto Smiles</h1>
         <p class="sub" id="takeaway">—</p>
       </div>
@@ -244,7 +257,7 @@
         <div>Base: atendimentos por agente e dia, jul/2025 a 19/jun/2026, mesma equipe fictícia do case PSAT. Dados fictícios de demonstração.</div>
       </section>
     </section>
-    <footer><span><a href="../index.html#cat-dashboards" style="text-decoration:none;border-bottom:1px solid var(--muted)">← Voltar ao portfólio</a> · Esteira de Vendas e Retenção · Projeto Smiles</span><span>HTML, CSS e JavaScript, arquivo único, abre sem internet.</span></footer>
+    <footer><span>Esteira de Vendas e Retenção · Projeto Smiles · dashboard</span><span>HTML, CSS e JavaScript, arquivo único, abre sem internet.</span></footer>
   </main>
 </div>
 
@@ -281,7 +294,9 @@
   const PANELS = ['home', 'vendas', 'qualidade', 'diario', 'equipe', 'detalhe'];
   const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
   Chart.defaults.color = css('--muted'); Chart.defaults.borderColor = css('--line'); Chart.defaults.font.family = css('--font'); Chart.defaults.font.size = 12;
-  const C = { chat: '#7fa6e8', voz: '#2f6bd6', meta: '#d9962e', ret: '#3fae7a', dg: '#d9962e', canc: '#d8574a', grey: '#7d8aa3', sky: '#a9c4f2' };
+  const C = { chat: '#4cc9f0', voz: '#f5a623', meta: '#f4eee2', ret: '#4cbf7e', dg: '#ff8c42', canc: '#e4574a', grey: '#8c8370', sky: '#ffe29a', main: '#f5a623', main2: '#ffc857', manha: '#ffd166', tarde: '#f3722c', do: '#ffd700', bpv: '#c9a27a' };
+  // cor principal das barras segue o recorte: frente, turno ou tipo escolhido
+  const corRecorte = () => state.canal ? (state.canal === 'Chat' ? C.chat : C.voz) : state.turno ? (state.turno === 'Manhã' ? C.manha : C.tarde) : state.tipo ? (state.tipo === 'D+O' ? C.do : C.bpv) : C.main;
 
   // ---------- controles ----------
   const fill = (sel, opts, val, labelAll, lab) => { sel.replaceChildren(...(labelAll !== null ? [new Option(labelAll, '')] : []), ...opts.map((o) => new Option(lab ? lab(o) : o, o))); sel.value = val; };
@@ -295,6 +310,7 @@
   seg('f-canal', 'canal'); seg('f-tipo', 'tipo'); seg('f-turno', 'turno'); seg('g1-mode', 'g1'); seg('g6-mode', 'g6'); seg('t-grp', 'grp');
   $('f-reset').onclick = () => { Object.assign(state, { de: months[0], ate: months[months.length - 1], coord: '', sup: '', canal: '', tipo: '', turno: '' }); draw(); };
   document.querySelector('#tb thead').addEventListener('click', (e) => { const th = e.target.closest('th[data-k]'); if (!th) return; if (state.sortK === th.dataset.k) state.dir *= -1; else { state.sortK = th.dataset.k; state.dir = th.dataset.t === 's' ? 1 : -1; } draw(); });
+  const paintRec = () => document.documentElement.style.setProperty('--rec', corRecorte());
   const press = (id, v) => $(id).querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.v === v)));
   // navegação lateral com deslize
   $('side').addEventListener('click', (e) => { const b = e.target.closest('button[data-p]'); if (!b) return; go(b.dataset.p); });
@@ -355,6 +371,7 @@
   }
 
   function draw() {
+    paintRec();
     $('f-de').value = state.de; $('f-ate').value = state.ate; $('f-coord').value = state.coord;
     fill($('f-sup'), SUPS.filter((s) => !state.coord || supCoord[s] === state.coord), state.sup, 'Todos'); state.sup = $('f-sup').value;
     press('f-canal', state.canal); press('f-tipo', state.tipo); press('f-turno', state.turno); press('g1-mode', state.g1); press('g6-mode', state.g6); press('t-grp', state.grp);
@@ -403,8 +420,8 @@
     const g1 = (id, tall) => {
       if (state.g1 === 'abs' || id === 'h1') {
         mk(id, { type: 'bar', data: { labels, datasets: [
-          { label: 'Vendas', data: per.map((k) => M[k].v), backgroundColor: C.voz, stack: 'a', borderRadius: 3 },
-          { label: 'Upgrades', data: per.map((k) => M[k].u), backgroundColor: C.chat, stack: 'a', borderRadius: 3 },
+          { label: 'Vendas', data: per.map((k) => M[k].v), backgroundColor: corRecorte(), stack: 'a', borderRadius: 3 },
+          { label: 'Upgrades', data: per.map((k) => M[k].u), backgroundColor: C.main2, stack: 'a', borderRadius: 3 },
           ...(mOk ? [{ label: 'Meta', data: per.map((k) => { const m = metaMes(k, sups.length); return m.v + m.u; }), type: 'line', borderColor: C.meta, backgroundColor: C.meta, borderDash: [5, 4], pointRadius: 3, tension: 0 }] : []),
         ] }, options: { maintainAspectRatio: false, scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, beginAtZero: true } }, plugins: { legend: { position: 'bottom' } } } });
       } else {
@@ -423,8 +440,8 @@
     if (p === 'vendas') {
       g1('g1');
       mk('g5', { type: 'bar', data: { labels: sups.map((s) => s.split(' ')[0]), datasets: [
-        { label: 'Consolidado', data: sups.map((s) => S.bySup[s] ? S.bySup[s].c : 0), backgroundColor: C.voz, borderRadius: 3 },
-        ...(mOk ? [{ label: 'Meta', data: sups.map(() => supMeta), backgroundColor: 'rgba(217,150,46,.35)', borderColor: C.meta, borderWidth: 1, borderRadius: 3 }] : []),
+        { label: 'Consolidado', data: sups.map((s) => S.bySup[s] ? S.bySup[s].c : 0), backgroundColor: corRecorte(), borderRadius: 3 },
+        ...(mOk ? [{ label: 'Meta', data: sups.map(() => supMeta), backgroundColor: 'rgba(244,238,226,.18)', borderColor: C.meta, borderWidth: 1, borderRadius: 3 }] : []),
       ] }, options: { indexAxis: 'y', maintainAspectRatio: false, scales: { x: { beginAtZero: true }, y: { grid: { display: false } } }, plugins: { legend: { position: 'bottom' } } } });
       const tb = document.querySelector('#top tbody'); tb.replaceChildren();
       agentes.slice().sort((a, b) => b.c - a.c || b.v - a.v).slice(0, 10).forEach((x, i) => { const tr = document.createElement('tr'); tr.append(td(i + 1, 'l'), td(x.a[0], 'l'), td(x.a[1], 'l'), td(fmtN(x.v)), td(fmtN(x.u)), td(fmtN(x.c), 'bar', x.c / (agentes[0] ? Math.max(...agentes.map((y) => y.c)) : 1)), td(x.conv === null ? '—' : pct(x.conv, 2))); tb.appendChild(tr); });
@@ -442,7 +459,7 @@
       const convM = last.conv || 0; const dl = days.map((d) => +d.slice(8, 10));
       if (state.g6 === 'vendas') {
         mk('g6', { type: 'bar', data: { labels: dl, datasets: [
-          { label: 'Vendas', data: days.map((d) => byD[d].v), backgroundColor: C.voz, borderRadius: 3 },
+          { label: 'Vendas', data: days.map((d) => byD[d].v), backgroundColor: corRecorte(), borderRadius: 3 },
           { label: 'Esperado pelo volume', data: days.map((d) => Math.round(byD[d].at * convM)), type: 'line', borderColor: C.meta, backgroundColor: C.meta, pointRadius: 2, tension: 0, borderDash: [4, 3] },
         ] }, options: { maintainAspectRatio: false, scales: { x: { grid: { display: false } }, y: { beginAtZero: true } }, plugins: { legend: { position: 'bottom' } } } });
       } else {
