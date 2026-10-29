@@ -1,5 +1,9 @@
 # Portfólio de cases
 
+**Site no ar:** [mmbrosium.github.io](https://mmbrosium.github.io/)
+
+Atalhos: [Sobre](https://mmbrosium.github.io/sobre.html) · [Changelog](https://mmbrosium.github.io/changelog.html) · [SisGeral](https://mmbrosium.github.io/case.html?c=sisgeral) · [Apresentação do SisGeral](https://mmbrosium.github.io/apresentacao-sisgeral/)
+
 Site estático em HTML, CSS e JavaScript. Sem framework, sem build. Abre em qualquer navegador.
 
 ## Como publicar no GitHub Pages (uma vez)
@@ -7,10 +11,10 @@ Site estático em HTML, CSS e JavaScript. Sem framework, sem build. Abre em qual
 1. No GitHub, crie um repositório **público** chamado exatamente `mmbrosium.github.io`.
 2. Clique em **Add file → Upload files**, arraste todos os arquivos e pastas deste pacote (`index.html`, `case.html`, `style.css`, `app.js`, `cases.js`, `README.md`, pastas `assets/`, `cases/` e `dashboards/`) e clique em **Commit changes**.
 3. Em **Settings → Pages**, confira que está em **Deploy from a branch**, branch `main`, pasta `/ (root)`. Para repositório com esse nome o GitHub já deixa assim sozinho; não precisa salvar nada.
-4. Em um ou dois minutos o site está em `https://mmbrosium.github.io`.
+4. Em um ou dois minutos o site está em [mmbrosium.github.io](https://mmbrosium.github.io/).
 
-Link de um case: `https://mmbrosium.github.io/case.html?c=psat`.
-Link direto para uma seção: `https://mmbrosium.github.io/case.html?c=psat#dashboard`.
+Link de um case: [mmbrosium.github.io/case.html?c=psat](https://mmbrosium.github.io/case.html?c=psat).
+Link direto para uma seção: [mmbrosium.github.io/case.html?c=psat#dashboard](https://mmbrosium.github.io/case.html?c=psat#dashboard).
 
 ## Como adicionar um case (sem mexer em código)
 
