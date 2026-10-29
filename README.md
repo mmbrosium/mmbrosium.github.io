@@ -56,6 +56,8 @@ Link direto para uma seção: `https://mmbrosium.github.io/case.html?c=psat#dash
    }
    ```
 
+   `nome` / `nome_en` é o nome do projeto (aparece como título do card e da página; o `titulo` vira subtítulo). Opcional.
+
    `capa` é a imagem que aparece no card da página inicial (um arquivo da pasta do case). Deixe `""` para card sem imagem. Se o case está em duas colunas e quer capas diferentes, acrescente `"capa_dashboards": "outra-tela.png"`.
 
    - `id` tem que ser igual ao nome da pasta.
@@ -119,3 +121,11 @@ dashboards/     dashboards em HTML, arquivo único cada (abrem sem internet)
 ## Links dentro do texto de um case
 
 Imagens são relativas à pasta do case (`![legenda](tela.png)`). Links comuns são relativos à raiz do site: `[Abrir o dashboard](dashboards/esteira.html)`.
+
+## Changelog
+
+A engrenagem (⚙) na barra abre `changelog.html`. A lista fica em `changelog.js`: um bloco por versão, com `versao`, `data` (AAAA-MM-DD), `itens` (PT) e `itens_en` (EN). O primeiro da lista ganha a etiqueta "atual". Cor da página: ciano (`--log` no `style.css`).
+
+## Dashboards
+
+Os três dashboards (`dashboards/psat.html`, `esteira.html`, `abs.html`) são arquivos únicos: HTML, CSS, JavaScript, Chart.js e os dados fictícios embutidos. Todos têm a faixa do portfólio no topo (nome, categorias, idioma, changelog), seguem o idioma escolhido no site (`localStorage.lang`) e os filtros valem pra todas as seções. Pra mexer, edite direto o arquivo; o script do painel fica no final.

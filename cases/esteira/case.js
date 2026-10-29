@@ -56,11 +56,37 @@ Em cima disso, três visões:
 
 ## Dashboard
 
-A esteira ganhou um dashboard com os doze meses da base e filtros combináveis (período, coordenação, supervisor, frente, tipo de cliente e turno). Seis seções: visão geral, vendas × meta, conversão e retenção, dia a dia, equipe e detalhe. A seção Equipe desce de coordenação para supervisor e para agente, em três colunas. É um arquivo HTML único, com os dados embutidos, que abre sem internet.
+A esteira ganhou um dashboard com os doze meses da base e os mesmos filtros combináveis (período, coordenação, supervisor, frente, tipo de cliente e turno). É um arquivo HTML único, com os dados embutidos, que abre sem internet. A paleta é quente, de operação comercial, e o recorte ativo colore as barras: filtrou Chat, tudo fica ciano; filtrou manhã, amarelo-sol.
 
-![Dashboard: visão geral](09-dashboard-visao-geral.png)
+**Visão geral.** O que a coordenação olha em trinta segundos: vendas, upgrades, consolidado, meta do período, atingimento, conversão, atendimentos, retenção e retidos com downgrade, cada um comparado com o mesmo trecho do mês anterior. Embaixo, vendas e upgrades por mês contra a linha da meta.
 
-![Dashboard: equipe, de coordenação a agente](10-dashboard-equipe.png)
+![Visão geral: indicadores do período e vendas por mês contra a meta](09-dashboard-visao-geral.png)
+
+![Visão geral: conversão por mês por frente, e retenção por mês separando quem ficou no plano de quem fez downgrade](10-dashboard-conversao-retencao.png)
+
+**Vendas × meta.** O mesmo gráfico alternando entre quantidade e atingimento, o consolidado por supervisor com a meta do período em cinza atrás de cada barra, e o top 10 de agentes. Quanto foi feito, quanto era pra ter sido feito, e quem está puxando.
+
+![Vendas × meta: realizado contra a meta, mês a mês](11-dashboard-vendas-meta.png)
+
+![Consolidado por supervisor contra a meta, e top 10 agentes](12-dashboard-supervisores-top10.png)
+
+**Conversão e retenção.** Conversão por frente ao longo dos meses, retenção por mês e por supervisor, sempre separando retido no plano de retido com downgrade, porque retenção sustentada por downgrade é receita caindo.
+
+![Retenção por supervisor: barra cheia é retido, a parte laranja é downgrade](13-dashboard-retencao-supervisor.png)
+
+**Dia a dia.** O último mês do período, dia por dia: as barras de vendas contra a linha do esperado pelo volume (atendimentos do dia × conversão média do mês). Barra acima da linha é dia bom de verdade; abaixo, dia que vendeu pouco apesar do movimento. A tabela do mês traz a mesma leitura com atendimentos, esperado, real − esperado, upgrades, retidos, downgrades, cancelados e retenção.
+
+![Dia a dia: vendas contra o esperado pelo volume](14-dashboard-dia-a-dia.png)
+
+![Tabela do mês](15-dashboard-tabela-mes.png)
+
+**Equipe.** Três colunas: coordenação → supervisor → agente. Clica numa coordenação e as outras duas colunas filtram; clica num supervisor e aparecem só os agentes dele, com atendimentos, vendas, upgrades e conversão. A lista de agentes mostra quem teve atendimento no período, por isso o número varia com o filtro.
+
+![Equipe: de coordenação a agente, em três colunas](16-dashboard-equipe.png)
+
+**Detalhe.** A tabela completa no recorte, agrupada por coordenação, supervisor ou agente, com meta, atingimento, conversão, retenção e downgrade, ordenável por qualquer coluna.
+
+![Detalhe por supervisor](17-dashboard-detalhe.png)
 
 [Abrir o dashboard](dashboards/esteira.html)
 
@@ -127,11 +153,37 @@ On top of that, three views:
 
 ## Dashboard
 
-The pipeline got a dashboard with the twelve months of the base and combinable filters (period, coordination, supervisor, channel, customer type and shift). Six sections: overview, sales × target, conversion and retention, day by day, team and detail. The Team section drills from coordination to supervisor to agent, in three columns. It is a single HTML file with the data embedded, which opens without internet.
+The pipeline got a dashboard with the twelve months of the base and the same combinable filters (period, coordination, supervisor, channel, customer type and shift). It is a single HTML file with the data embedded, which opens without internet. The palette is warm, a sales-operation look, and the active cut colors the bars: filter Chat and everything turns cyan; filter morning and it turns sun-yellow. The interface is in Portuguese.
 
-![Dashboard: overview](09-dashboard-visao-geral.png)
+**Overview.** What coordination looks at in thirty seconds: sales, upgrades, consolidated, period target, attainment, conversion, contacts, retention and retained with downgrade, each compared with the same stretch of the previous month. Below, sales and upgrades by month against the target line.
 
-![Dashboard: team, from coordination to agent](10-dashboard-equipe.png)
+![Overview: period indicators and sales by month against the target](09-dashboard-visao-geral.png)
+
+![Overview: conversion by month by channel, and retention by month separating those who kept the plan from those who downgraded](10-dashboard-conversao-retencao.png)
+
+**Sales × target.** The same chart switching between quantity and attainment, the consolidated per supervisor with the period target in grey behind each bar, and the top 10 agents. How much was done, how much should have been done, and who is pulling.
+
+![Sales × target: actual against target, month by month](11-dashboard-vendas-meta.png)
+
+![Consolidated per supervisor against target, and top 10 agents](12-dashboard-supervisores-top10.png)
+
+**Conversion and retention.** Conversion by channel over the months, retention by month and by supervisor, always separating retained in the plan from retained with downgrade, because retention sustained by downgrades is revenue going down.
+
+![Retention by supervisor: the full bar is retained, the orange part is downgrade](13-dashboard-retencao-supervisor.png)
+
+**Day by day.** The last month of the period, day by day: sales bars against the line of what was expected from volume (contacts of the day × average conversion of the month). A bar above the line is a truly good day; below it, a day that sold little despite the traffic. The month table gives the same reading with contacts, expected, actual − expected, upgrades, retained, downgrades, cancelled and retention.
+
+![Day by day: sales against expected from volume](14-dashboard-dia-a-dia.png)
+
+![Month table](15-dashboard-tabela-mes.png)
+
+**Team.** Three columns: coordination → supervisor → agent. Click a coordination and the other two columns filter; click a supervisor and only their agents show, with contacts, sales, upgrades and conversion. The agent list shows who had contacts in the period, so the count changes with the filter.
+
+![Team: from coordination to agent, in three columns](16-dashboard-equipe.png)
+
+**Detail.** The full table in the chosen cut, grouped by coordination, supervisor or agent, with target, attainment, conversion, retention and downgrade, sortable by any column.
+
+![Detail by supervisor](17-dashboard-detalhe.png)
 
 [Open the dashboard](dashboards/esteira.html)
 

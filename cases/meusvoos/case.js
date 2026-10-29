@@ -51,6 +51,28 @@ Para confirmar um voo ao cliente, o agente copiava a linha crua do sistema de re
 - Foi o projeto que me tirou da operação: a cobertura de férias do analista de melhoria contínua veio depois dela, e os cases PSAT e Esteira vieram na sequência.
 - A mesma ideia virou, um ano depois, a planilha guiada do Projeto Uber (case à parte), com fluxo de perguntas Sim/Não.
 
+## Dashboard
+
+A planilha não guardava histórico: cada atendimento era copiado pro Zendesk e pronto. O dashboard abaixo é o que eu montaria se o log existisse, com dados fictícios de dois meses, setembro (implantação, metade do time ainda no processo antigo nas duas primeiras semanas) e outubro. Serve pra mostrar o comparativo entre meses que a operação precisaria pra defender a mudança.
+
+![Visão geral: e-mails, operadores, tempo por e-mail, abaixo de 5 minutos, internacional, Clube; os dois meses lado a lado e o tempo por semana](15-dash-visao-geral.png)
+
+**Visão geral.** E-mails por dia com os dois meses sobrepostos, o tempo por e-mail semana a semana contra a meta de 5 minutos, e nacional contra internacional, que demora mais porque o parser de itinerário tem mais trecho pra ler.
+
+![Mês contra mês: e-mails por dia, tempo por e-mail, abaixo de 5 min, internacional e operadores, com variação; tempo por categoria e por supervisor](16-dash-comparativo.png)
+
+**Mês contra mês.** Setembro contra outubro em todos os cortes. O tempo cai pela metade e a fatia abaixo de 5 minutos triplica, com o mesmo time e o mesmo volume.
+
+![Operadores: tempo por operador contra a média do time, e a tabela com dias, e-mails, por dia, minutos por e-mail](17-dash-operadores.png)
+
+**Operadores.** Quem responde mais, quem responde mais rápido, por turno. A tabela ordena por qualquer coluna.
+
+![Problemas: categorias, status do Clube e os 26 problemas da base com contagem, tempo e se dependem do trecho voado](18-dash-problemas.png)
+
+**Problemas.** Os 26 problemas da base em 10 categorias, o status do Clube (que muda o texto da resposta) e se o problema depende do trecho de ida, que é quando o parser entra.
+
+[Abrir o dashboard](dashboards/manche.html)
+
 ## A versão para testar
 
 Reconstruí a planilha com dados fictícios, no mesmo formato da original, para quem quiser abrir e mexer: programa Horizonte, companhias inventadas, a mesma equipe fictícia dos outros cases. A aba Atendimento tem um bloco de operador com seis atendimentos em paralelo; VN e VI são os dois parsers de itinerário, nacional e internacional, com até duas conexões por trecho; Terminal é o quadro de instruções. Por trás, 26 problemas representativos das categorias reais, cada um com tabulação, mensagem e registro, e uma aba com os blocos de saudação, Clube, ida realizada e emojis. Tudo em fórmula de planilha, sem script, como no original.
@@ -122,6 +144,28 @@ To confirm a flight to the customer, the agent copied the raw line from the rese
 - Used by both shifts of the channel, at coordination's initiative.
 - It was the project that took me out of the queue: covering the continuous improvement analyst's vacation came after it, and the PSAT and Pipeline cases followed.
 - The same idea became, a year later, the guided spreadsheet for the Uber Project (its own case), with a yes/no question flow.
+
+## Dashboard
+
+The spreadsheet kept no history: each contact was copied into Zendesk and that was it. The dashboard below is what I would build if the log existed, with fictitious data for two months, September (rollout, half the team still on the old process in the first two weeks) and October. It shows the month-to-month comparison the operation would need to defend the change.
+
+![Overview: e-mails, agents, time per e-mail, under 5 minutes, international, club; the two months side by side and time by week](15-dash-visao-geral.png)
+
+**Overview.** E-mails per day with the two months overlaid, time per e-mail week by week against the 5-minute target, and domestic versus international, which takes longer because the itinerary parser has more segments to read.
+
+![Month vs. month: e-mails per day, time per e-mail, under 5 min, international and agents, with variation; time by category and by supervisor](16-dash-comparativo.png)
+
+**Month vs. month.** September against October in every cut. Time halves and the under-5-minute share triples, with the same team and the same volume.
+
+![Agents: time per agent against the team average, and the table with days, e-mails, per day, minutes per e-mail](17-dash-operadores.png)
+
+**Agents.** Who answers more, who answers faster, by shift. The table sorts by any column.
+
+![Issues: categories, club status and the base's 26 issues with count, time and whether they depend on the flown segment](18-dash-problemas.png)
+
+**Issues.** The base's 26 issues in 10 categories, the club status (which changes the reply text) and whether the issue depends on the outbound segment, which is when the parser comes in.
+
+[Open the dashboard](dashboards/manche.html)
 
 ## The version you can try
 

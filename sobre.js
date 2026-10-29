@@ -20,7 +20,7 @@ Pouco depois cobri as férias do analista de melhoria contínua. Ele saiu da emp
 
 Na Foundever, no Projeto Uber, repeti a receita no treinamento: uma planilha que guia o atendimento, da escolha do problema até a resposta padronizada. Consulta de cerca de 10 minutos para 30 segundos. O projeto encerrou o turno em que eu atuava em março de 2026.
 
-Hoje atuo em operação de atendimento e construí, pra uso próprio, o SisGeral: um gerenciador de atendimentos em HTML, CSS e JavaScript que abre sem instalar nada. Está na terceira versão depois de mais de cinquenta iterações, e também virou case.
+Hoje estou numa operação de atendimento de plano odontológico. No papel, atendente; na prática, foi ali que construí o projeto mais ambicioso que já fiz, o SisGeral: um gerenciador de atendimentos em HTML, CSS e JavaScript que abre sem instalar nada, com catálogo de procedimentos, prontuário compilado, histórico, calendário e painel de produtividade. Está na versão 3.24 depois de mais de cinquenta iterações, já foi apresentado à supervisão, e é o case da coluna Sistemas. O padrão se repete em todo lugar que passei: entro pela operação, enxergo o que trava, e construo a ferramenta que faltava. É isso que eu quero fazer de ofício.
 
 ## Como trabalho {Método}
 
@@ -76,7 +76,7 @@ Shortly after, I covered the continuous improvement analyst's vacation. He left 
 
 At Foundever, on the Uber Project, I repeated the recipe during training: a spreadsheet that guides the contact, from picking the issue to the standardized reply. Lookup from about 10 minutes to 30 seconds. The project closed my shift in March 2026.
 
-Today I work in a support operation and built, for my own use, SisGeral: a contact manager in HTML, CSS and JavaScript that opens with no install. It is on its third version after more than fifty iterations, and it became a case too.
+Today I am in a dental-plan customer-service operation. On paper, an agent; in practice, that is where I built the most ambitious project I have done, SisGeral: a contact manager in HTML, CSS and JavaScript that opens with no install, with a procedure catalog, a compiled record, history, calendar and a productivity panel. It is on version 3.24 after more than fifty iterations, it has been presented to supervision, and it is the case in the Systems column. The pattern repeats everywhere I have been: I come in through the operation, see what jams, and build the tool that was missing. That is what I want to do for a living.
 
 ## How I work {Method}
 

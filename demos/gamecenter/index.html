@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Jogos Retrô</title>
+    <style>
+        /* ==========================================================================
+           [CONFIGURAÇÃO] VARIÁVEIS DE CORES (Modo Claro)
+           ========================================================================== */
+        :root {
+            --bg-principal: #f4f7f6;
+            --bg-card: #ffffff;
+            --texto-escuro: #2c3e50;
+            --texto-mutado: #7f8c8d;
+            --cor-primaria: #3498db;
+            --cor-primaria-hover: #2980b9;
+            --cor-perigo: #e74c3c;
+            --cor-perigo-hover: #c0392b;
+            --borda: #e2e8f0;
+        }
+
+        /* ==========================================================================
+           [ESTILOS] ELEMENTOS GERAIS DA PÁGINA
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-principal);
+            color: var(--texto-escuro);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .tela {
+            display: none;
+            width: 100%;
+        }
+
+        .tela.ativa {
+            display: block;
+        }
+
+        /* ==========================================================================
+           [COMPONENTES] BOTÕES E INTERRUPTORES DO PORTAL
+           ========================================================================== */
+        .btn {
+            background-color: var(--cor-primaria);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            width: 100%;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .btn:hover { background-color: var(--cor-primaria-hover); }
+        .btn:active { transform: scale(0.98); }
+
+        .btn-reiniciar-topo {
+            background-color: var(--cor-perigo);
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-reiniciar-topo:hover { background-color: var(--cor-perigo-hover); }
+
+        .btn-voltar-x {
+            background: none;
+            border: none;
+            color: var(--cor-primaria);
+            font-size: 1.8rem;
+            cursor: pointer;
+            font-weight: bold;
+            padding: 0 5px;
+            transition: color 0.2s;
+            display: flex;
+            align-items: center;
+        }
+        .btn-voltar-x:hover { color: var(--cor-primaria-hover); }
+
+        /* ==========================================================================
+           [LAYOUT] CABEÇALHOS INTERNOS DOS JOGOS
+           ========================================================================== */
+        .cabecalho-jogo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            border-bottom: 2px solid var(--borda);
+            padding-bottom: 12px;
+            margin-bottom: 15px;
+        }
+
+        .titulo-jogo-inline {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--texto-escuro);
+        }
+
+        .menu-descricao {
+            text-align: center;
+            color: var(--texto-mutado);
+            margin-bottom: 25px;
+        }
+
+        .status-jogo {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+
+        /* ==========================================================================
+           [CSS DOS JOGOS] (Serão injetados nas próximas partes B e C)
+           
+        /* ==========================================================================
+           [CSS: JOGO DA VELHA]
+           ========================================================================== */
+        .tabuleiro-velha {
+            display: grid;
+            grid-template-columns: repeat(3, 90px);
+            grid-template-rows: repeat(3, 90px);
+            gap: 6px;
+            background-color: var(--borda);
+            padding: 6px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .quadrado-velha {
+            background-color: var(--bg-card);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            user-select: none;
+        }
+        .quadrado-velha:hover { background-color: var(--bg-principal); }
+
+        /* ==========================================================================
+           [CSS: CAMPO MINADO] LAYOUT E BORDAS CLÁSSICAS
+           ========================================================================== */
+        .layout-minado {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            align-items: flex-start;
+        }
+
+        .coluna-esquerda-minado {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .coluna-direita-leaderboard {
+            width: 180px;
+            background-color: var(--bg-principal);
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid var(--borda);
+        }
+
+        .leaderboard-titulo {
+            font-size: 0.95rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #cbd5e1;
+            padding-bottom: 5px;
+            color: var(--texto-escuro);
+        }
+
+        .leaderboard-item {
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        /* Fontes nítidas com borda preta simulada */
+        .fonte-qjg {
+            color: #2ecc71;
+            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        }
+
+        .fonte-qjj {
+            color: #e74c3c;
+            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        }
+
+        .tabuleiro-minado {
+            display: grid;
+            gap: 2px;
+            background-color: var(--borda);
+            padding: 4px;
+            border-radius: 6px;
+            margin: 15px 0;
+            user-select: none;
+        }
+
+        .quadrado-minado {
+            background-color: #bdc3c7;
+            border-top: 2px solid #eee;
+            border-left: 2px solid #eee;
+            border-right: 2px solid #95a5a6;
+            border-bottom: 2px solid #95a5a6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            width: 35px;
+            height: 35px;
+        }
+        .quadrado-minado.revelado { background-color: #e2e8f0; border: 1px solid #cbd5e1; }
+        .quadrado-minado.bomba { background-color: #e74c3c; border: 1px solid #c0392b; }
+        
+        .n-1 { color: #2980b9; }
+        .n-2 { color: #27ae60; }
+        .n-3 { color: #e74c3c; }
+        .n-4 { color: #8e44ad; }
+        .n-mais { color: #7f8c8d; }
+
+                /* ==========================================================================
+           [CSS: BATALHA NAVAL PRO] GRADES ADAPTÁVEIS E FROTA DRAG&DROP
+           ========================================================================== */
+        .tabuleiro-naval {
+            display: grid;
+            gap: 2px;
+            background-color: var(--borda);
+            padding: 4px;
+            border-radius: 6px;
+            user-select: none;
+        }
+
+        .quadrado-naval {
+            background-color: #e2e8f0;
+            border: 1px solid #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            cursor: pointer;
+            width: 35px;
+            height: 35px;
+            transition: background 0.2s;
+        }
+        .quadrado-naval:hover { background-color: #cbd5e1; }
+
+        /* Estados de tiros e posicionamento clássico */
+        .naval-agua { background-color: #74b9ff !important; color: white; }
+        .naval-fogo { background-color: #ff7675 !important; color: white; }
+        .naval-seu-navio { background-color: #7f8c8d !important; color: white; }
+        
+        /* Container da Doca de Navios (Espaço para arrastar e girar) */
+        .doca-container {
+            width: 100%;
+            background-color: var(--bg-principal);
+            border: 1px dashed var(--texto-mutado);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .doca-titulo {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: var(--texto-mutado);
+            text-transform: uppercase;
+        }
+
+        .lista-navios-doca {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            min-height: 50px;
+        }
+
+        /* O Bloco do Navio Arrastável */
+        .navio-drag {
+            background-color: #636e72;
+            border: 2px solid #2d3436;
+            border-radius: 4px;
+            cursor: grab;
+            display: flex;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        }
+        .navio-drag:active { cursor: grabbing; }
+
+        /* Segmentos internos do navio para simular os blocos */
+        .segmento-navio {
+            width: 31px;
+            height: 31px;
+            border-right: 1px dashed #b2bec3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #dfe6e9;
+            font-size: 0.8rem;
+        }
+        .segmento-navio:last-child { border-right: none; }
+
+        /* Classe aplicada via JS quando o navio for rotacionado para Vertical */
+        .navio-vertical {
+            flex-direction: column;
+        }
+        .navio-vertical .segmento-navio {
+            border-right: none;
+            border-bottom: 1px dashed #b2bec3;
+        }
+        .navio-vertical .segmento-navio:last-child { border-bottom: none; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Game Center 🎮</h1>
+    </header>
+
+    <div class="container">
+        <!-- ==================================================================
+             [TELA: HOME] MENU PRINCIPAL DE SELEÇÃO
+             ================================================================== -->
+        <div id="tela-home" class="tela ativa">
+            <p class="menu-descricao">Escolha um jogo abaixo para começar a se divertir!</p>
+            <button class="btn" onclick="mudarAba('tela-velha')">❌ Jogo da Velha Pro ⭕</button>
+            <button class="btn" onclick="mudarAba('tela-minado')">💣 Campo Minado Clássico 🚩</button>
+            <button class="btn" onclick="mudarAba('tela-naval')">🚢 Batalha Naval 🌊</button>
+        </div>
+
+        <!-- AS PRÓXIMAS TELAS DO PORTAL SERÃO COLOCADAS LOGO ABAIXO DAQUI -->
+
+        <!-- ==================================================================
+             [TELA: JOGO DA VELHA PRO]
+             ================================================================== -->
+        <div id="tela-velha" class="tela">
+            <div class="cabecalho-jogo">
+                <button class="btn-voltar-x" onclick="mudarAba('tela-home')">←</button>
+                <div class="titulo-jogo-inline">Jogo da Velha Pro</div>
+                <button class="btn-reiniciar-topo" onclick="reiniciarVelha()">Reiniciar Jogo</button>
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-bottom: 15px; width: 100%; justify-content: center; max-width: 300px; margin-left: auto; margin-right: auto;">
+                <select id="modo-velha" class="btn" style="margin-bottom:0; padding: 6px 12px; font-size: 0.9rem;" onchange="reiniciarVelha()">
+                    <option value="amigo">Contra Amigo</option>
+                    <option value="ia">Contra Máquina</option>
+                </select>
+                <select id="simbolo-jogador" class="btn" style="margin-bottom:0; padding: 6px 12px; font-size: 0.9rem;" onchange="reiniciarVelha()">
+                    <option value="X">Jogar de X</option>
+                    <option value="O">Jogar de O</option>
+                </select>
+            </div>
+
+            <div style="display: flex; justify-content: space-around; width: 100%; margin-bottom: 15px; font-weight: bold; background-color: var(--bg-principal); padding: 8px; border-radius: 8px; font-size: 0.9rem;">
+                <div>❌ J1: <span id="placar-j1">0</span></div>
+                <div>🤝 Empates: <span id="placar-empates">0</span></div>
+                <div>⭕ J2/Robô: <span id="placar-j2">0</span></div>
+            </div>
+
+            <div id="status-velha" class="status-jogo">Vez do jogador: X</div>
+            
+            <div style="display: flex; justify-content: center; width: 100%;">
+                <div class="tabuleiro-velha" id="tabuleiro-velha">
+                    <div class="quadrado-velha" onclick="jogadaVelha(this, 0)"></div>
+                    <div class="quadrado-velha" onclick="jogadaVelha(this, 1)"></div>
+                    <div class="quadrado-velha" onclick="jogadaVelha(this, 2)"></div>
+                    <div class="quadrado-velha" onclick="jogadaVelha(this, 3)"></div>
+                    <div class="quadrado-velha" onclick="jogadaVelha(this, 4)"></div>
+                    <div class="quadrado-velha" onclick="jogadaVelha(this, 5)"></div>
+                    <div class="quadrado-velha" onclick="jogadaVelha(this, 6)"></div>
+                    <div class="quadrado-velha" onclick="jogadaVelha(this, 7)"></div>
+                    <div class="quadrado-velha" onclick="jogadaVelha(this, 8)"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================================================================
+             [TELA: CAMPO MINADO CLÁSSICO]
+             ================================================================== -->
+        <div id="tela-minado" class="tela">
+            <div class="cabecalho-jogo">
+                <button class="btn-voltar-x" onclick="voltarParaMenuMinado()">←</button>
+                <div class="titulo-jogo-inline">Campo Minado</div>
+                <button class="btn-reiniciar-topo" onclick="reiniciarMinado()">Reiniciar Jogo</button>
+            </div>
+
+            <div style="display: flex; gap: 8px; margin-bottom: 15px; justify-content: center; max-width: 400px; margin-left: auto; margin-right: auto;">
+                <button class="btn" style="margin-bottom:0; padding: 6px 12px; font-size: 0.9rem;" onclick="mudarDificuldade('facil')">Fácil</button>
+                <button class="btn" style="margin-bottom:0; padding: 6px 12px; font-size: 0.9rem;" onclick="mudarDificuldade('medio')">Médio</button>
+                <button class="btn" style="margin-bottom:0; padding: 6px 12px; font-size: 0.9rem;" onclick="mudarDificuldade('dificil')">Difícil</button>
+            </div>
+
+            <div class="layout-minado">
+                <div class="coluna-esquerda-minado">
+                    <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 8px; font-weight: bold; font-size: 0.95rem;">
+                        <div id="status-minado">Clique para começar!</div>
+                        <div id="timer-minado">⏱️ 0s</div>
+                    </div>
+                    <div class="tabuleiro-minado" id="tabuleiro-minado"></div>
+                </div>
+                
+                <div class="coluna-direita-leaderboard">
+                    <div class="leaderboard-titulo">🏅 Leaderboard</div>
+                    <div class="leaderboard-item">Fácil: <span class="fonte-qjg" id="w-facil">0</span>/<span class="fonte-qjj" id="g-facil">0</span></div>
+                    <div class="leaderboard-item">Médio: <span class="fonte-qjg" id="w-medio">0</span>/<span class="fonte-qjj" id="g-medio">0</span></div>
+                    <div class="leaderboard-item">Difícil: <span class="fonte-qjg" id="w-dificil">0</span>/<span class="fonte-qjj" id="g-dificil">0</span></div>
+                </div>
+            </div>
+        </div>
+
+                <!-- ==================================================================
+             [TELA: BATALHA NAVAL PERSONALIZADO]
+             ================================================================== -->
+        <div id="tela-naval" class="tela">
+            <div class="cabecalho-jogo">
+                <button class="btn-voltar-x" onclick="voltarParaMenuNaval()">←</button>
+                <div class="titulo-jogo-inline">Batalha Naval Pro</div>
+                <button class="btn-reiniciar-topo" onclick="reiniciarNaval()">Reiniciar</button>
+            </div>
+
+            <!-- Seletores de Configuração de Escala e Modo -->
+            <div style="display: flex; gap: 8px; margin-bottom: 12px; justify-content: center; width: 100%;">
+                <select id="modo-naval" class="btn" style="margin-bottom:0; padding: 6px 12px; font-size: 0.85rem; width: auto;" onchange="reiniciarNaval()">
+                    <option value="computador">Vs Computador</option>
+                    <option value="player">Vs Player (Local)</option>
+                </select>
+                <select id="escala-naval" class="btn" style="margin-bottom:0; padding: 6px 12px; font-size: 0.85rem; width: auto;" onchange="mudarEscalaNaval(this.value)">
+                    <option value="5">Fácil (5x5)</option>
+                    <option value="7">Médio (7x7)</option>
+                    <option value="9">Difícil (9x9)</option>
+                </select>
+            </div>
+
+            <div id="status-naval" class="status-jogo">Posicione seus navios arrastando para o seu tabuleiro!</div>
+            
+            <!-- Contagem Dinâmica de Impactos/Navios -->
+            <div style="display: flex; justify-content: space-around; width: 100%; margin-bottom: 15px; font-weight: bold; background-color: var(--bg-principal); padding: 8px; border-radius: 8px; font-size: 0.9rem;">
+                <div>🚢 Frotas Inimigas: <span id="navios-inimigos-vivos">0</span></div>
+                <div>⚓ Suas Frotas: <span id="seus-navios-vivos">0</span></div>
+            </div>
+
+            <!-- Grades de Combate -->
+            <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; width: 100%;">
+                <div id="container-tabuleiro-inimigo" style="display: none;">
+                    <h5 style="text-align: center; margin-bottom: 4px; color: var(--texto-mutado);" id="titulo-ataque">Ataque (Inimigo)</h5>
+                    <div class="tabuleiro-naval" id="naval-inimigo"></div>
+                </div>
+                <div>
+                    <h5 style="text-align: center; margin-bottom: 4px; color: var(--texto-mutado);" id="titulo-defesa">Seu Tabuleiro (Defesa)</h5>
+                    <div class="tabuleiro-naval" id="naval-jogador"></div>
+                </div>
+            </div>
+
+            <!-- Doca de Posicionamento (Drag and Drop + Clique para Girar) -->
+            <div id="doca-posicionamento" class="doca-container">
+                <div class="doca-titulo">⚓ Sua Doca (Clique para Girar / Arraste para o Tabuleiro)</div>
+                <div id="lista-navios-doca" class="lista-navios-doca"></div>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+
+    <!-- ==========================================================================
+         [SISTEMA CENTRAl] SISTEMA DE ABAS E EVENTOS
+         ========================================================================== -->
+    <script>
+        function mudarAba(idDaAba) {
+            document.querySelectorAll('.tela').forEach(tela => {
+                tela.classList.remove('ativa');
+            });
+            document.getElementById(idDaAba).classList.add('ativa');
+
+            // Gatilhos de reinicialização automática ao transitar pelas abas
+            if (idDaAba === 'tela-velha' && typeof reiniciarVelha === 'function') reiniciarVelha();
+            if (idDaAba === 'tela-minado' && typeof reiniciarMinado === 'function') reiniciarMinado();
+            if (idDaAba === 'tela-naval' && typeof reiniciarNaval === 'function') reiniciarNaval();
+        }
+    </script>
+
+    <!-- AS PRÓXIMAS PARTES DA LÓGICA (PARTE 2) SERÃO INJETADAS DIRETAMENTE ABAIXO DAQUI -->
+
+    <!-- ==========================================================================
+         [LÓGICA: JOGO DA VELHA PRO] (PARTE 2A)
+         ========================================================================== -->
+    <script>
+        let turnoVelha = 'X';
+        let estadoVelha = ["", "", "", "", "", "", "", "", ""];
+        let jogoAtivoVelha = true;
+        let vitoriasJ1 = 0;
+        let vitoriasJ2 = 0;
+        let empatesVelha = 0;
+
+        const condicoesVitoria = [
+            "0,1,2", "3,4,5", "6,7,8",
+            "0,3,6", "1,4,7", "2,5,8",
+            "0,4,8", "2,4,6"
+        ];
+
+        function reiniciarVelha() {
+            const simboloEscolhido = document.getElementById('simbolo-jogador').value;
+            turnoVelha = simboloEscolhido;
+            estadoVelha = ["", "", "", "", "", "", "", "", ""];
+            jogoAtivoVelha = true;
+            
+            document.getElementById('status-velha').innerText = `Vez do jogador: ${turnoVelha}`;
+            document.querySelectorAll('.quadrado-velha').forEach(q => q.innerText = "");
+
+            const modo = document.getElementById('modo-velha').value;
+            if (modo === 'ia' && turnoVelha === 'O') {
+                document.getElementById('status-velha').innerText = "Máquina pensando...";
+                setTimeout(jogadaIA, 500);
+            }
+        }
+
+        function jogadaVelha(elemento, indice) {
+            if (estadoVelha[indice] !== "" || !jogoAtivoVelha) return;
+            
+            const modo = document.getElementById('modo-velha').value;
+            const simboloHumano = document.getElementById('simbolo-jogador').value;
+            if (modo === 'ia' && turnoVelha !== simboloHumano) return;
+
+            executarMovimento(indice, elemento);
+        }
+
+        function executarMovimento(indice, elemento) {
+            estadoVelha[indice] = turnoVelha;
+            elemento.innerText = turnoVelha;
+
+            if (verificarResultadoVelha()) return;
+
+            turnoVelha = turnoVelha === 'X' ? 'O' : 'X';
+            document.getElementById('status-velha').innerText = `Vez do jogador: ${turnoVelha}`;
+
+            const modo = document.getElementById('modo-velha').value;
+            const simboloHumano = document.getElementById('simbolo-jogador').value;
+            if (modo === 'ia' && turnoVelha !== simboloHumano && jogoAtivoVelha) {
+                document.getElementById('status-velha').innerText = "Máquina pensando...";
+                setTimeout(jogadaIA, 500);
+            }
+        }
+
+        function verificarResultadoVelha() {
+            let venceu = false;
+            for (let i = 0; i < condicoesVitoria.length; i++) {
+                const condicao = condicoesVitoria[i].split(",").map(Number);
+                let a = estadoVelha[condicao[0]];
+                let b = estadoVelha[condicao[1]];
+                let c = estadoVelha[condicao[2]];
+
+                if (a === "" || b === "" || c === "") continue;
+                if (a === b && b === c) {
+                    venceu = true;
+                    break;
+                }
+            }
+
+            const simboloHumano = document.getElementById('simbolo-jogador').value;
+
+            if (venceu) {
+                document.getElementById('status-velha').innerText = `🎉 Jogador ${turnoVelha} Venceu!`;
+                jogoAtivoVelha = false;
+                if (turnoVelha === simboloHumano) {
+                    vitoriasJ1++;
+                    document.getElementById('placar-j1').innerText = vitoriasJ1;
+                } else {
+                    vitoriasJ2++;
+                    document.getElementById('placar-j2').innerText = vitoriasJ2;
+                }
+                return true;
+            }
+
+            if (!estadoVelha.includes("")) {
+                document.getElementById('status-velha').innerText = `🤝 Velha! Deu empate.`;
+                jogoAtivoVelha = false;
+                empatesVelha++;
+                document.getElementById('placar-empates').innerText = empatesVelha;
+                return true;
+            }
+            return false;
+        }
+
+        function jogadaIA() {
+            if (!jogoAtivoVelha) return;
+            const simboloHumano = document.getElementById('simbolo-jogador').value;
+            const simboloIA = simboloHumano === 'X' ? 'O' : 'X';
+
+            let movimentoIA = encontrarMelhorMovimento(simboloIA);
+            if (movimentoIA === null) movimentoIA = encontrarMelhorMovimento(simboloHumano);
+
+            if (movimentoIA === null) {
+                let casasLivres = [];
+                for (let i = 0; i < estadoVelha.length; i++) {
+                    if (estadoVelha[i] === "") casasLivres.push(i);
+                }
+                if (casasLivres.length > 0) {
+                    movimentoIA = casasLivres[Math.floor(Math.random() * casasLivres.length)];
+                }
+            }
+
+            if (movimentoIA !== null) {
+                const elementos = document.querySelectorAll('.quadrado-velha');
+                executarMovimento(movimentoIA, elementos[movimentoIA]);
+            }
+        }
+
+        function encontrarMelhorMovimento(simbolo) {
+            for (let i = 0; i < condicoesVitoria.length; i++) {
+                const condicao = condicoesVitoria[i].split(",").map(Number);
+                let a = estadoVelha[condicao[0]];
+                let b = estadoVelha[condicao[1]];
+                let c = estadoVelha[condicao[2]];
+
+                let contagem = 0;
+                let vazio = null;
+
+                if (a === simbolo) contagem++; else if (a === "") vazio = condicao[0];
+                if (b === simbolo) contagem++; else if (b === "") vazio = condicao[1];
+                if (c === simbolo) contagem++; else if (c === "") vazio = condicao[2];
+
+                if (contagem === 2 && vazio !== null) return vazio;
+            }
+            return null;
+        }
+    </script>
+
+    <!-- ==========================================================================
+         [LÓGICA: CAMPO MINADO CLÁSSICO] (PARTE 2B)
+         ========================================================================== -->
+    <script>
+        let dificuldadeAtual = 'facil';
+        let tamanhoGrade = 5;
+        let qtdBombas = 4;
+        let matrizJogo = [];
+        let minasPosicoes = [];
+        let jogoAtivoMinado = false;
+        let primeiroClique = true;
+        let tempoDecorrido = 0;
+        let intervaloTimer = null;
+
+        // Histórico do Leaderboard (QJG / QJJ)
+        let recordesMinado = {
+            facil: { qjg: 0, qjj: 0 },
+            medio: { qjg: 0, qjj: 0 },
+            dificil: { qjg: 0, qjj: 0 }
+        };
+
+        function iniciarTimer() {
+            if (intervaloTimer) clearInterval(intervaloTimer);
+            tempoDecorrido = 0;
+            document.getElementById('timer-minado').innerText = `⏱️ ${tempoDecorrido}s`;
+            
+            intervaloTimer = setInterval(() => {
+                if (jogoAtivoMinado) {
+                    tempoDecorrido++;
+                    document.getElementById('timer-minado').innerText = `⏱️ ${tempoDecorrido}s`;
+                }
+            }, 1000);
+        }
+
+        function pararTimer() { 
+            clearInterval(intervaloTimer); 
+        }
+
+        function mudarDificuldade(nivel) {
+            // Se o usuário mudar de nível no meio de um jogo ativo, conta como derrota/jogada
+            if (jogoAtivoMinado && !primeiroClique) {
+                recordesMinado[dificuldadeAtual].qjj++;
+                atualizarDOMLeaderboard();
+            }
+            dificuldadeAtual = nivel;
+            if (nivel === 'facil') { tamanhoGrade = 5; qtdBombas = 4; }
+            else if (nivel === 'medio') { tamanhoGrade = 7; qtdBombas = 9; }
+            else if (nivel === 'dificil') { tamanhoGrade = 9; qtdBombas = 15; }
+            reiniciarMinado();
+        }
+
+        function voltarParaMenuMinado() {
+            if (jogoAtivoMinado && !primeiroClique) {
+                recordesMinado[dificuldadeAtual].qjj++;
+                atualizarDOMLeaderboard();
+            }
+            pararTimer();
+            mudarAba('tela-home');
+        }
+
+        function atualizarDOMLeaderboard() {
+            ['facil', 'medio', 'dificil'].forEach(n => {
+                document.getElementById(`w-${n}`).innerText = recordesMinado[n].qjg;
+                document.getElementById(`g-${n}`).innerText = recordesMinado[n].qjj;
+            });
+        }
+
+        function reiniciarMinado() {
+            jogoAtivoMinado = true;
+            primeiroClique = true;
+            pararTimer();
+            tempoDecorrido = 0;
+            document.getElementById('timer-minado').innerText = "⏱️ 0s";
+            document.getElementById('status-minado').innerText = "Dê o primeiro clique!";
+            
+            const tabuleiro = document.getElementById('tabuleiro-minado');
+            tabuleiro.innerHTML = '';
+            
+            // Reajusta dinamicamente o grid CSS
+            tabuleiro.style.gridTemplateColumns = `repeat(${tamanhoGrade}, 35px)`;
+            tabuleiro.style.gridTemplateRows = `repeat(${tamanhoGrade}, 35px)`;
+
+            matrizJogo = [];
+            minasPosicoes = [];
+
+            for (let i = 0; i < tamanhoGrade * tamanhoGrade; i++) {
+                const bloco = document.createElement('div');
+                bloco.classList.add('quadrado-minado');
+                bloco.dataset.index = i;
+                bloco.addEventListener('click', () => tratarCliqueMinado(bloco, i));
+                tabuleiro.appendChild(bloco);
+                
+                matrizJogo.push({
+                    revelado: false,
+                    bomba: false,
+                    bombasAoRedor: 0,
+                    elementoHTML: bloco
+                });
+            }
+        }
+
+        function tratarCliqueMinado(bloco, indice) {
+            if (!jogoAtivoMinado || matrizJogo[indice].revelado) return;
+
+            if (primeiroClique) {
+                primeiroClique = false;
+                // Incrementa a quantidade de jogos jogados ao fazer a primeira ação real
+                recordesMinado[dificuldadeAtual].qjj++;
+                atualizarDOMLeaderboard();
+                
+                gerarMinasERegras(indice);
+                iniciarTimer();
+                document.getElementById('status-minado').innerText = "Cuidado com as bombas!";
+            }
+
+            revelarBloco(indice);
+        }
+
+        function gerarMinasERegras(indiceEvitar) {
+            const totalCelulas = tamanhoGrade * tamanhoGrade;
+            
+            while (minasPosicoes.length < qtdBombas) {
+                let posicao = Math.floor(Math.random() * totalCelulas);
+                if (posicao !== indiceEvitar && !minasPosicoes.includes(posicao)) {
+                    minasPosicoes.push(posicao);
+                    matrizJogo[posicao].bomba = true;
+                }
+            }
+
+            for (let i = 0; i < totalCelulas; i++) {
+                if (matrizJogo[i].bomba) continue;
+                
+                let vizinhos = obterVizinhos(i);
+                let contagem = 0;
+                
+                vizinhos.forEach(vIdx => {
+                    if (matrizJogo[vIdx].bomba) contagem++;
+                });
+                
+                matrizJogo[i].bombasAoRedor = contagem;
+            }
+        }
+
+        function obterVizinhos(indice) {
+            let vizinhos = [];
+            let linha = Math.floor(indice / tamanhoGrade);
+            let coluna = indice % tamanhoGrade;
+
+            for (let dLinha = -1; dLinha <= 1; dLinha++) {
+                for (let dColuna = -1; dColuna <= 1; dColuna++) {
+                    let nLinha = linha + dLinha;
+                    let nColuna = coluna + dColuna;
+
+                    if (nLinha >= 0 && nLinha < tamanhoGrade && nColuna >= 0 && nColuna < tamanhoGrade) {
+                        let vIdx = nLinha * tamanhoGrade + nColuna;
+                        if (vIdx !== indice) vizinhos.push(vIdx);
+                    }
+                }
+            }
+            return vizinhos;
+        }
+
+        function revelarBloco(indice) {
+            let blocoData = matrizJogo[indice];
+            if (blocoData.revelado) return;
+
+            blocoData.revelado = true;
+            blocoData.elementoHTML.classList.add('revelado');
+
+            if (blocoData.bomba) {
+                blocoData.elementoHTML.classList.add('bomba');
+                blocoData.elementoHTML.innerText = '💣';
+                document.getElementById('status-minado').innerText = "💥 Você perdeu!";
+                jogoAtivoMinado = false;
+                pararTimer();
+                revelarTodasAsMinas();
+                return;
+            }
+
+            if (blocoData.bombasAoRedor > 0) {
+                blocoData.elementoHTML.innerText = blocoData.bombasAoRedor;
+                if (blocoData.bombasAoRedor === 1) blocoData.elementoHTML.classList.add('n-1');
+                else if (blocoData.bombasAoRedor === 2) blocoData.elementoHTML.classList.add('n-2');
+                else if (blocoData.bombasAoRedor === 3) blocoData.elementoHTML.classList.add('n-3');
+                else if (blocoData.bombasAoRedor === 4) blocoData.elementoHTML.classList.add('n-4');
+                else blocoData.elementoHTML.classList.add('n-mais');
+            } else {
+                let vizinhos = obterVizinhos(indice);
+                vizinhos.forEach(vIdx => revelarBloco(vIdx));
+            }
+
+            verificarVitoriaMinado();
+        }
+
+        function revelarTodasAsMinas() {
+            matrizJogo.forEach(blocoData => {
+                if (blocoData.bomba) {
+                    blocoData.elementoHTML.classList.add('bomba');
+                    blocoData.elementoHTML.innerText = '💣';
+                }
+            });
+        }
+
+        function verificarVitoriaMinado() {
+            const totalRevelados = matrizJogo.filter(b => b.revelado && !b.bomba).length;
+            const objetivosSeguros = (tamanhoGrade * tamanhoGrade) - qtdBombas;
+
+            if (totalRevelados === objetivosSeguros) {
+                document.getElementById('status-minado').innerText = "🏆 Você venceu!";
+                jogoAtivoMinado = false;
+                pararTimer();
+                
+                // Incrementa a quantidade de jogos ganhos
+                recordesMinado[dificuldadeAtual].qjg++;
+                atualizarDOMLeaderboard();
+            }
+        }
+    </script>
+
+        <!-- ==========================================================================
+         [LÓGICA: BATALHA NAVAL PRO] (PARTE 2C - FASE 1: CONFIGURAÇÕES E DOCA)
+         ========================================================================== -->
+    <script>
+        let tamanhoNaval = 5;
+        let modoNaval = 'computador';
+        let jogoAtivoNaval = false;
+        let fasePosicionamento = true;
+
+        // Estado lógico dos tabuleiros: contêm objetos { idNavio: null, atingido: false, navio: false }
+        let matrizJogadorNaval = [];
+        let matrizInimigoNaval = [];
+
+        // Controle dos navios e frotas ativas
+        let frotaJogador = [];
+        let frotaInimigo = [];
+        let idNavioSendoArrastado = null;
+
+        // Configuração oficial de tamanhos e frotas por nível
+        const configuracaoEscalas = {
+            5: { totalNavios: 3, frotas: [1, 1, 1] },
+            7: { totalNavios: 5, frotas: [4, 2, 2, 1, 1] },
+            9: { totalNavios: 7, frotas: [5, 2, 2, 2, 1, 1, 1] }
+        };
+
+        function mudarEscalaNaval(novaEscala) {
+            tamanhoNaval = parseInt(novaEscala);
+            reiniciarNaval();
+        }
+
+        function voltarParaMenuNaval() {
+            jogoAtivoNaval = false;
+            mudarAba('tela-home');
+        }
+
+        function reiniciarNaval() {
+            modoNaval = document.getElementById('modo-velha') ? document.getElementById('modo-naval').value : 'computador';
+            jogoAtivoNaval = false;
+            fasePosicionamento = true;
+            idNavioSendoArrastado = null;
+            
+            document.getElementById('status-naval').innerText = "Arraste os navios para o seu tabuleiro! Clique neles para girar.";
+            document.getElementById('container-tabuleiro-inimigo').style.display = 'none';
+            document.getElementById('doca-posicionamento').style.display = 'flex';
+            
+            const config = configuracaoEscalas[tamanhoNaval];
+            document.getElementById('navios-inimigos-vivos').innerText = config.totalNavios;
+            document.getElementById('seus-navios-vivos').innerText = config.totalNavios;
+
+            // Limpa as frotas na memória
+            frotaJogador = [];
+            frotaInimigo = [];
+
+            // Inicializa as matrizes de controle com células vazias
+            matrizJogadorNaval = Array(tamanhoNaval * tamanhoNaval).fill(null).map(() => ({ navioId: null, atingido: false, navio: false }));
+            matrizInimigoNaval = Array(tamanhoNaval * tamanhoNaval).fill(null).map(() => ({ navioId: null, atingido: false, navio: false }));
+
+            configurarGridsVisuais();
+            gerarFrotaNaDoca(config.frotas);
+        }
+
+        function configurarGridsVisuais() {
+            const divInimigo = document.getElementById('naval-inimigo');
+            const divJogador = document.getElementById('naval-jogador');
+            
+            divInimigo.innerHTML = '';
+            divJogador.innerHTML = '';
+
+            // Ajusta dinamicamente as colunas e tamanhos dos grids baseados na escala (5x5, 7x7 ou 9x9)
+            [divInimigo, divJogador].forEach(grid => {
+                grid.style.gridTemplateColumns = `repeat(${tamanhoNaval}, 35px)`;
+                grid.style.gridTemplateRows = `repeat(${tamanhoNaval}, 35px)`;
+            });
+
+            // Constrói o tabuleiro do jogador (Defesa) com os eventos de Drag & Drop mapeados
+            for (let i = 0; i < tamanhoNaval * tamanhoNaval; i++) {
+                const quadrado = document.createElement('div');
+                quadrado.classList.add('quadrado-naval');
+                quadrado.dataset.index = i;
+                
+                // Mapeia os eventos nativos de arrastar e soltar do HTML5
+                quadrado.addEventListener('dragover', (e) => e.preventDefault());
+                quadrado.addEventListener('drop', (e) => soltarNavioNoTabuleiro(e, i));
+                
+                divJogador.appendChild(quadrado);
+            }
+
+            // Constrói o tabuleiro do Inimigo (Ataque)
+            for (let i = 0; i < tamanhoNaval * tamanhoNaval; i++) {
+                const quadrado = document.createElement('div');
+                quadrado.classList.add('quadrado-naval');
+                quadrado.dataset.index = i;
+                quadrado.addEventListener('click', () => tratarDisparoJogador(quadrado, i));
+                divInimigo.appendChild(quadrado);
+            }
+        }
+
+        function gerarFrotaNaDoca(listaTamanhos) {
+            const listaDoca = document.getElementById('lista-navios-doca');
+            listaDoca.innerHTML = '';
+
+            listaTamanhos.forEach((tamanho, indice) => {
+                // Instancia o objeto do navio do jogador
+                const objetoNavio = {
+                    id: indice,
+                    tamanho: tamanho,
+                    orientacao: 'horizontal', // 'horizontal' ou 'vertical'
+                    posicionado: false,
+                    celulas: [], // Guarda os índices ocupados no tabuleiro
+                    vida: tamanho
+                };
+                frotaJogador.push(objetoNavio);
+
+                // Cria o elemento visual do navio
+                const navioDiv = document.createElement('div');
+                navioDiv.classList.add('navio-drag');
+                navioDiv.setAttribute('draggable', 'true');
+                navioDiv.dataset.id = indice;
+
+                // Monta os segmentos internos (quadradinhos) do navio
+                for (let s = 0; s < tamanho; s++) {
+                    const segmento = document.createElement('div');
+                    segmento.classList.add('segmento-navio');
+                    segmento.innerText = tamanho > 1 ? '•' : '⚓';
+                    navioDiv.appendChild(segmento);
+                }
+
+                // Evento para alternar entre horizontal/vertical ao clicar na doca
+                navioDiv.addEventListener('click', () => {
+                    if (objetoNavio.orientacao === 'horizontal') {
+                        objetoNavio.orientacao = 'vertical';
+                        navioDiv.classList.add('navio-vertical');
+                    } else {
+                        objetoNavio.orientacao = 'horizontal';
+                        navioDiv.classList.remove('navio-vertical');
+                    }
+                });
+
+                // Mapeia o início do arrasto
+                navioDiv.addEventListener('dragstart', () => {
+                    idNavioSendoArrastado = objetoNavio.id;
+                });
+
+                listaDoca.appendChild(navioDiv);
+            });
+        }
+    </script>
+
+    <!-- ==========================================================================
+         [LÓGICA: BATALHA NAVAL PRO] (PARTE 2C - FASE 2: DROP, COLISÃO E MÁQUINA)
+         ========================================================================== -->
+    <script>
+        function soltarNavioNoTabuleiro(evento, indiceFoco) {
+            evento.preventDefault();
+            if (idNavioSendoArrastado === null) return;
+
+            const navio = frotaJogador[idNavioSendoArrastado];
+            const indicesOcupados = calcularIndicesOcupados(indiceFoco, navio.tamanho, navio.orientacao);
+
+            // Se for inválido (bateu nas bordas ou colidiu com outro navio), cancela o movimento
+            if (indicesOcupados === null || detectarColisao(indicesOcupados, matrizJogadorNaval)) {
+                document.getElementById('status-naval').innerText = "❌ Posição inválida! O navio não cabe aí.";
+                return;
+            }
+
+            // Aloca o navio na memória e pinta as células do tabuleiro de cinza
+            indicesOcupados.forEach(idx => {
+                matrizJogadorNaval[idx].navio = true;
+                matrizJogadorNaval[idx].navioId = navio.id;
+                
+                const quadradoHTML = document.getElementById('naval-jogador').children[idx];
+                quadradoHTML.classList.add('naval-seu-navio');
+                quadradoHTML.innerText = '⚓';
+            });
+
+            navio.posicionado = true;
+            navio.celulas = indicesOcupados;
+
+            // Remove o navio fisicamente da Doca para que não seja duplicado
+            const navioElemento = document.querySelector(`.navio-drag[data-id="${navio.id}"]`);
+            if (navioElemento) navioElemento.remove();
+
+            verificarFasePosicionamentoConcluida();
+        }
+
+        function calcularIndicesOcupados(foco, tamanho, orientacao) {
+            let indices = [];
+            let linhaFoco = Math.floor(foco / tamanhoNaval);
+            let colunaFoco = foco % tamanhoNaval;
+
+            for (let i = 0; i < tamanho; i++) {
+                let novaLinha = orientacao === 'vertical' ? linhaFoco + i : linhaFoco;
+                let novaColuna = orientacao === 'horizontal' ? colunaFoco + i : colunaFoco;
+
+                // Validação de estouro de bordas da matriz
+                if (novaLinha >= tamanhoNaval || novaColuna >= tamanhoNaval) return null;
+
+                indices.push(novaLinha * tamanhoNaval + novaColuna);
+            }
+            return indices;
+        }
+
+        function detectarColisao(indices, matriz) {
+            return indices.some(idx => matriz[idx].navio);
+        }
+
+        function verificarFasePosicionamentoConcluida() {
+            // Se ainda houver navios na doca pendentes de alocação, continua esperando
+            const todosPosicionados = frotaJogador.every(n => n.posicionado);
+            if (!todosPosicionados) return;
+
+            // Transiciona da fase de montagem para a fase de combate real
+            fasePosicionamento = false;
+            jogoAtivoNaval = true;
+            
+            document.getElementById('doca-posicionamento').style.display = 'none';
+            document.getElementById('container-tabuleiro-inimigo').style.display = 'block';
+            document.getElementById('status-naval').innerText = "🎯 Frota posicionada! Clique no tabuleiro inimigo para abrir fogo!";
+
+            posicionarFrotaInimigaInvisivel();
+        }
+
+        function posicionarFrotaInimigaInvisivel() {
+            const config = configuracaoEscalas[tamanhoNaval];
+            
+            config.frotas.forEach((tamanho, indice) => {
+                const navioInimigo = {
+                    id: indice,
+                    tamanho: tamanho,
+                    vida: tamanho
+                };
+                frotaInimigo.push(navioInimigo);
+
+                let posicionadoComSucesso = false;
+                while (!posicionadoComSucesso) {
+                    let orientacaoAlea = Math.random() < 0.5 ? 'horizontal' : 'vertical';
+                    let focoAlea = Math.floor(Math.random() * (tamanhoNaval * tamanhoNaval));
+
+                    let indices = calcularIndicesOcupados(focoAlea, tamanho, orientacaoAlea);
+                    if (indices !== null && !detectarColisao(indices, matrizInimigoNaval)) {
+                        indices.forEach(idx => {
+                            matrizInimigoNaval[idx].navio = true;
+                            matrizInimigoNaval[idx].navioId = indice;
+                        });
+                        posicionadoComSucesso = true;
+                    }
+                }
+            });
+        }
+    </script>
+
+    <!-- ==========================================================================
+         [LÓGICA: BATALHA NAVAL PRO] (PARTE 2C - FASE 3: COMBATE, TIROS E VITÓRIA)
+         ========================================================================== -->
+    <script>
+        let turnoDoJogadorNaval = true; // Gerencia quem atira no momento
+
+        function tratarDisparoJogador(quadrado, indice) {
+            // Impede se o jogo acabou, se já foi atingido, se está na montagem ou se é a vez da máquina
+            if (!jogoAtivoNaval || !turnoDoJogadorNaval || matrizInimigoNaval[indice].atingido) return;
+
+            matrizInimigoNaval[indice].atingido = true;
+            const alvo = matrizInimigoNaval[indice];
+
+            if (alvo.navio) {
+                quadrado.classList.add('naval-fogo');
+                quadrado.innerText = '💥';
+                
+                // Diminui a vida do navio inimigo atingido
+                const navioAtingido = frotaInimigo[alvo.navioId];
+                navioAtingido.vida--;
+                
+                if (navioAtingido.vida === 0) {
+                    document.getElementById('status-naval').innerText = `🎯 Excelente! Você afundou uma frota tamanho ${navioAtingido.tamanho}!`;
+                } else {
+                    document.getElementById('status-naval').innerText = "🎯 Alvo atingido! Fogo a bordo.";
+                }
+            } else {
+                quadrado.classList.add('naval-agua');
+                quadrado.innerText = '💧';
+                document.getElementById('status-naval').innerText = "Água! Você errou o alvo. 🌊";
+            }
+
+            atualizarContagemFrotasVivas();
+
+            if (verificarFimDeJogoNaval()) return;
+
+            // Se for contra a máquina, transfere o turno para o robô contra-atacar
+            if (modoNaval === 'computador') {
+                turnoDoJogadorNaval = false;
+                setTimeout(contraAtaqueMaquina, 700);
+            } else {
+                // Se for Versus Player Local, o próximo jogador atira no mesmo tabuleiro (alternando alvos lógicos)
+                // Para uma versão local simples, o J2 apenas simula a vez de forma contínua ou alternada
+                document.getElementById('status-naval').innerText += " (Vez do J2 - Ataque o tabuleiro acima!)";
+            }
+        }
+
+        function contraAtaqueMaquina() {
+            if (!jogoAtivoNaval) return;
+
+            let posicoesDisponiveis = [];
+            matrizJogadorNaval.forEach((celula, idx) => {
+                if (!celula.atingido) posicoesDisponiveis.push(idx);
+            });
+
+            if (posicoesDisponiveis.length === 0) return;
+
+            // O robô sorteia um local que ele ainda não atirou
+            let tiroIA = posicoesDisponiveis[Math.floor(Math.random() * posicoesDisponiveis.length)];
+            matrizJogadorNaval[tiroIA].atingido = true;
+
+            const alvo = matrizJogadorNaval[tiroIA];
+            const quadradoHTML = document.getElementById('naval-jogador').children[tiroIA];
+
+            if (alvo.navio) {
+                quadradoHTML.classList.remove('naval-seu-navio');
+                quadradoHTML.classList.add('naval-fogo');
+                quadradoHTML.innerText = '💥';
+
+                const navioAtingido = frotaJogador[alvo.navioId];
+                navioAtingido.vida--;
+
+                if (navioAtingido.vida === 0) {
+                    document.getElementById('status-naval').innerText = `😭 Alerta! A máquina afundou seu navio tamanho ${navioAtingido.tamanho}!`;
+                } else {
+                    document.getElementById('status-naval').innerText = "💥 A máquina bombardeou um navio seu!";
+                }
+            } else {
+                quadradoHTML.classList.add('naval-agua');
+                quadradoHTML.innerText = '💧';
+                document.getElementById('status-naval').innerText = "A máquina errou e atirou na água! 🛡️";
+            }
+
+            atualizarContagemFrotasVivas();
+
+            if (!verificarFimDeJogoNaval()) {
+                turnoDoJogadorNaval = true;
+            }
+        }
+
+        function atualizarContagemFrotasVivas() {
+            // Conta quantos navios ainda têm vida acima de 0
+            const frotasInimigasVivas = frotaInimigo.filter(n => n.vida > 0).length;
+            const suasFrotasVivas = frotaJogador.filter(n => n.vida > 0).length;
+
+            document.getElementById('navios-inimigos-vivos').innerText = frotasInimigasVivas;
+            document.getElementById('seus-navios-vivos').innerText = suasFrotasVivas;
+        }
+
+        function verificarFimDeJogoNaval() {
+            const frotasInimigasVivas = frotaInimigo.filter(n => n.vida > 0).length;
+            const suasFrotasVivas = frotaJogador.filter(n => n.vida > 0).length;
+
+            if (frotasInimigasVivas === 0) {
+                document.getElementById('status-naval').innerText = "🏆 PARABÉNS! Você destruiu toda a frota inimiga!";
+                jogoAtivoNaval = false;
+                return true;
+            }
+            if (suasFrotasVivas === 0) {
+                document.getElementById('status-naval').innerText = "☠️ DERROTA! A máquina afundou todos os seus navios.";
+                jogoAtivoNaval = false;
+                return true;
+            }
+            return false;
+        }
+    </script>
+
+
+
+</body>
+</html>

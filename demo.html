@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Versão de teste</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="assets/favicon-laranja.svg" type="image/svg+xml" id="fav">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Moldura de versão de teste: faixa em cima, o sistema roda inteiro num iframe embaixo */
+    html, body { height: 100%; overflow: hidden; }
+    body { display: flex; flex-direction: column; background: var(--bg); }
+    .faixa { --c: var(--sistemas); flex: none; display: flex; align-items: center; gap: 14px; padding: 6px 14px; background: var(--panel); border-bottom: 2px dashed var(--c); font-size: .9rem; }
+    .faixa .gema { color: var(--c); font-size: .8rem; }
+    .faixa .nome { font-family: "Cinzel", serif; letter-spacing: .04em; color: var(--c); }
+    .faixa .tag { color: #000; background: var(--c); padding: 1px 8px; font-size: .75rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+    .faixa .nota { color: var(--muted); font-size: .8rem; }
+    .faixa .dir { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+    .faixa a { color: var(--c); text-decoration: none; border: 1px solid var(--line); padding: 3px 10px; }
+    .faixa a:hover { border-color: var(--c); }
+    .faixa a.volta { background: var(--c); color: #000; border-color: var(--c); font-weight: 600; }
+    .faixa a.volta:hover { background: transparent; color: var(--c); }
+    iframe { flex: 1; width: 100%; border: 0; background: #fff; }
+    @media (max-width: 720px) { .faixa .nota { display: none; } }
+  </style>
+</head>
+<body>
+  <div class="faixa" id="faixa">
+    <span class="gema">◆</span><span class="nome" id="nome">…</span><span class="tag" id="tag">Versão de teste</span>
+    <span class="nota" id="nota">roda aqui mesmo, sem instalar; o que você fizer fica só neste navegador</span>
+    <span class="dir"><a id="aba" href="#" target="_blank" rel="noopener">Abrir em aba própria ↗</a><a class="volta" id="volta" href="index.html">← Voltar ao portfólio</a></span>
+  </div>
+  <iframe id="app" title="Versão de teste" src="about:blank"></iframe>
+  <script src="cases.js"></script>
+  <script>
+    (function () {
+      const $ = (id) => document.getElementById(id);
+      let lang = "pt"; try { lang = localStorage.getItem("lang") === "en" ? "en" : "pt"; } catch (e) {}
+      const id = new URLSearchParams(location.search).get("app");
+      const c = ((window.CASES || {}).cases || []).find((x) => x.id === id);
+      if (!c || !c.demo) { $("nome").textContent = lang === "en" ? "Not found" : "Não encontrado"; $("volta").href = "index.html"; return; }
+      const nome = (lang === "en" && c.nome_en) || c.nome || c.curto || id;
+      const cat = (c.categorias || [])[0] || "sistemas";
+      const fav = { planilhas: "verde", dashboards: "azul", sistemas: "laranja" }[cat] || "laranja";
+      $("faixa").style.setProperty("--c", `var(--${cat})`); $("fav").href = `assets/favicon-${fav}.svg`;
+      $("nome").textContent = nome; document.title = `${nome} · ${lang === "en" ? "test version" : "versão de teste"}`;
+      if (lang === "en") { $("tag").textContent = "Test version"; $("nota").textContent = "runs right here, nothing to install; what you do stays in this browser"; $("aba").textContent = "Open in its own tab ↗"; $("volta").textContent = "← Back to the portfolio"; }
+      $("aba").href = c.demo; $("volta").href = `case.html?c=${encodeURIComponent(id)}`;
+      $("app").src = c.demo;
+    })();
+  </script>
+</body>
+</html>

@@ -14,8 +14,38 @@
   }
 
   const autor = data.autor || {};
-  // ornamentos laterais (SVG inline, cor por CSS)
-  if (window.ORN) { document.querySelectorAll(".orn").forEach((o) => { o.innerHTML = o.classList.contains("l") ? ORN.l : ORN.r; }); }
+  // ornamentos laterais (SVG inline, cor por CSS). Um desenho por categoria: grade, barras, circuito; trepadeira no Sobre e na inicial; engrenagens no changelog.
+  const ORN_BY = { planilhas: "grade", dashboards: "barras", sistemas: "circuito", log: "engrenagens" };
+  // Ícone da aba na cor da página: cinza na inicial, verde/azul/laranja na categoria, vermelho no Sobre, ciano no changelog
+  const FAV = { planilhas: "verde", dashboards: "azul", sistemas: "laranja", sobre: "vermelho", log: "ciano" };
+  const setFav = (k) => { const l = document.getElementById("fav"); if (l) l.href = `assets/favicon-${FAV[k] || "cinza"}.svg`; };
+  let ornCur = "?";
+  const ORN_DENSE = true; // palavra de segurança: false volta pros damascos leves
+  // cor do divisor: a cor da categoria, escurecida (cinza na inicial sem foco)
+  const DIV_COLOR = { grade: "#2f7a52", barras: "#365f99", circuito: "#9a6a3a", vida: "#8a4536", engrenagens: "#257f8a" };
+  const divisorCss = (svg, color) => `url("data:image/svg+xml,${encodeURIComponent(svg.replace('fill="currentColor"', `fill="${color}"`))}")`;
+  const setOrn = (kind) => {
+    if (!window.ORN || kind === ornCur) return; ornCur = kind;
+    const O2 = window.ORN2 || {};
+    const set = kind ? (ORN_DENSE ? O2[kind] : (O2.leve || {})[kind]) : null;
+    const col = (kind && DIV_COLOR[kind]) || "#55585f";
+    document.documentElement.style.setProperty("--divline", col);
+    if (O2.divisor) document.documentElement.style.setProperty("--divisor", divisorCss((kind && O2.divisores && O2.divisores[kind]) || O2.divisor, col));
+    // crossfade: duas camadas, a nova entra enquanto a antiga some
+    document.querySelectorAll(".orn").forEach((o) => {
+      const svg = set ? (o.classList.contains("l") ? set.l : set.r) : (o.classList.contains("l") ? ORN.l : ORN.r);
+      if (!o.querySelector(".layer")) { o.innerHTML = `<div class="layer on">${svg}</div><div class="layer"></div>`; return; }
+      const on = o.querySelector(".layer.on"), off = o.querySelector(".layer:not(.on)");
+      off.innerHTML = svg; void off.offsetWidth; off.classList.add("on"); on.classList.remove("on");
+    });
+  };
+  setOrn(document.body.dataset.orn || (document.body.classList.contains("pg-log") ? "engrenagens" : document.body.classList.contains("pg-sobre") ? "vida" : null));
+  // transição de página: entra com fade (CSS) e sai com fade ao clicar num link interno
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest("a[href]"); if (!a || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || a.target === "_blank") return;
+    const href = a.getAttribute("href"); if (!href || href.startsWith("#") || /^(https?:|mailto:)/.test(href) || /\.(xlsx|pdf|zip)$/i.test(href)) return;
+    e.preventDefault(); document.body.classList.add("leaving"); setTimeout(() => { location.href = href; }, 240);
+  });
 
   // ---------- Idioma (PT-BR / EN-US) ----------
   // Campos com sufixo _en no cases.js, CASE_MD_EN / SOBRE_MD_EN nos textos. Sem tradução, cai no português.
@@ -24,8 +54,8 @@
   document.documentElement.lang = lang === "en" ? "en-US" : "pt-BR";
   const T = (o, k) => (lang === "en" && o && o[k + "_en"]) ? o[k + "_en"] : ((o || {})[k]);
   const UI = {
-    pt: { cases: "Cases", about: "Sobre", aboutMe: "Sobre mim", open: "Abrir case", soon: "Em breve.", home: "Página inicial", back: "Voltar aos cases", full: "Ver o case completo →", loading: "Carregando…", notFound: "Case não encontrado", noText: "O texto deste case ainda não existe.", foot: "Feito em HTML, CSS e JavaScript, sem framework. Abre em qualquer navegador.", sndOn: "Som de interface (ligado)", sndOff: "Som de interface (desligado)", langBtn: "EN-US", langTitle: "Switch to English" },
-    en: { cases: "Cases", about: "About", aboutMe: "About me", open: "Open case", soon: "Coming soon.", home: "Home", back: "Back to cases", full: "See the full case →", loading: "Loading…", notFound: "Case not found", noText: "This case has no text yet.", foot: "Built with HTML, CSS and JavaScript, no framework. Opens in any browser.", sndOn: "Interface sound (on)", sndOff: "Interface sound (off)", langBtn: "PT-BR", langTitle: "Mudar para português" },
+    pt: { cases: "Cases", about: "Sobre", aboutMe: "Sobre mim", open: "Abrir case", soon: "Em breve.", home: "Página inicial", back: "Voltar aos cases", full: "Ver o case completo →", loading: "Carregando…", notFound: "Case não encontrado", noText: "O texto deste case ainda não existe.", foot: "Feito em HTML, CSS e JavaScript, sem framework. Abre em qualquer navegador.", sndOn: "Som de interface (ligado)", sndOff: "Som de interface (desligado)", langBtn: "EN-US", langTitle: "Switch to English", logTitle: "O que mudou", logSub: "Versão, data e o que entrou. Mais recente primeiro.", logNow: "atual" },
+    en: { cases: "Cases", about: "About", aboutMe: "About me", open: "Open case", soon: "Coming soon.", home: "Home", back: "Back to cases", full: "See the full case →", loading: "Loading…", notFound: "Case not found", noText: "This case has no text yet.", foot: "Built with HTML, CSS and JavaScript, no framework. Opens in any browser.", sndOn: "Interface sound (on)", sndOff: "Interface sound (off)", langBtn: "PT-BR", langTitle: "Mudar para português", logTitle: "What changed", logSub: "Version, date and what went in. Most recent first.", logNow: "current" },
   };
   const t = (k) => UI[lang][k];
   document.querySelectorAll("[data-ui]").forEach((el) => { el.textContent = t(el.dataset.ui); });
@@ -61,12 +91,16 @@
     btn.addEventListener("click", () => { on = !on; try { localStorage.setItem("som", on ? "1" : "0"); } catch (e) {} paint(); if (on) api.click(); });
     paint();
     let last = null;
-    document.addEventListener("mouseover", (e) => { const el = e.target.closest(".case-btn, .topnav a, .links a, .case .go, .back, .lang"); if (el && el !== last) api.hover(); last = el; });
-    document.addEventListener("click", (e) => { if (e.target.closest(".case-btn, .topnav a, .links a, .case .go, .back, .lang")) api.click(); });
+    document.addEventListener("mouseover", (e) => { const el = e.target.closest(".case-btn, .topnav a, .links a, .case .go, .back, .lang, .nav-log"); if (el && el !== last) api.hover(); last = el; });
+    document.addEventListener("click", (e) => { if (e.target.closest(".case-btn, .topnav a, .links a, .case .go, .back, .lang, .nav-log")) api.click(); });
     return api;
   })();
   if ($("foot-nome")) $("foot-nome").textContent = autor.nome || "";
+  // ⌂ e o nome na barra levam pro início limpo; só o ← devolve pro foco em que o visitante estava
+  document.addEventListener("click", (e) => { const a = e.target.closest("a.nav-ico:not(#nav-back), a.brand"); if (!a) return; try { sessionStorage.setItem("focus", ""); } catch (e2) {} }, true);
 
+  // Diamantes pixel: um por categoria do case, na cor da coluna (só quando o case está em mais de uma)
+  const gemas = (c) => (c.categorias || []).length > 1 ? `<span class="gems">${(c.categorias || []).map((k) => `<i class="gem" data-cat="${esc(k)}" title="${esc(T((data.categorias || []).find((x) => x.id === k) || {}, "titulo") || k)}">${window.ORN ? ORN.gema : "◆"}</i>`).join("")}</span>` : "";
   // ---------- Página inicial ----------
   if ($("cols")) {
     document.title = `${autor.nome || "Portfólio"} · ${t("cases")}`;
@@ -77,8 +111,14 @@
     $("links").innerHTML = (autor.links || []).map((l) => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.rotulo)}</a>`).join("")
       + (autor.sobre === false ? "" : `<a href="sobre.html" class="sobre-link">${t("aboutMe")}</a>`);
 
+    // "Por onde começar": os três cases de entrada, em cases.js (autor.comecar)
+    if ($("start") && (autor.comecar || []).length) {
+      const itens = autor.comecar.map((id) => (data.cases || []).find((x) => x.id === id)).filter(Boolean);
+      $("start").innerHTML = `<span class="start-l">${lang === "en" ? "Two minutes? Start here:" : "Dois minutos? Comece por aqui:"}</span>` + itens.map((c) => `<a href="case.html?c=${encodeURIComponent(c.id)}" data-cat="${esc((c.categorias || [])[0])}">${window.ORN ? `<i class="gem" data-cat="${esc((c.categorias || [])[0])}">${ORN.gema}</i>` : ""}${esc(T(c, "nome") || T(c, "titulo"))}<small>${esc(T(c, "curto") || "")}</small></a>`).join("");
+      $("start").hidden = false;
+    }
     const cats = data.categorias || [];
-    $("topnav").innerHTML = cats.map((cat) => `<a href="#cat-${esc(cat.id)}" data-cat="${esc(cat.id)}">${esc(T(cat, "titulo"))}</a>`).join("")
+    $("topnav").innerHTML = `<a href="#hero" class="nav-ico" id="nav-home" title="${t("home")}" aria-label="${t("home")}">⌂</a>` + cats.map((cat) => `<a href="#cat-${esc(cat.id)}" data-cat="${esc(cat.id)}">${esc(T(cat, "titulo"))}</a>`).join("")
       + (autor.sobre === false ? "" : `<a href="sobre.html" class="nav-sobre">${t("about")}</a>`);
 
     $("cols").innerHTML = cats.map((cat, ci) => {
@@ -92,8 +132,8 @@
         const capa = capaArq ? `<img class="capa" src="cases/${encodeURIComponent(c.id)}/${esc(capaArq)}" alt="" loading="lazy">` : "";
         return `<li class="case" data-href="${esc(href)}" data-id="${esc(c.id)}" data-capa="${capaArq ? `cases/${encodeURIComponent(c.id)}/${esc(capaArq)}` : ""}" data-cat="${esc(cat.id)}">
           <button type="button" class="case-btn" aria-expanded="false">
-            <span class="t">${esc(T(c, "curto") || T(c, "titulo"))}</span>
-            <span class="m">${esc(c.empresa || "")}</span>
+            <span class="t">${esc(T(c, "nome") || T(c, "curto") || T(c, "titulo"))}${gemas(c)}</span>
+            <span class="m">${T(c, "nome") ? esc(T(c, "curto") || "") + " · " : ""}${esc(c.empresa || "")}</span>
             <span class="r2">${esc(T(c, "resumo") || "")}</span>
           </button>
           <div class="drawer"><div class="drawer-in">
@@ -151,7 +191,7 @@
       if (!focus || matchMedia("(max-width: 860px)").matches) return;
       const c = (data.cases || []).find((x) => x.id === li.dataset.id); if (!c) return;
       pop.style.setProperty("--c", `var(--${li.dataset.cat})`);
-      pop.innerHTML = `${li.dataset.capa ? `<img src="${esc(li.dataset.capa)}" alt="">` : ""}<p class="pt">${esc(T(c, "titulo"))}</p><p class="pm">${esc(c.empresa || "")}</p>${T(c, "destaque") ? `<span class="pd">${esc(T(c, "destaque"))}</span>` : ""}${T(c, "ferramentas") ? `<p class="pf">${esc(T(c, "ferramentas"))}</p>` : ""}`;
+      pop.innerHTML = `${li.dataset.capa ? `<img src="${esc(li.dataset.capa)}" alt="">` : ""}<p class="pt">${esc(T(c, "nome") ? T(c, "nome") + " · " + T(c, "titulo") : T(c, "titulo"))}</p><p class="pm">${esc(c.empresa || "")}</p>${T(c, "destaque") ? `<span class="pd">${esc(T(c, "destaque"))}</span>` : ""}${T(c, "ferramentas") ? `<p class="pf">${esc(T(c, "ferramentas"))}</p>` : ""}`;
       const r = li.getBoundingClientRect(); const col = li.closest(".col").getBoundingClientRect();
       const left = col.right + 18 + 340 <= innerWidth - 8 ? col.right + 18 : Math.max(8, innerWidth - 348);
       pop.style.left = `${left + scrollX}px`; pop.style.top = `${r.top + scrollY}px`;
@@ -162,6 +202,7 @@
       closeAll();
       focus = id; setActive(id); all.hidden = !id;
       if (id) document.body.dataset.focus = id; else delete document.body.dataset.focus;
+      setOrn(id ? ORN_BY[id] : null); setFav(id);
       if (!id) {
         $("cols").classList.remove("focus");
         cols.forEach((el) => { el.classList.remove("gone", "wide"); el.classList.add("away"); requestAnimationFrame(() => requestAnimationFrame(() => el.classList.remove("away"))); });
@@ -177,6 +218,7 @@
     };
     links.forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); setFocus(focus === a.dataset.cat ? null : a.dataset.cat); }));
     all.addEventListener("click", (e) => { e.preventDefault(); setFocus(null); try { history.replaceState(null, "", location.pathname); sessionStorage.setItem("focus", ""); } catch (e2) {} });
+    $("nav-home").addEventListener("click", (e) => { e.preventDefault(); if (focus) setFocus(null); try { history.replaceState(null, "", location.pathname); sessionStorage.setItem("focus", ""); } catch (e2) {} window.scrollTo({ top: 0, behavior: "smooth" }); });
     // janela flutuante: hover mostra; card aberto mantém; clique fora fecha
     $("cols").addEventListener("mouseover", (e) => { const li = e.target.closest(".case"); if (li && focus) showPop(li); });
     $("cols").addEventListener("mouseleave", () => { if (!document.querySelector(".case.open")) hidePop(); });
@@ -187,6 +229,17 @@
     let h = (location.hash || "").replace("#cat-", "");
     if (!h) { try { h = sessionStorage.getItem("focus") || ""; } catch (e) {} }
     if (h && cols.some((el) => el.dataset.cat === h)) setFocus(h);
+    return;
+  }
+
+  // ---------- Página "Changelog" ----------
+  // Lista em changelog.js (window.CHANGELOG). Mais recente primeiro.
+  if ($("log-md")) {
+    if ($("brand")) $("brand").textContent = autor.nome || "";
+    document.title = `Changelog · ${autor.nome || ""}`;
+    const fmtD = (d) => { const [y, m, dd] = d.split("-"); return lang === "en" ? `${y}-${m}-${dd}` : `${dd}/${m}/${y}`; };
+    $("log-md").innerHTML = (window.CHANGELOG || []).map((v) => `<section class="ver"><div class="vh" data-atual="${esc(t("logNow"))}">v${esc(v.versao)}<small>${esc(fmtD(v.data))}</small></div><ul>${((lang === "en" && v.itens_en) || v.itens || []).map((i) => `<li>${esc(i)}</li>`).join("")}</ul></section>`).join("");
+    if ($("topnav")) $("topnav").innerHTML = `<a href="index.html" class="nav-ico" title="${t("home")}" aria-label="${t("home")}">⌂</a>` + (data.categorias || []).map((cat) => `<a href="index.html#cat-${esc(cat.id)}" data-cat="${esc(cat.id)}">${esc(T(cat, "titulo"))}</a>`).join("") + (autor.sobre === false ? "" : `<a href="sobre.html" class="nav-sobre">${t("about")}</a>`);
     return;
   }
 
@@ -219,8 +272,10 @@
     root.querySelectorAll("a[href^='http'], a[href^='mailto']").forEach((a) => { a.target = "_blank"; a.rel = "noopener"; });
     (window.SOBRE_FOTOS || []).forEach((src, i) => {
       const sec = root.querySelectorAll(".sec")[i]; if (!sec) return;
-      const f = document.createElement("figure"); f.className = "foto " + (i % 2 ? "r" : "l");
-      f.innerHTML = `<img src="${esc(src)}" alt="" loading="lazy"><span class="canto tr">${window.ORN ? ORN.canto : ""}</span><span class="canto bl">${window.ORN ? ORN.canto : ""}</span>`;
+      const f = document.createElement("figure"); const flor = ["vermelho", "roxo", "amarelo"][i % 3];
+      f.className = "foto " + (i % 2 ? "r" : "l") + " f-" + flor;
+      const fl = (window.ORN2 && ORN2.cantos && ORN2.cantos[flor]) || (window.ORN ? ORN.canto : "");
+      f.innerHTML = `<img src="${esc(src)}" alt="" loading="lazy"><span class="canto tr">${fl}</span><span class="canto bl">${fl}</span>`;
       const h2 = sec.querySelector("h2"); h2 ? h2.insertAdjacentElement("afterend", f) : sec.prepend(f);
     });
     if ($("topnav")) {
@@ -263,10 +318,11 @@
   if ($("topnav")) {
     const cats = c.categorias || [];
     // Só as categorias do case. Primeira = topo do case; outras = arquivo próprio (link_<cat>) ou a seção (ancora_<cat>).
+    // Dentro do case, toda aba desce pra seção correspondente (a primeira = topo; "dashboards" = seção #dashboard, salvo ancora_<cat>).
+    // O arquivo do dashboard (link_<cat>) fica num botão ao lado do título da seção.
     const links = (data.categorias || []).filter((k) => cats.includes(k.id)).map((k) => {
       if (k.id === cats[0]) return `<a href="#topo" data-cat="${esc(k.id)}" data-dentro="1" class="${secOnly ? "" : "on"}">${esc(T(k, "titulo"))}</a>`;
-      if (c[`link_${k.id}`]) return `<a href="${esc(c[`link_${k.id}`])}" data-cat="${esc(k.id)}" data-dentro="0">${esc(T(k, "titulo"))}</a>`;
-      const anc = c[`ancora_${k.id}`] || "topo";
+      const anc = c[`ancora_${k.id}`] || (k.id === "dashboards" ? "dashboard" : "topo");
       return `<a href="#${esc(anc)}" data-cat="${esc(k.id)}" data-dentro="1" class="${secOnly === anc ? "on" : ""}">${esc(T(k, "titulo"))}</a>`;
     });
     $("topnav").innerHTML = `<a href="index.html" class="nav-ico" title="${t("home")}" aria-label="${t("home")}">⌂</a><a href="index.html" class="nav-ico" id="nav-back" title="${t("back")}" aria-label="${t("back")}">←</a>` + links.join("");
@@ -276,20 +332,29 @@
       const a = e.target.closest("a[data-dentro='1']"); if (!a) return;
       e.preventDefault();
       const el = document.getElementById(a.getAttribute("href").slice(1)); if (!el) return;
-      el.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
       $("topnav").querySelectorAll("a").forEach((x) => x.classList.toggle("on", x === a));
+      if (a.dataset.cat) window.setCaseCat && setCaseCat(a.dataset.cat);
     });
   }
   const catId = (c.categorias || [])[0] || "planilhas";
-  const cat = (data.categorias || []).find((k) => k.id === catId) || {};
-  $("topo").style.setProperty("--c", `var(--${catId})`);
-  document.body.dataset.focus = catId;
-  $("md").style.setProperty("--c", `var(--${catId})`);
-  $("c-cat").textContent = (c.categorias || []).map((k) => T((data.categorias || []).find((x) => x.id === k) || {}, "titulo") || k).join(" · ") || T(cat, "titulo") || "";
-  $("c-titulo").textContent = T(c, "titulo");
-  document.title = `${T(c, "curto") || T(c, "titulo")} · ${autor.nome || ""}`;
+  let catCur = null;
+  // A página assume a categoria da seção visível: cor, rótulo do topo, damasco e divisor
+  window.setCaseCat = (k) => {
+    if (k === catCur) return; catCur = k;
+    const kat = (data.categorias || []).find((x) => x.id === k) || {};
+    $("topo").style.setProperty("--c", `var(--${k})`); $("md").style.setProperty("--c", `var(--${k})`);
+    document.body.dataset.focus = k; setOrn(ORN_BY[k]); setFav(k);
+    $("c-cat").innerHTML = `${esc(T(kat, "titulo") || "")}${gemas(c)}`;
+    $("topnav").querySelectorAll("a[data-cat]").forEach((x) => x.classList.toggle("on", x.dataset.cat === k));
+  };
+  setCaseCat(catId);
+  $("c-titulo").innerHTML = T(c, "nome") ? `${esc(T(c, "nome"))}<small>${esc(T(c, "titulo"))}</small>` : esc(T(c, "titulo"));
+  document.title = `${T(c, "nome") || T(c, "curto") || T(c, "titulo")} · ${autor.nome || ""}`;
   $("c-meta").innerHTML = `${c.empresa ? `<b>${esc(c.empresa)}</b>` : ""}${T(c, "ferramentas") ? ` · ${esc(T(c, "ferramentas"))}` : ""}`;
   if (T(c, "destaque")) { $("c-destaque").textContent = T(c, "destaque"); $("c-destaque").hidden = false; }
+  // Sistema com versão de teste: botão "abrir ao vivo" no cabeçalho (abre em demo.html, com faixa e volta)
+  if (c.demo) { const a = document.createElement("a"); a.className = "ao-vivo"; a.href = `demo.html?app=${encodeURIComponent(c.id)}`; a.textContent = lang === "en" ? "Open live →" : "Abrir ao vivo →"; a.title = lang === "en" ? "Test version, opens inside the portfolio" : "Versão de teste, abre dentro do portfólio"; $("c-destaque").insertAdjacentElement("afterend", a); }
   if ($("c-capa") && c.capa) { $("c-capa").src = `cases/${encodeURIComponent(c.id)}/${c.capa}`; $("c-capa").hidden = false; }
 
   // O texto do case vem de cases/<id>/case.js (Markdown dentro de um script, pra funcionar aberto local).
@@ -342,29 +407,40 @@
       const k = (c.categorias || []).find((x) => c[`ancora_${x}`] === secOnly); if (k) { $("topo").style.setProperty("--c", `var(--${k})`); $("md").style.setProperty("--c", `var(--${k})`); }
     }
   }
-  // Seção ligada a outra categoria (ex.: Dashboard) fica na cor dela
-  (c.categorias || []).forEach((k) => { const h = c[`ancora_${k}`] && document.getElementById(c[`ancora_${k}`]); if (h) h.style.setProperty("--c", `var(--${k})`); });
-  // Marca na barra a categoria da seção visível (ex.: ao chegar no Dashboard)
+  // Botão "abrir o dashboard" ao lado do título da seção, quando o case tem arquivo de dashboard
+  (c.categorias || []).slice(1).forEach((k) => {
+    const anc = c[`ancora_${k}`] || (k === "dashboards" ? "dashboard" : null); const h = anc && document.getElementById(anc); if (!h) return;
+    if (c[`link_${k}`]) { const a = document.createElement("a"); a.className = "h2-go"; a.href = c[`link_${k}`]; a.textContent = lang === "en" ? "Open the dashboard →" : "Abrir o dashboard →"; h.appendChild(a); }
+  });
+  // Ao rolar, a seção visível define a categoria da página (verde nas planilhas, azul no dashboard)
   (function spy() {
     const links = [...document.querySelectorAll("#topnav a[data-dentro='1']")];
     const alvos = links.map((a) => document.getElementById(a.getAttribute("href").slice(1))).filter(Boolean);
     if (!("IntersectionObserver" in window) || alvos.length < 2) return;
-    const io = new IntersectionObserver((ents) => {
-      const topo = ents.filter((e) => e.isIntersecting).sort((a, b) => b.boundingClientRect.top - a.boundingClientRect.top)[0];
-      if (!topo) return;
-      links.forEach((a) => a.classList.toggle("on", a.getAttribute("href") === "#" + topo.target.id));
-    }, { rootMargin: "-60px 0px -70% 0px" });
-    alvos.forEach((el) => io.observe(el));
+    const catOf = (id) => (links.find((a) => a.getAttribute("href") === "#" + id) || {}).dataset?.cat;
+    // a seção da outra categoria vai de "#<ancora>" até o próximo h2 de seção da primeira categoria (ou o fim)
+    const secs = alvos.map((el) => el.closest(".sec") || el);
+    const io = new IntersectionObserver(() => {
+      const y = 70; let atual = alvos[0];
+      alvos.forEach((el, i) => { const r = (secs[i]).getBoundingClientRect(); if (r.top <= y) atual = el; });
+      // dentro da seção "dashboard" até o fim dela: só muda de volta se passou do fim da seção
+      const k = catOf(atual.id); if (k) setCaseCat(k);
+    }, { rootMargin: "-70px 0px -60% 0px", threshold: [0, .01, .5, 1] });
+    alvos.forEach((el) => io.observe(el.closest(".sec") || el));
+    window.addEventListener("scroll", () => { let atual = alvos[0]; alvos.forEach((el, i) => { if (secs[i].getBoundingClientRect().top <= 70) atual = el; }); const k = catOf(atual.id); if (k) setCaseCat(k); }, { passive: true });
   })();
 
   // Lightbox
+  // Lightbox simples (substituído pela lupa em lupa.js quando ela está na página)
   const lb = $("lb"), lbImg = $("lb-img");
-  $("md").addEventListener("click", (e) => {
-    const img = e.target.closest("img[data-zoom]"); if (!img) return;
-    lbImg.src = img.src; lbImg.alt = img.alt; lb.classList.add("on");
-  });
-  lb.addEventListener("click", () => lb.classList.remove("on"));
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") lb.classList.remove("on"); });
+  if (lb) {
+    $("md").addEventListener("click", (e) => {
+      const img = e.target.closest("img[data-zoom]"); if (!img) return;
+      lbImg.src = img.src; lbImg.alt = img.alt; lb.classList.add("on");
+    });
+    lb.addEventListener("click", () => lb.classList.remove("on"));
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") lb.classList.remove("on"); });
+  }
 
   // Âncora na URL (ex.: case.html?c=psat#dashboard)
   if (location.hash) {

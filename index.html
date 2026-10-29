@@ -5,6 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Paulo Guilherme Veiga · Cases</title>
   <meta name="description" content="Portfólio de cases de dados e processos: planilhas, dashboards e sistemas em produção.">
+  <link rel="icon" href="assets/favicon-cinza.svg" id="fav" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon.png" sizes="64x64">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Paulo Guilherme de Souza Veiga · Cases">
+  <meta property="og:title" content="Paulo Guilherme de Souza Veiga · Cases">
+  <meta property="og:description" content="Planilhas, dashboards e sistemas em produção: cases de dados e processos em operações de atendimento.">
+  <meta property="og:image" content="https://mmbrosium.github.io/assets/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap">
   <link rel="stylesheet" href="style.css">
@@ -19,6 +29,7 @@
       <div class="topnav" id="topnav"></div>
       <button type="button" class="lang" id="lang" title="English"><img src="assets/flag-br.png" alt=""><span>PT-BR</span></button>
       <button type="button" class="snd" id="snd" aria-pressed="false" title="Som de interface (desligado)">♪</button>
+      <a class="snd nav-log" href="changelog.html" title="Changelog">⚙</a>
     </div>
   </nav>
 
@@ -28,6 +39,7 @@
       <p class="cargo" id="cargo"></p>
       <p class="desc" id="desc"></p>
       <nav class="links" id="links" aria-label="Contato"></nav>
+      <p class="start" id="start" hidden></p>
     </header>
 
     <section class="cols" id="cols" aria-label="Cases por categoria"></section>
@@ -39,6 +51,7 @@
   </main>
 
   <script src="assets/ornamentos.js"></script>
+  <script src="assets/ornamentos2.js"></script>
   <script src="cases.js"></script>
   <script src="app.js"></script>
 </body>

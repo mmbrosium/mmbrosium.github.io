@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Esteira de Vendas e Retenção · Projeto Smiles</title>
+<title>Cruzeiro · Esteira de Vendas e Retenção · Projeto Smiles</title>
+<link rel="icon" href="../assets/favicon-azul.svg" type="image/svg+xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Source+Sans+3:wght@400;600;700&display=swap">
 <style>
   :root {
     --bg: #14110c; --panel: #1d1811; --panel-2: #262016; --panel-3: #30281b; --line: #3d3324; --fg: #f4eee2; --muted: #b5a88f;
@@ -36,7 +38,6 @@
   .ticker .it .n { font-weight: 600; }
   .ticker .it .up { color: var(--green); } .ticker .it .down { color: var(--red); } .ticker .it .warn { color: var(--amber); }
   @keyframes roll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-  @media (prefers-reduced-motion: reduce) { .ticker .track { animation: none; } }
   .filters { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: flex-end; }
   .f { display: flex; flex-direction: column; gap: 3px; }
   .f label { font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
@@ -76,10 +77,10 @@
   .panels { position: relative; min-width: 0; }
   .panel { display: none; flex-direction: column; gap: 14px; }
   .panel.on { display: flex; }
-  @media (prefers-reduced-motion: no-preference) {
-    .panel.slide-l { animation: slideL .28s ease-out; } .panel.slide-r { animation: slideR .28s ease-out; }
-    @keyframes slideL { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: none; } }
-    @keyframes slideR { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: none; } }
+  .panel.slide-l { animation: slideL .28s ease-out; } .panel.slide-r { animation: slideR .28s ease-out; }
+  @keyframes slideL { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: none; } }
+  @keyframes slideR { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: none; } }
+  @media (max-width: 0px) {
   }
   .ph { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
   .ph h2 { margin: 0; font-size: 1.15rem; font-weight: 600; }
@@ -128,136 +129,196 @@
   .defs b { color: var(--fg); }
   footer { color: var(--muted); font-size: .78rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; border-top: 1px solid var(--line); padding-top: 10px; }
   .empty { color: var(--muted); font-size: .85rem; padding: 10px; }
+  h1 small { font-weight: 400; color: var(--muted); font-size: .85rem; margin-left: 8px; }
+  
+  /* ---- faixa do portfólio (mesma da inicial) ---- */
+  .pbar { position: sticky; top: 0; z-index: 30; background: rgba(0,0,0,.92); backdrop-filter: blur(6px); border-bottom: 1px solid #2a2c32; }
+  .pbar-in { max-width: 1400px; margin: 0 auto; display: flex; align-items: center; gap: 16px; height: 52px; padding: 0 16px; }
+  .pbrand { font-family: "Cinzel", "Times New Roman", serif; font-weight: 600; letter-spacing: .06em; text-decoration: none; font-size: .95rem; color: #e8e8e6; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+  .pnav { display: flex; gap: 4px; margin-left: auto; min-width: 0; overflow-x: auto; scrollbar-width: none; }
+  .pnav::-webkit-scrollbar { display: none; }
+  .pnav a { white-space: nowrap; text-decoration: none; color: #9a9ca4; font-size: .82rem; letter-spacing: .1em; text-transform: uppercase; padding: 6px 10px; border-bottom: 2px solid transparent; transition: color .15s, border-color .15s; }
+  .pnav a[data-cat="planilhas"]:hover { color: #58c98a; border-bottom-color: #58c98a; }
+  .pnav a[data-cat="dashboards"].on, .pnav a[data-cat="dashboards"]:hover { color: #5b9cf6; border-bottom-color: #5b9cf6; }
+  .pnav a[data-cat="sistemas"]:hover { color: #f2a65a; border-bottom-color: #f2a65a; }
+  .pnav a.nav-sobre:hover { color: #c9624f; border-bottom-color: #c9624f; }
+  .pnav a.nav-ico { font-size: 1rem; padding: 4px 9px; letter-spacing: 0; text-transform: none; border: 1px solid #2a2c32; border-radius: 4px; margin-right: 4px; line-height: 1.2; }
+  .pnav a.nav-ico:hover { color: #e8e8e6; border-color: #e8e8e6; }
+  .pnav a.nav-log { font-size: .95rem; padding: 4px 9px; letter-spacing: 0; text-transform: none; border: 1px solid #2a2c32; border-radius: 4px; line-height: 1.2; }
+  .pnav a.nav-log:hover { color: #39c6d6; border-color: #39c6d6; }
+  .plang { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 8px; margin-left: 10px; border: 1px solid #2a2c32; color: #9a9ca4; font-size: .72rem; letter-spacing: .08em; flex-shrink: 0; transition: color .15s, border-color .15s; }
+  .plang img { width: 18px; height: 12px; image-rendering: pixelated; display: block; }
+  .plang:hover { color: #e8e8e6; border-color: #e8e8e6; }
+  @media (max-width: 520px) { .pbrand { display: none; } .plang span { display: none; } }
+  /* o cabeçalho do dashboard gruda logo abaixo da faixa */
+  .top { top: 52px; }
+  .side { top: 190px; }
+  .back-port { display: none; }
+  /* ---- filtros compactos: uma linha, rótulo ao lado do controle, recorte à direita ---- */
+  .filters { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; }
+  .f { display: flex; flex-direction: row; align-items: center; gap: 6px; }
+  .f label { font-size: .66rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+  select, .seg button, .btn { padding: 3px 8px; font-size: .84rem; }
+  .filters .crumb { margin-left: auto; text-align: right; max-width: 48ch; line-height: 1.3; }
+  .crumb:empty { display: none; }
+  .top-in { gap: 8px; }
+  .top { padding-top: 8px; padding-bottom: 8px; }
+  h1 { font-size: 1.15rem; }
+  .sub { font-size: .88rem; }
+  .ticker { min-height: 46px; }
+  @media (max-width: 900px) { .filters .crumb { margin-left: 0; text-align: left; max-width: none; } .side { top: 0; } }
+  @view-transition { navigation: auto; }
+  /* transição de página, igual à do site */
+  .pbar, .top, .body, footer { animation: pagein .38s ease-out both; }
+  @keyframes pagein { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  body.leaving .pbar, body.leaving .top, body.leaving .body, body.leaving footer { animation: none; opacity: 0; transform: translateY(-6px); transition: opacity .24s ease, transform .24s ease; }
+
 </style>
 </head>
 <body>
+
+<nav class="pbar" aria-label="Portfólio">
+  <div class="pbar-in">
+    <a class="pbrand" href="../index.html">Paulo Guilherme de Souza Veiga</a>
+    <div class="pnav">
+      <a href="../index.html" class="nav-ico" title="Página inicial" data-en-title="Home">⌂</a>
+      <a href="../index.html" class="nav-ico" id="pnav-back" title="Voltar" data-en-title="Back">←</a>
+      <a href="../index.html#cat-planilhas" data-cat="planilhas" data-en="Spreadsheets">Planilhas</a>
+      <a href="../index.html#cat-dashboards" data-cat="dashboards" class="on">Dashboards</a>
+      <a href="../index.html#cat-sistemas" data-cat="sistemas" data-en="Systems">Sistemas</a>
+      <a href="../sobre.html" class="nav-sobre" data-en="About">Sobre</a>
+      <a href="../changelog.html" class="nav-log" title="Changelog">⚙</a>
+    </div>
+    <button type="button" class="plang" id="plang" title="English"><img src="../assets/flag-br.png" alt=""><span>PT-BR</span></button>
+  </div>
+</nav>
+
 <header class="top">
   <div class="top-in">
     <div class="title-row">
       <div>
-        <a class="back-port" href="../index.html">← Portfólio</a>
-        <h1>Esteira de Vendas e Retenção · Projeto Smiles</h1>
+        <h1><span data-en="Cruise">Cruzeiro</span><small data-en="Sales &amp; Retention Pipeline · Smiles Project">Esteira de Vendas e Retenção · Projeto Smiles</small></h1>
         <p class="sub" id="takeaway">—</p>
       </div>
-      <div class="ticker" aria-label="Destaques do recorte"><div class="tag">Destaques</div><div class="track-wrap"><div class="track" id="ticker"></div></div></div>
+      <div class="ticker" aria-label="Destaques do recorte"><div class="tag" data-en="Highlights">Destaques</div><div class="track-wrap"><div class="track" id="ticker"></div></div></div>
     </div>
     <div class="filters">
-      <div class="f"><label for="f-de">De</label><select id="f-de"></select></div>
-      <div class="f"><label for="f-ate">Até</label><select id="f-ate"></select></div>
-      <div class="f"><label for="f-coord">Coordenação</label><select id="f-coord"></select></div>
+      <div class="f"><label for="f-de" data-en="From">De</label><select id="f-de"></select></div>
+      <div class="f"><label for="f-ate" data-en="To">Até</label><select id="f-ate"></select></div>
+      <div class="f"><label for="f-coord" data-en="Coordination">Coordenação</label><select id="f-coord"></select></div>
       <div class="f"><label for="f-sup">Supervisor</label><select id="f-sup"></select></div>
-      <div class="f"><label>Frente</label><div class="seg" id="f-canal"><button type="button" data-v="" aria-pressed="true">Todas</button><button type="button" data-v="Chat">Chat</button><button type="button" data-v="Voz">Voz</button></div></div>
-      <div class="f"><label>Tipo de cliente</label><div class="seg" id="f-tipo"><button type="button" data-v="" aria-pressed="true">Todos</button><button type="button" data-v="D+O">Ouro/Diamante</button><button type="button" data-v="BPV">Bronze/Prata/Vis.</button></div></div>
-      <div class="f"><label>Turno</label><div class="seg" id="f-turno"><button type="button" data-v="" aria-pressed="true">Todos</button><button type="button" data-v="Manhã">Manhã</button><button type="button" data-v="Tarde">Tarde</button></div></div>
-      <button type="button" class="btn" id="f-reset">Limpar filtros</button>
+      <div class="f"><label data-en="Channel">Frente</label><div class="seg" id="f-canal"><button type="button" data-v="" aria-pressed="true" data-en="All">Todas</button><button type="button" data-v="Chat">Chat</button><button type="button" data-v="Voz" data-en="Voice">Voz</button></div></div>
+      <div class="f"><label data-en="Customer tier">Tipo de cliente</label><div class="seg" id="f-tipo"><button type="button" data-v="" aria-pressed="true" data-en="All">Todos</button><button type="button" data-v="D+O" data-en="Gold/Diamond">Ouro/Diamante</button><button type="button" data-v="BPV" data-en="Bronze/Silver/Vis.">Bronze/Prata/Vis.</button></div></div>
+      <div class="f"><label data-en="Shift">Turno</label><div class="seg" id="f-turno"><button type="button" data-v="" aria-pressed="true" data-en="All">Todos</button><button type="button" data-v="Manhã" data-en="Morning">Manhã</button><button type="button" data-v="Tarde" data-en="Afternoon">Tarde</button></div></div>
+      <button type="button" class="btn" id="f-reset" data-en="Clear filters">Limpar filtros</button>
+      <div class="crumb" id="crumb"></div>
     </div>
-    <div class="crumb" id="crumb">—</div>
   </div>
 </header>
 
 <div class="body">
   <nav class="side" id="side" aria-label="Seções">
-    <button type="button" data-p="home" aria-current="page"><span class="ic">▦</span>Visão geral</button>
-    <button type="button" data-p="vendas"><span class="ic">▲</span>Vendas × meta</button>
-    <button type="button" data-p="qualidade"><span class="ic">●</span>Conversão e retenção</button>
-    <button type="button" data-p="diario"><span class="ic">▤</span>Dia a dia</button>
+    <button type="button" data-p="home" aria-current="page"><span class="ic">▦</span><span data-en="Overview">Visão geral</span></button>
+    <button type="button" data-p="vendas"><span class="ic">▲</span><span data-en="Sales × target">Vendas × meta</span></button>
+    <button type="button" data-p="qualidade"><span class="ic">●</span><span data-en="Conversion &amp; retention">Conversão e retenção</span></button>
+    <button type="button" data-p="diario"><span class="ic">▤</span><span data-en="Day by day">Dia a dia</span></button>
     <div class="sep"></div>
-    <button type="button" data-p="equipe"><span class="ic">⁂</span>Equipe</button>
-    <button type="button" data-p="detalhe"><span class="ic">≡</span>Detalhe</button>
+    <button type="button" data-p="equipe"><span class="ic">⁂</span><span data-en="Team">Equipe</span></button>
+    <button type="button" data-p="detalhe"><span class="ic">≡</span><span data-en="Detail">Detalhe</span></button>
     <div class="sep"></div>
-    <div class="hint">Os filtros do topo valem para todas as seções.</div>
+    <div class="hint" data-en="Top filters apply to every section.">Os filtros do topo valem para todas as seções.</div>
   </nav>
 
   <main class="panels" id="panels">
     <!-- VISÃO GERAL -->
     <section class="panel on" data-p="home">
-      <div class="ph"><h2>Visão geral</h2><p>O que a coordenação olha em 30 segundos.</p></div>
+      <div class="ph"><h2 data-en="Overview">Visão geral</h2><p data-en="What coordination looks at in 30 seconds.">O que a coordenação olha em 30 segundos.</p></div>
       <div class="tiles" aria-label="Indicadores do período">
-        <div class="tile"><div class="k">Vendas</div><div class="v" id="k-v">—</div><div class="d" id="d-v"></div></div>
+        <div class="tile"><div class="k" data-en="Sales">Vendas</div><div class="v" id="k-v">—</div><div class="d" id="d-v"></div></div>
         <div class="tile"><div class="k">Upgrades</div><div class="v" id="k-u">—</div><div class="d" id="d-u"></div></div>
-        <div class="tile"><div class="k">Consolidado</div><div class="v" id="k-c">—</div><div class="d" id="d-c"></div></div>
-        <div class="tile grey"><div class="k">Meta do período</div><div class="v" id="k-m">—</div><div class="d" id="d-m"></div></div>
-        <div class="tile green"><div class="k">Atingimento</div><div class="v" id="k-a">—</div><div class="d" id="d-a"></div></div>
-        <div class="tile"><div class="k">Conversão</div><div class="v" id="k-cv">—</div><div class="d" id="d-cv"></div></div>
-        <div class="tile"><div class="k">Atendimentos</div><div class="v" id="k-at">—</div><div class="d" id="d-at"></div></div>
-        <div class="tile green"><div class="k">Retenção</div><div class="v" id="k-r">—</div><div class="d" id="d-r"></div></div>
-        <div class="tile amber"><div class="k">Retidos com downgrade</div><div class="v" id="k-dg">—</div><div class="d" id="d-dg"></div></div>
+        <div class="tile"><div class="k" data-en="Consolidated">Consolidado</div><div class="v" id="k-c">—</div><div class="d" id="d-c"></div></div>
+        <div class="tile grey"><div class="k" data-en="Period target">Meta do período</div><div class="v" id="k-m">—</div><div class="d" id="d-m"></div></div>
+        <div class="tile green"><div class="k" data-en="Attainment">Atingimento</div><div class="v" id="k-a">—</div><div class="d" id="d-a"></div></div>
+        <div class="tile"><div class="k" data-en="Conversion">Conversão</div><div class="v" id="k-cv">—</div><div class="d" id="d-cv"></div></div>
+        <div class="tile"><div class="k" data-en="Contacts">Atendimentos</div><div class="v" id="k-at">—</div><div class="d" id="d-at"></div></div>
+        <div class="tile green"><div class="k" data-en="Retention">Retenção</div><div class="v" id="k-r">—</div><div class="d" id="d-r"></div></div>
+        <div class="tile amber"><div class="k" data-en="Retained with downgrade">Retidos com downgrade</div><div class="v" id="k-dg">—</div><div class="d" id="d-dg"></div></div>
       </div>
       <div class="grid">
-        <div class="card wide"><h3>Vendas e upgrades por mês, contra a meta</h3><p class="note">Barras: realizado. Linha tracejada: meta do mês. Mês em andamento mostra o acumulado até a referência.</p><div class="ch"><canvas id="h1"></canvas></div></div>
-        <div class="card"><h3>Conversão por mês</h3><p class="note">Vendas ÷ atendimentos, por frente.</p><div class="ch"><canvas id="h2"></canvas></div></div>
-        <div class="card"><h3>Retenção por mês</h3><p class="note">Verde: retidos no plano. Âmbar: retidos com downgrade.</p><div class="ch"><canvas id="h3"></canvas></div></div>
+        <div class="card wide"><h3 data-en="Sales and upgrades by month, against target">Vendas e upgrades por mês, contra a meta</h3><p class="note" data-en="Bars: actual. Dashed line: month target. The current month shows the total up to the reference date.">Barras: realizado. Linha tracejada: meta do mês. Mês em andamento mostra o acumulado até a referência.</p><div class="ch"><canvas id="h1"></canvas></div></div>
+        <div class="card"><h3 data-en="Conversion by month">Conversão por mês</h3><p class="note" data-en="Sales ÷ contacts, by channel.">Vendas ÷ atendimentos, por frente.</p><div class="ch"><canvas id="h2"></canvas></div></div>
+        <div class="card"><h3 data-en="Retention by month">Retenção por mês</h3><p class="note" data-en="Green: retained on plan. Amber: retained with downgrade.">Verde: retidos no plano. Âmbar: retidos com downgrade.</p><div class="ch"><canvas id="h3"></canvas></div></div>
       </div>
     </section>
 
     <!-- VENDAS × META -->
     <section class="panel" data-p="vendas">
-      <div class="ph"><h2>Vendas × meta</h2><p>Quanto foi feito, quanto era pra ter sido feito, e quem está puxando.</p></div>
+      <div class="ph"><h2 data-en="Sales × target">Vendas × meta</h2><p data-en="What was done, what should have been done, and who is pulling.">Quanto foi feito, quanto era pra ter sido feito, e quem está puxando.</p></div>
       <div class="grid">
         <div class="card wide">
-          <div class="hrow"><h3>Vendas e upgrades por mês, contra a meta</h3><div class="seg small" id="g1-mode"><button type="button" data-v="abs" aria-pressed="true">Quantidade</button><button type="button" data-v="pct">Atingimento</button></div></div>
-          <p class="note">Meta: 38 vendas e 12 upgrades por supervisor por mês. Com filtro de supervisor ou coordenação a meta acompanha; com filtro de frente, tipo ou turno ela não se aplica.</p>
+          <div class="hrow"><h3 data-en="Sales and upgrades by month, against target">Vendas e upgrades por mês, contra a meta</h3><div class="seg small" id="g1-mode"><button type="button" data-v="abs" aria-pressed="true" data-en="Count">Quantidade</button><button type="button" data-v="pct" data-en="Attainment">Atingimento</button></div></div>
+          <p class="note" data-en="Target: 38 sales and 12 upgrades per supervisor per month. With a supervisor or coordination filter the target follows; with a channel, tier or shift filter it does not apply.">Meta: 38 vendas e 12 upgrades por supervisor por mês. Com filtro de supervisor ou coordenação a meta acompanha; com filtro de frente, tipo ou turno ela não se aplica.</p>
           <div class="ch tall"><canvas id="g1"></canvas></div>
         </div>
-        <div class="card"><h3>Consolidado por supervisor no período</h3><p class="note">Realizado contra a meta do período.</p><div class="ch tall"><canvas id="g5"></canvas></div></div>
-        <div class="card"><h3>Top 10 agentes</h3><p class="note">Por consolidado no período.</p>
-          <div class="tw"><table id="top"><thead><tr><th class="l">#</th><th class="l">Agente</th><th class="l">Supervisor</th><th>Vendas</th><th>Upg.</th><th>Cons.</th><th>Conv.</th></tr></thead><tbody></tbody></table></div></div>
+        <div class="card"><h3 data-en="Consolidated by supervisor in the period">Consolidado por supervisor no período</h3><p class="note" data-en="Actual against the period target.">Realizado contra a meta do período.</p><div class="ch tall"><canvas id="g5"></canvas></div></div>
+        <div class="card"><h3 data-en="Top 10 agents">Top 10 agentes</h3><p class="note" data-en="By consolidated in the period.">Por consolidado no período.</p>
+          <div class="tw"><table id="top"><thead><tr><th class="l">#</th><th class="l" data-en="Agent">Agente</th><th class="l">Supervisor</th><th data-en="Sales">Vendas</th><th>Upg.</th><th>Cons.</th><th>Conv.</th></tr></thead><tbody></tbody></table></div></div>
       </div>
     </section>
 
     <!-- CONVERSÃO E RETENÇÃO -->
     <section class="panel" data-p="qualidade">
-      <div class="ph"><h2>Conversão e retenção</h2><p>Qualidade da venda e do cancelamento, separadas do volume.</p></div>
+      <div class="ph"><h2 data-en="Conversion and retention">Conversão e retenção</h2><p data-en="Quality of the sale and of the cancellation, apart from volume.">Qualidade da venda e do cancelamento, separadas do volume.</p></div>
       <div class="grid">
-        <div class="card"><h3>Conversão por mês</h3><p class="note">Vendas ÷ atendimentos. Uma linha por frente quando "Todas".</p><div class="ch tall"><canvas id="g2"></canvas></div></div>
-        <div class="card"><h3>Retenção por mês</h3><p class="note">Retidos ÷ (retidos + cancelados). A parte em âmbar ficou num plano menor.</p><div class="ch tall"><canvas id="g3"></canvas></div></div>
-        <div class="card"><h3>Atendimentos por mês</h3><p class="note">Volume de chamadas e chats no recorte.</p><div class="ch"><canvas id="g4"></canvas></div></div>
-        <div class="card"><h3>Retenção por supervisor</h3><p class="note">No período. Barra cheia = retidos; parte âmbar = downgrade.</p><div class="ch"><canvas id="g7"></canvas></div></div>
+        <div class="card"><h3 data-en="Conversion by month">Conversão por mês</h3><p class="note" data-en="Sales ÷ contacts. One line per channel when &quot;All&quot;.">Vendas ÷ atendimentos. Uma linha por frente quando "Todas".</p><div class="ch tall"><canvas id="g2"></canvas></div></div>
+        <div class="card"><h3 data-en="Retention by month">Retenção por mês</h3><p class="note" data-en="Retained ÷ (retained + cancelled). The amber part moved to a smaller plan.">Retidos ÷ (retidos + cancelados). A parte em âmbar ficou num plano menor.</p><div class="ch tall"><canvas id="g3"></canvas></div></div>
+        <div class="card"><h3 data-en="Contacts by month">Atendimentos por mês</h3><p class="note" data-en="Volume of calls and chats in the slice.">Volume de chamadas e chats no recorte.</p><div class="ch"><canvas id="g4"></canvas></div></div>
+        <div class="card"><h3 data-en="Retention by supervisor">Retenção por supervisor</h3><p class="note" data-en="In the period. Full bar = retained; amber part = downgrade.">No período. Barra cheia = retidos; parte âmbar = downgrade.</p><div class="ch"><canvas id="g7"></canvas></div></div>
       </div>
     </section>
 
     <!-- DIA A DIA -->
     <section class="panel" data-p="diario">
-      <div class="ph"><h2 id="g6-t">Dia a dia</h2><p>O último mês do período, dia por dia.</p></div>
+      <div class="ph"><h2 id="g6-t">Dia a dia</h2><p data-en="The last month of the period, day by day.">O último mês do período, dia por dia.</p></div>
       <div class="grid">
         <div class="card wide">
-          <div class="hrow"><h3 id="g6-h">Dia a dia</h3><div class="seg small" id="g6-mode"><button type="button" data-v="vendas" aria-pressed="true">Vendas</button><button type="button" data-v="ret">Retenção</button></div></div>
-          <p class="note">Vendas: barras do dia contra o esperado pelo volume (atendimentos × conversão média do mês). Retenção: retidos, downgrades e cancelados por dia.</p>
+          <div class="hrow"><h3 id="g6-h">Dia a dia</h3><div class="seg small" id="g6-mode"><button type="button" data-v="vendas" aria-pressed="true" data-en="Sales">Vendas</button><button type="button" data-v="ret" data-en="Retention">Retenção</button></div></div>
+          <p class="note" data-en="Sales: daily bars against the volume expectation (contacts × the month's average conversion). Retention: retained, downgrades and cancelled per day.">Vendas: barras do dia contra o esperado pelo volume (atendimentos × conversão média do mês). Retenção: retidos, downgrades e cancelados por dia.</p>
           <div class="ch tall"><canvas id="g6"></canvas></div>
         </div>
-        <div class="card wide"><h3>Tabela do mês</h3>
-          <div class="tw"><table id="dt"><thead><tr><th class="l">Dia</th><th class="l">Sem.</th><th>Atend.</th><th>Vendas</th><th>Esperado</th><th>Real − esp.</th><th>Upgrades</th><th>Conv.</th><th>Retidos</th><th>Downgr.</th><th>Cancel.</th><th>Retenção</th></tr></thead><tbody></tbody></table></div></div>
+        <div class="card wide"><h3 data-en="Month table">Tabela do mês</h3>
+          <div class="tw"><table id="dt"><thead><tr><th class="l" data-en="Day">Dia</th><th class="l" data-en="Wkd">Sem.</th><th data-en="Contacts">Atend.</th><th data-en="Sales">Vendas</th><th data-en="Expected">Esperado</th><th data-en="Act − exp.">Real − esp.</th><th>Upgrades</th><th>Conv.</th><th data-en="Retained">Retidos</th><th data-en="Downgr.">Downgr.</th><th data-en="Cancel.">Cancel.</th><th data-en="Retention">Retenção</th></tr></thead><tbody></tbody></table></div></div>
       </div>
     </section>
 
     <!-- EQUIPE -->
     <section class="panel" data-p="equipe">
-      <div class="ph"><h2>Equipe</h2><p>Coordenação → supervisor → agente. Clique para descer um nível. Os números seguem o período e os filtros do topo.</p></div>
+      <div class="ph"><h2 data-en="Team">Equipe</h2><p data-en="Coordination → supervisor → agent. Click to go one level down. Numbers follow the period and the top filters.">Coordenação → supervisor → agente. Clique para descer um nível. Os números seguem o período e os filtros do topo.</p></div>
       <div class="org">
-        <div class="col"><h3>Coordenações</h3><div id="org-c"></div></div>
+        <div class="col"><h3 data-en="Coordinations">Coordenações</h3><div id="org-c"></div></div>
         <div class="col"><h3 id="org-s-t">Supervisores</h3><div id="org-s"></div></div>
-        <div class="col"><h3 id="org-a-t">Agentes</h3><div class="tw" style="max-height: 560px"><table id="org-a"><thead><tr><th class="l">Agente</th><th class="l">Frente</th><th>Atend.</th><th>Vendas</th><th>Upg.</th><th>Conv.</th><th>Retenção</th><th>Status</th></tr></thead><tbody></tbody></table></div></div>
+        <div class="col"><h3 id="org-a-t">Agentes</h3><div class="tw" style="max-height: 560px"><table id="org-a"><thead><tr><th class="l" data-en="Agent">Agente</th><th class="l" data-en="Channel">Frente</th><th data-en="Contacts">Atend.</th><th data-en="Sales">Vendas</th><th>Upg.</th><th>Conv.</th><th data-en="Retention">Retenção</th><th>Status</th></tr></thead><tbody></tbody></table></div></div>
       </div>
     </section>
 
     <!-- DETALHE -->
     <section class="panel" data-p="detalhe">
-      <div class="ph"><h2>Detalhe</h2><p>Tabela completa, no recorte, agrupada como você quiser.</p></div>
+      <div class="ph"><h2 data-en="Detail">Detalhe</h2><p data-en="Full table, in the slice, grouped the way you want.">Tabela completa, no recorte, agrupada como você quiser.</p></div>
       <div class="card">
-        <div class="hrow"><h3>Agrupar por</h3><div class="seg small" id="t-grp"><button type="button" data-v="coord">Coordenação</button><button type="button" data-v="sup" aria-pressed="true">Supervisor</button><button type="button" data-v="agente">Agente</button></div></div>
-        <p class="note">Clique no cabeçalho para ordenar. Agentes: só quem teve atendimento no período.</p>
+        <div class="hrow"><h3 data-en="Group by">Agrupar por</h3><div class="seg small" id="t-grp"><button type="button" data-v="coord" data-en="Coordination">Coordenação</button><button type="button" data-v="sup" aria-pressed="true">Supervisor</button><button type="button" data-v="agente" data-en="Agent">Agente</button></div></div>
+        <p class="note" data-en="Click a header to sort. Agents: only those with contacts in the period.">Clique no cabeçalho para ordenar. Agentes: só quem teve atendimento no período.</p>
         <div class="tw"><table id="tb"><thead><tr>
-          <th class="l" data-k="nome" data-t="s">Nome</th><th class="l" data-k="sub" data-t="s">Acima</th><th data-k="n">Agentes</th><th data-k="at">Atendimentos</th><th data-k="v">Vendas</th><th data-k="u">Upgrades</th><th data-k="c">Consolidado</th><th data-k="meta">Meta</th><th data-k="ating">Ating.</th><th data-k="conv">Conversão</th><th data-k="ret">Retenção</th><th data-k="dgs">Downgrade</th>
+          <th class="l" data-k="nome" data-t="s" data-en="Name">Nome</th><th class="l" data-k="sub" data-t="s" data-en="Above">Acima</th><th data-k="n" data-en="Agents">Agentes</th><th data-k="at" data-en="Contacts">Atendimentos</th><th data-k="v" data-en="Sales">Vendas</th><th data-k="u">Upgrades</th><th data-k="c" data-en="Consolidated">Consolidado</th><th data-k="meta" data-en="Target">Meta</th><th data-k="ating" data-en="Attain.">Ating.</th><th data-k="conv" data-en="Conversion">Conversão</th><th data-k="ret" data-en="Retention">Retenção</th><th data-k="dgs">Downgrade</th>
         </tr></thead><tbody></tbody></table></div>
       </div>
       <section class="defs">
-        <div><b>Consolidado</b> = vendas (adesões) + upgrades. <b>Meta</b> = 38 vendas e 12 upgrades por supervisor por mês.</div>
-        <div><b>Conversão</b> = vendas ÷ atendimentos. <b>Esperado pelo volume</b> = atendimentos do dia × conversão média do mês.</div>
-        <div><b>Retenção</b> = retidos ÷ (retidos + cancelados). Retido inclui quem ficou no mesmo plano e quem ficou num plano menor (downgrade).</div>
-        <div>Base: atendimentos por agente e dia, jul/2025 a 19/jun/2026, mesma equipe fictícia do case PSAT. Dados fictícios de demonstração.</div>
+        <div data-en="<b>Consolidated</b> = sales (sign-ups) + upgrades. <b>Target</b> = 38 sales and 12 upgrades per supervisor per month."><b>Consolidado</b> = vendas (adesões) + upgrades. <b>Meta</b> = 38 vendas e 12 upgrades por supervisor por mês.</div>
+        <div data-en="<b>Conversion</b> = sales ÷ contacts. <b>Volume expectation</b> = day's contacts × the month's average conversion."><b>Conversão</b> = vendas ÷ atendimentos. <b>Esperado pelo volume</b> = atendimentos do dia × conversão média do mês.</div>
+        <div data-en="<b>Retention</b> = retained ÷ (retained + cancelled). Retained includes those who kept the same plan and those who moved to a smaller plan (downgrade)."><b>Retenção</b> = retidos ÷ (retidos + cancelados). Retido inclui quem ficou no mesmo plano e quem ficou num plano menor (downgrade).</div>
+        <div data-en="Base: contacts by agent and day, Jul/2025 to 19 Jun 2026, same fictitious team as the PSAT case. Fictitious demo data.">Base: atendimentos por agente e dia, jul/2025 a 19/jun/2026, mesma equipe fictícia do case PSAT. Dados fictícios de demonstração.</div>
       </section>
     </section>
-    <footer><span>Esteira de Vendas e Retenção · Projeto Smiles · dashboard</span><span>HTML, CSS e JavaScript, arquivo único, abre sem internet.</span></footer>
+    <footer><span data-en="Cruise · Sales &amp; Retention Pipeline · Smiles Project · dashboard">Cruzeiro · Esteira de Vendas e Retenção · Projeto Smiles · dashboard</span><span data-en="HTML, CSS and JavaScript, single file, works offline.">HTML, CSS e JavaScript, arquivo único, abre sem internet.</span></footer>
   </main>
 </div>
 
@@ -281,10 +342,42 @@
 (function () {
   const D = window.DATA, AG = D.agentes, ROWS = D.linhas, META = D.meta;
   const $ = (id) => document.getElementById(id);
-  const MES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
-  const MESL = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
-  const SEM = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-  const fmtN = (n) => n.toLocaleString('pt-BR'); const pct = (x, d = 1) => (x * 100).toFixed(d).replace('.', ',') + '%';
+  
+  // ---- idioma: mesma chave do site (localStorage "lang") ----
+  let LANG = 'pt'; try { LANG = localStorage.getItem('lang') === 'en' ? 'en' : 'pt'; } catch (e) {}
+  const EN = LANG === 'en';
+  const L = (pt, en) => EN ? en : pt;
+  document.documentElement.lang = EN ? 'en-US' : 'pt-BR';
+  if (EN) {
+    document.querySelectorAll('[data-en]').forEach((el) => { el.innerHTML = el.dataset.en; });
+    document.querySelectorAll('[data-en-title]').forEach((el) => { el.title = el.dataset.enTitle; });
+  }
+  (function () {
+    const b = document.getElementById('plang'); if (!b) return;
+    b.querySelector('img').src = EN ? '../assets/flag-us.png' : '../assets/flag-br.png';
+    b.querySelector('span').textContent = EN ? 'EN-US' : 'PT-BR';
+    b.title = EN ? 'Mudar para português' : 'Switch to English';
+    b.addEventListener('click', () => { try { localStorage.setItem('lang', EN ? 'pt' : 'en'); } catch (e) {} location.reload(); });
+    // ⌂ e o nome levam pro início limpo; o ← devolve pro foco em que o visitante estava
+    document.querySelectorAll('.pbrand, .pnav a.nav-ico:not(#pnav-back)').forEach((a) => a.addEventListener('click', () => { try { sessionStorage.setItem('focus', ''); } catch (e) {} }, true));
+  })();
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href]'); if (!a || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || a.target === '_blank') return;
+    const href = a.getAttribute('href'); if (!href || href.startsWith('#') || /^(https?:|mailto:)/.test(href)) return;
+    e.preventDefault(); document.body.classList.add('leaving'); setTimeout(() => { location.href = href; }, 240);
+  });
+  const LOCALE = EN ? 'en-US' : 'pt-BR';
+  const dec = (s) => EN ? String(s) : String(s).replace('.', ',');
+  // ---- paleta do mapa de calor: escala contínua, suave, texto claro ----
+  // t em [0,1]: 0 = pior, 1 = melhor. Vinho → ocre → verde-azulado, tudo dessaturado pro fundo escuro.
+  const hmStops = [[0, [122, 56, 66]], [0.5, [138, 104, 42]], [1, [44, 128, 108]]];
+  const hmColor = (t) => { t = Math.max(0, Math.min(1, t)); let a = hmStops[0], b = hmStops[hmStops.length - 1]; for (let i = 0; i < hmStops.length - 1; i++) if (t >= hmStops[i][0] && t <= hmStops[i + 1][0]) { a = hmStops[i]; b = hmStops[i + 1]; break; } const k = (t - a[0]) / ((b[0] - a[0]) || 1); const c = a[1].map((v, i) => Math.round(v + (b[1][i] - v) * k)); return `rgb(${c[0]},${c[1]},${c[2]})`; };
+
+  const MES = EN ? ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] : ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+  const MESL = EN ? ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] : ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+  const SEM = EN ? ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] : ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+  const CH = (c) => c === 'Voz' ? L('Voz', 'Voice') : c;
+  const fmtN = (n) => n.toLocaleString(LOCALE); const pct = (x, d = 1) => dec((x * 100).toFixed(d)) + '%';
   const ym = (s) => s.slice(0, 7); const ymLabel = (k) => MES[+k.slice(5, 7) - 1] + '/' + k.slice(2, 4);
   const months = [...new Set(ROWS.map((r) => ym(r[0])))].sort();
   const REF = META.ref;
@@ -301,7 +394,7 @@
   // ---------- controles ----------
   const fill = (sel, opts, val, labelAll, lab) => { sel.replaceChildren(...(labelAll !== null ? [new Option(labelAll, '')] : []), ...opts.map((o) => new Option(lab ? lab(o) : o, o))); sel.value = val; };
   fill($('f-de'), months, state.de, null, ymLabel); fill($('f-ate'), months, state.ate, null, ymLabel);
-  fill($('f-coord'), COORDS, '', 'Todas'); fill($('f-sup'), SUPS, '', 'Todos');
+  fill($('f-coord'), COORDS, '', L('Todas', 'All')); fill($('f-sup'), SUPS, '', L('Todos', 'All'));
   $('f-de').onchange = () => { state.de = $('f-de').value; if (state.ate < state.de) state.ate = state.de; draw(); };
   $('f-ate').onchange = () => { state.ate = $('f-ate').value; if (state.ate < state.de) state.de = state.ate; draw(); };
   $('f-coord').onchange = () => { state.coord = $('f-coord').value; state.sup = ''; draw(); };
@@ -363,7 +456,7 @@
     const lastK = per[per.length - 1], prevK = months[months.indexOf(lastK) - 1];
     const parcial = lastK === ym(REF); const refDay = +REF.slice(8, 10);
     const last = M[lastK]; const prev = prevK ? fin(ROWS.filter((r) => okA[r[1]] && ym(r[0]) === prevK && (!parcial || +r[0].slice(8, 10) <= refDay)).reduce(add, Z())) : null;
-    const cmp = prevK ? `${MESL[+lastK.slice(5, 7) - 1]} vs. ${parcial ? 'os mesmos ' + refDay + ' dias de ' : ''}${MESL[+prevK.slice(5, 7) - 1]}` : '';
+    const cmp = prevK ? `${MESL[+lastK.slice(5, 7) - 1]} vs. ${parcial ? L('os mesmos ' + refDay + ' dias de ', 'the same ' + refDay + ' days of ') : ''}${MESL[+prevK.slice(5, 7) - 1]}` : '';
     const dayRows = rows.filter((r) => ym(r[0]) === lastK); const days = [...new Set(dayRows.map((r) => r[0]))].sort();
     const byD = Object.fromEntries(days.map((d) => [d, Z()])); dayRows.forEach((r) => add(byD[r[0]], r));
     const agentes = Object.entries(byA).map(([i, s]) => ({ a: AG[+i], ...fin(s) }));
@@ -373,42 +466,42 @@
   function draw() {
     paintRec();
     $('f-de').value = state.de; $('f-ate').value = state.ate; $('f-coord').value = state.coord;
-    fill($('f-sup'), SUPS.filter((s) => !state.coord || supCoord[s] === state.coord), state.sup, 'Todos'); state.sup = $('f-sup').value;
+    fill($('f-sup'), SUPS.filter((s) => !state.coord || supCoord[s] === state.coord), state.sup, L('Todos', 'All')); state.sup = $('f-sup').value;
     press('f-canal', state.canal); press('f-tipo', state.tipo); press('f-turno', state.turno); press('g1-mode', state.g1); press('g6-mode', state.g6); press('t-grp', state.grp);
     compute();
     const { tot, per, M, metaPer, mOk, last, prev, cmp, sups, supMeta, agentes } = S;
     // recorte
-    const lab = [`${ymLabel(state.de)}${state.de !== state.ate ? ' a ' + ymLabel(state.ate) : ''}`, state.coord ? 'coordenação ' + state.coord : 'todas as coordenações', state.sup ? 'supervisor ' + state.sup : 'todos os supervisores', state.canal || 'Chat e Voz', state.tipo ? (state.tipo === 'D+O' ? 'Ouro/Diamante' : 'Bronze/Prata/Visitante') : 'todos os tipos', state.turno || 'manhã e tarde'];
-    $('crumb').replaceChildren('Recorte: ', ...lab.flatMap((t, i) => { const b = document.createElement('b'); b.textContent = t; return i ? [' · ', b] : [b]; }));
+    const lab = [`${ymLabel(state.de)}${state.de !== state.ate ? ' – ' + ymLabel(state.ate) : ''}`, state.coord ? state.coord : L('todas as coordenações', 'all coordinations'), state.sup ? state.sup : L('todos os supervisores', 'all supervisors'), state.canal ? CH(state.canal) : L('Chat e Voz', 'Chat and Voice'), state.tipo ? (state.tipo === 'D+O' ? L('Ouro/Diamante', 'Gold/Diamond') : L('Bronze/Prata/Visitante', 'Bronze/Silver/Visitor')) : L('todos os tipos', 'all tiers'), state.turno ? (state.turno === 'Manhã' ? L('manhã', 'morning') : L('tarde', 'afternoon')) : L('manhã e tarde', 'morning and afternoon')];
+    $('crumb').replaceChildren(L('Recorte: ', 'Slice: '), ...lab.flatMap((t, i) => { const b = document.createElement('b'); b.textContent = t; return i ? [' · ', b] : [b]; }));
     // KPIs
     const set = (k, v, d, cls) => { $('k-' + k).textContent = v; const e = $('d-' + k); e.textContent = d || ''; e.className = 'd' + (cls ? ' ' + cls : ''); };
-    const delta = (a, b, isPct) => (prev && a !== null && b !== null) ? `${a - b >= 0 ? '+' : '−'}${isPct ? (Math.abs(a - b) * 100).toFixed(1).replace('.', ',') + ' p.p.' : fmtN(Math.abs(a - b))} em ${cmp}` : '';
+    const delta = (a, b, isPct) => (prev && a !== null && b !== null) ? `${a - b >= 0 ? '+' : '−'}${isPct ? dec((Math.abs(a - b) * 100).toFixed(1)) + ' p.p.' : fmtN(Math.abs(a - b))} ${L('em', 'in')} ${cmp}` : '';
     const ud = (a, b) => (prev && a !== null && b !== null) ? (a >= b ? 'up' : 'down') : '';
     set('v', fmtN(tot.v), delta(last.v, prev && prev.v), ud(last.v, prev && prev.v));
     set('u', fmtN(tot.u), delta(last.u, prev && prev.u), ud(last.u, prev && prev.u));
     set('c', fmtN(tot.c), delta(last.c, prev && prev.c), ud(last.c, prev && prev.c));
-    set('m', mOk ? fmtN(metaPer.v + metaPer.u) : '—', mOk ? `${fmtN(metaPer.v)} vendas + ${fmtN(metaPer.u)} upgrades` : 'não se aplica a este recorte');
+    set('m', mOk ? fmtN(metaPer.v + metaPer.u) : '—', mOk ? `${fmtN(metaPer.v)} ${L('vendas', 'sales')} + ${fmtN(metaPer.u)} upgrades` : L('não se aplica a este recorte', 'does not apply to this slice'));
     const ating = mOk && metaPer.v + metaPer.u ? tot.c / (metaPer.v + metaPer.u) : null;
-    set('a', ating === null ? '—' : pct(ating, 0), ating === null ? 'meta definida por supervisor' : (ating >= 1 ? 'acima da meta' : 'abaixo da meta'), ating === null ? '' : (ating >= 1 ? 'up' : 'down'));
+    set('a', ating === null ? '—' : pct(ating, 0), ating === null ? L('meta definida por supervisor', 'target is set per supervisor') : (ating >= 1 ? L('acima da meta', 'above target') : L('abaixo da meta', 'below target')), ating === null ? '' : (ating >= 1 ? 'up' : 'down'));
     set('cv', tot.conv === null ? '—' : pct(tot.conv, 2), delta(last.conv, prev && prev.conv, true), ud(last.conv, prev && prev.conv));
     set('at', fmtN(tot.at), delta(last.at, prev && prev.at), '');
     set('r', tot.ret === null ? '—' : pct(tot.ret, 0), delta(last.ret, prev && prev.ret, true), ud(last.ret, prev && prev.ret));
-    set('dg', tot.dgs === null ? '—' : pct(tot.dgs, 0), `${fmtN(tot.dg)} de ${fmtN(tot.retidos)} retidos`, '');
-    const who = state.sup ? `a equipe de ${state.sup}` : state.coord ? `a coordenação de ${state.coord}` : 'a operação';
-    $('takeaway').textContent = `No período, ${who} fez ${fmtN(tot.c)} vendas e upgrades${ating !== null ? `, ${pct(ating, 0)} da meta` : ''}, com conversão de ${tot.conv === null ? '—' : pct(tot.conv, 2)} e retenção de ${tot.ret === null ? '—' : pct(tot.ret, 0)}.${tot.dgs !== null ? ` ${pct(tot.dgs, 0)} dos retidos ficaram num plano menor.` : ''}`;
+    set('dg', tot.dgs === null ? '—' : pct(tot.dgs, 0), `${fmtN(tot.dg)} ${L('de', 'of')} ${fmtN(tot.retidos)} ${L('retidos', 'retained')}`, '');
+    const who = state.sup ? L(`a equipe de ${state.sup}`, `${state.sup}'s team`) : state.coord ? L(`a coordenação de ${state.coord}`, `${state.coord}'s coordination`) : L('a operação', 'the operation');
+    $('takeaway').textContent = L(`No período, ${who} fez ${fmtN(tot.c)} vendas e upgrades${ating !== null ? `, ${pct(ating, 0)} da meta` : ''}, com conversão de ${tot.conv === null ? '—' : pct(tot.conv, 2)} e retenção de ${tot.ret === null ? '—' : pct(tot.ret, 0)}.${tot.dgs !== null ? ` ${pct(tot.dgs, 0)} dos retidos ficaram num plano menor.` : ''}`, `In the period, ${who} made ${fmtN(tot.c)} sales and upgrades${ating !== null ? `, ${pct(ating, 0)} of target` : ''}, with ${tot.conv === null ? '—' : pct(tot.conv, 2)} conversion and ${tot.ret === null ? '—' : pct(tot.ret, 0)} retention.${tot.dgs !== null ? ` ${pct(tot.dgs, 0)} of the retained moved to a smaller plan.` : ''}`);
     // ticker
     const items = [];
     const best = per.slice().sort((a, b) => M[b].c - M[a].c)[0]; const worst = per.filter((k) => k !== ym(REF)).sort((a, b) => M[a].c - M[b].c)[0];
-    if (best) items.push(['melhor mês', `${ymLabel(best)} · ${fmtN(M[best].c)}`, 'up']);
-    if (worst && worst !== best) items.push(['pior mês', `${ymLabel(worst)} · ${fmtN(M[worst].c)}`, 'down']);
-    if (ating !== null) items.push(['atingimento', pct(ating, 0), ating >= 1 ? 'up' : 'down']);
-    const topA = agentes.slice().sort((a, b) => b.c - a.c)[0]; if (topA) items.push(['top agente', `${topA.a[0]} · ${fmtN(topA.c)}`, '']);
-    if (mOk && sups.length > 1) { const ls = sups.map((s) => [s, S.bySup[s] ? S.bySup[s].c / supMeta : 0]).sort((a, b) => b[1] - a[1]); items.push(['supervisor líder', `${ls[0][0].split(' ')[0]} · ${pct(ls[0][1], 0)} da meta`, 'up']); items.push(['mais distante', `${ls[ls.length - 1][0].split(' ')[0]} · ${pct(ls[ls.length - 1][1], 0)} da meta`, 'down']); }
-    if (prev && last.conv !== null && prev.conv !== null) items.push(['conversão', `${pct(last.conv, 2)} · ${last.conv >= prev.conv ? '▲' : '▼'} ${(Math.abs(last.conv - prev.conv) * 100).toFixed(2).replace('.', ',')} p.p.`, last.conv >= prev.conv ? 'up' : 'down']);
-    if (prev && last.ret !== null && prev.ret !== null) items.push(['retenção', `${pct(last.ret, 0)} · ${last.ret >= prev.ret ? '▲' : '▼'} ${(Math.abs(last.ret - prev.ret) * 100).toFixed(1).replace('.', ',')} p.p.`, last.ret >= prev.ret ? 'up' : 'down']);
-    if (tot.dgs !== null) items.push(['downgrade', `${pct(tot.dgs, 0)} dos retidos`, tot.dgs > 0.25 ? 'warn' : '']);
-    const bestDay = S.days.slice().sort((a, b) => S.byD[b].v - S.byD[a].v)[0]; if (bestDay) items.push(['melhor dia', `${+bestDay.slice(8, 10)}/${MES[+bestDay.slice(5, 7) - 1]} · ${fmtN(S.byD[bestDay].v)} vendas`, '']);
-    items.push(['atendimentos', fmtN(tot.at), '']);
+    if (best) items.push([L('melhor mês', 'best month'), `${ymLabel(best)} · ${fmtN(M[best].c)}`, 'up']);
+    if (worst && worst !== best) items.push([L('pior mês', 'worst month'), `${ymLabel(worst)} · ${fmtN(M[worst].c)}`, 'down']);
+    if (ating !== null) items.push([L('atingimento', 'attainment'), pct(ating, 0), ating >= 1 ? 'up' : 'down']);
+    const topA = agentes.slice().sort((a, b) => b.c - a.c)[0]; if (topA) items.push([L('top agente', 'top agent'), `${topA.a[0]} · ${fmtN(topA.c)}`, '']);
+    if (mOk && sups.length > 1) { const ls = sups.map((s) => [s, S.bySup[s] ? S.bySup[s].c / supMeta : 0]).sort((a, b) => b[1] - a[1]); items.push([L('supervisor líder', 'leading supervisor'), `${ls[0][0].split(' ')[0]} · ${pct(ls[0][1], 0)} ${L('da meta', 'of target')}`, 'up']); items.push([L('mais distante', 'furthest'), `${ls[ls.length - 1][0].split(' ')[0]} · ${pct(ls[ls.length - 1][1], 0)} ${L('da meta', 'of target')}`, 'down']); }
+    if (prev && last.conv !== null && prev.conv !== null) items.push([L('conversão', 'conversion'), `${pct(last.conv, 2)} · ${last.conv >= prev.conv ? '▲' : '▼'} ${dec((Math.abs(last.conv - prev.conv) * 100).toFixed(2))} p.p.`, last.conv >= prev.conv ? 'up' : 'down']);
+    if (prev && last.ret !== null && prev.ret !== null) items.push([L('retenção', 'retention'), `${pct(last.ret, 0)} · ${last.ret >= prev.ret ? '▲' : '▼'} ${dec((Math.abs(last.ret - prev.ret) * 100).toFixed(1))} p.p.`, last.ret >= prev.ret ? 'up' : 'down']);
+    if (tot.dgs !== null) items.push(['downgrade', `${pct(tot.dgs, 0)} ${L('dos retidos', 'of retained')}`, tot.dgs > 0.25 ? 'warn' : '']);
+    const bestDay = S.days.slice().sort((a, b) => S.byD[b].v - S.byD[a].v)[0]; if (bestDay) items.push([L('melhor dia', 'best day'), `${+bestDay.slice(8, 10)}/${MES[+bestDay.slice(5, 7) - 1]} · ${fmtN(S.byD[bestDay].v)} ${L('vendas', 'sales')}`, '']);
+    items.push([L('atendimentos', 'contacts'), fmtN(tot.at), '']);
     const mkIt = ([l, n, c]) => { const s = document.createElement('span'); s.className = 'it'; const a = document.createElement('span'); a.className = 'l'; a.textContent = l; const b = document.createElement('span'); b.className = 'n ' + c; b.textContent = n; s.append(a, b); return s; };
     $('ticker').replaceChildren(...items.map(mkIt), ...items.map(mkIt));
     renderPanel();
@@ -420,53 +513,53 @@
     const g1 = (id, tall) => {
       if (state.g1 === 'abs' || id === 'h1') {
         mk(id, { type: 'bar', data: { labels, datasets: [
-          { label: 'Vendas', data: per.map((k) => M[k].v), backgroundColor: corRecorte(), stack: 'a', borderRadius: 3 },
+          { label: L('Vendas', 'Sales'), data: per.map((k) => M[k].v), backgroundColor: corRecorte(), stack: 'a', borderRadius: 3 },
           { label: 'Upgrades', data: per.map((k) => M[k].u), backgroundColor: C.main2, stack: 'a', borderRadius: 3 },
-          ...(mOk ? [{ label: 'Meta', data: per.map((k) => { const m = metaMes(k, sups.length); return m.v + m.u; }), type: 'line', borderColor: C.meta, backgroundColor: C.meta, borderDash: [5, 4], pointRadius: 3, tension: 0 }] : []),
+          ...(mOk ? [{ label: L('Meta', 'Target'), data: per.map((k) => { const m = metaMes(k, sups.length); return m.v + m.u; }), type: 'line', borderColor: C.meta, backgroundColor: C.meta, borderDash: [5, 4], pointRadius: 3, tension: 0 }] : []),
         ] }, options: { maintainAspectRatio: false, scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, beginAtZero: true } }, plugins: { legend: { position: 'bottom' } } } });
       } else {
-        mk(id, { type: 'bar', data: { labels, datasets: [{ label: 'Atingimento', data: per.map((k) => { const m = metaMes(k, sups.length); return mOk && m.v + m.u ? M[k].c / (m.v + m.u) * 100 : null; }), backgroundColor: per.map((k) => { const m = metaMes(k, sups.length); return mOk && M[k].c >= m.v + m.u ? C.ret : C.canc; }), borderRadius: 3 }] },
-          options: { maintainAspectRatio: false, scales: { x: { grid: { display: false } }, y: { beginAtZero: true, ticks: { callback: (v) => v + '%' } } }, plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => c.raw === null ? 'meta não se aplica' : c.raw.toFixed(0) + '% da meta' } } } } });
+        mk(id, { type: 'bar', data: { labels, datasets: [{ label: L('Atingimento', 'Attainment'), data: per.map((k) => { const m = metaMes(k, sups.length); return mOk && m.v + m.u ? M[k].c / (m.v + m.u) * 100 : null; }), backgroundColor: per.map((k) => { const m = metaMes(k, sups.length); return mOk && M[k].c >= m.v + m.u ? C.ret : C.canc; }), borderRadius: 3 }] },
+          options: { maintainAspectRatio: false, scales: { x: { grid: { display: false } }, y: { beginAtZero: true, ticks: { callback: (v) => v + '%' } } }, plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => c.raw === null ? L('meta não se aplica', 'target does not apply') : c.raw.toFixed(0) + L('% da meta', '% of target') } } } } });
       }
     };
     const g2 = (id) => { const frentes = state.canal ? [state.canal] : ['Chat', 'Voz'];
-      mk(id, { type: 'line', data: { labels, datasets: frentes.map((f) => ({ label: f, data: per.map((k) => { const s = fin(byMC[f][k]); return s.conv === null ? null : s.conv * 100; }), borderColor: f === 'Chat' ? C.chat : C.voz, backgroundColor: f === 'Chat' ? C.chat : C.voz, pointRadius: 3, tension: 0 })) },
-        options: { maintainAspectRatio: false, scales: { x: { grid: { display: false } }, y: { ticks: { callback: (v) => v.toFixed(2).replace('.', ',') + '%' } } }, plugins: { legend: { position: 'bottom' }, tooltip: { callbacks: { label: (c) => `${c.dataset.label}: ${c.raw.toFixed(2).replace('.', ',')}%` } } } } }); };
+      mk(id, { type: 'line', data: { labels, datasets: frentes.map((f) => ({ label: CH(f), data: per.map((k) => { const s = fin(byMC[f][k]); return s.conv === null ? null : s.conv * 100; }), borderColor: f === 'Chat' ? C.chat : C.voz, backgroundColor: f === 'Chat' ? C.chat : C.voz, pointRadius: 3, tension: 0 })) },
+        options: { maintainAspectRatio: false, scales: { x: { grid: { display: false } }, y: { ticks: { callback: (v) => dec(v.toFixed(2)) + '%' } } }, plugins: { legend: { position: 'bottom' }, tooltip: { callbacks: { label: (c) => `${c.dataset.label}: ${dec(c.raw.toFixed(2))}%` } } } } }); };
     const g3 = (id) => mk(id, { type: 'bar', data: { labels, datasets: [
-      { label: 'Retidos no plano', data: per.map((k) => M[k].retidos + M[k].ca ? M[k].re / (M[k].retidos + M[k].ca) * 100 : null), backgroundColor: C.ret, stack: 'r', borderRadius: 2 },
-      { label: 'Retidos com downgrade', data: per.map((k) => M[k].retidos + M[k].ca ? M[k].dg / (M[k].retidos + M[k].ca) * 100 : null), backgroundColor: C.dg, stack: 'r', borderRadius: 2 },
+      { label: L('Retidos no plano', 'Retained on plan'), data: per.map((k) => M[k].retidos + M[k].ca ? M[k].re / (M[k].retidos + M[k].ca) * 100 : null), backgroundColor: C.ret, stack: 'r', borderRadius: 2 },
+      { label: L('Retidos com downgrade', 'Retained with downgrade'), data: per.map((k) => M[k].retidos + M[k].ca ? M[k].dg / (M[k].retidos + M[k].ca) * 100 : null), backgroundColor: C.dg, stack: 'r', borderRadius: 2 },
     ] }, options: { maintainAspectRatio: false, scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, max: 100, ticks: { callback: (v) => v + '%' } } }, plugins: { legend: { position: 'bottom' }, tooltip: { callbacks: { label: (c) => `${c.dataset.label}: ${c.raw.toFixed(0)}%` } } } } });
     if (p === 'home') { g1('h1'); g2('h2'); g3('h3'); }
     if (p === 'vendas') {
       g1('g1');
       mk('g5', { type: 'bar', data: { labels: sups.map((s) => s.split(' ')[0]), datasets: [
-        { label: 'Consolidado', data: sups.map((s) => S.bySup[s] ? S.bySup[s].c : 0), backgroundColor: corRecorte(), borderRadius: 3 },
-        ...(mOk ? [{ label: 'Meta', data: sups.map(() => supMeta), backgroundColor: 'rgba(244,238,226,.18)', borderColor: C.meta, borderWidth: 1, borderRadius: 3 }] : []),
+        { label: L('Consolidado', 'Consolidated'), data: sups.map((s) => S.bySup[s] ? S.bySup[s].c : 0), backgroundColor: corRecorte(), borderRadius: 3 },
+        ...(mOk ? [{ label: L('Meta', 'Target'), data: sups.map(() => supMeta), backgroundColor: 'rgba(244,238,226,.18)', borderColor: C.meta, borderWidth: 1, borderRadius: 3 }] : []),
       ] }, options: { indexAxis: 'y', maintainAspectRatio: false, scales: { x: { beginAtZero: true }, y: { grid: { display: false } } }, plugins: { legend: { position: 'bottom' } } } });
       const tb = document.querySelector('#top tbody'); tb.replaceChildren();
       agentes.slice().sort((a, b) => b.c - a.c || b.v - a.v).slice(0, 10).forEach((x, i) => { const tr = document.createElement('tr'); tr.append(td(i + 1, 'l'), td(x.a[0], 'l'), td(x.a[1], 'l'), td(fmtN(x.v)), td(fmtN(x.u)), td(fmtN(x.c), 'bar', x.c / (agentes[0] ? Math.max(...agentes.map((y) => y.c)) : 1)), td(x.conv === null ? '—' : pct(x.conv, 2))); tb.appendChild(tr); });
     }
     if (p === 'qualidade') {
       g2('g2'); g3('g3');
-      mk('g4', { type: 'bar', data: { labels, datasets: [{ label: 'Atendimentos', data: per.map((k) => M[k].at), backgroundColor: C.sky, borderRadius: 3 }] }, options: { maintainAspectRatio: false, scales: { x: { grid: { display: false } }, y: { beginAtZero: true, ticks: { callback: (v) => fmtN(v) } } }, plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => fmtN(c.raw) + ' atendimentos' } } } } });
+      mk('g4', { type: 'bar', data: { labels, datasets: [{ label: L('Atendimentos', 'Contacts'), data: per.map((k) => M[k].at), backgroundColor: C.sky, borderRadius: 3 }] }, options: { maintainAspectRatio: false, scales: { x: { grid: { display: false } }, y: { beginAtZero: true, ticks: { callback: (v) => fmtN(v) } } }, plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => fmtN(c.raw) + L(' atendimentos', ' contacts') } } } } });
       mk('g7', { type: 'bar', data: { labels: sups.map((s) => s.split(' ')[0]), datasets: [
-        { label: 'Retidos no plano', data: sups.map((s) => { const x = S.bySup[s]; return x && x.retidos + x.ca ? x.re / (x.retidos + x.ca) * 100 : 0; }), backgroundColor: C.ret, stack: 'r' },
-        { label: 'Retidos com downgrade', data: sups.map((s) => { const x = S.bySup[s]; return x && x.retidos + x.ca ? x.dg / (x.retidos + x.ca) * 100 : 0; }), backgroundColor: C.dg, stack: 'r' },
+        { label: L('Retidos no plano', 'Retained on plan'), data: sups.map((s) => { const x = S.bySup[s]; return x && x.retidos + x.ca ? x.re / (x.retidos + x.ca) * 100 : 0; }), backgroundColor: C.ret, stack: 'r' },
+        { label: L('Retidos com downgrade', 'Retained with downgrade'), data: sups.map((s) => { const x = S.bySup[s]; return x && x.retidos + x.ca ? x.dg / (x.retidos + x.ca) * 100 : 0; }), backgroundColor: C.dg, stack: 'r' },
       ] }, options: { indexAxis: 'y', maintainAspectRatio: false, scales: { x: { stacked: true, max: 100, ticks: { callback: (v) => v + '%' } }, y: { stacked: true, grid: { display: false } } }, plugins: { legend: { position: 'bottom' }, tooltip: { callbacks: { label: (c) => `${c.dataset.label}: ${c.raw.toFixed(0)}%` } } } } });
     }
     if (p === 'diario') {
-      $('g6-t').textContent = `Dia a dia de ${MESL[+lastK.slice(5, 7) - 1]} de ${lastK.slice(0, 4)}`; $('g6-h').textContent = state.g6 === 'vendas' ? 'Vendas por dia, contra o esperado pelo volume' : 'Retenção por dia';
+      $('g6-t').textContent = L(`Dia a dia de ${MESL[+lastK.slice(5, 7) - 1]} de ${lastK.slice(0, 4)}`, `${MESL[+lastK.slice(5, 7) - 1]} ${lastK.slice(0, 4)}, day by day`); $('g6-h').textContent = state.g6 === 'vendas' ? L('Vendas por dia, contra o esperado pelo volume', 'Sales per day, against the volume expectation') : L('Retenção por dia', 'Retention per day');
       const convM = last.conv || 0; const dl = days.map((d) => +d.slice(8, 10));
       if (state.g6 === 'vendas') {
         mk('g6', { type: 'bar', data: { labels: dl, datasets: [
-          { label: 'Vendas', data: days.map((d) => byD[d].v), backgroundColor: corRecorte(), borderRadius: 3 },
-          { label: 'Esperado pelo volume', data: days.map((d) => Math.round(byD[d].at * convM)), type: 'line', borderColor: C.meta, backgroundColor: C.meta, pointRadius: 2, tension: 0, borderDash: [4, 3] },
+          { label: L('Vendas', 'Sales'), data: days.map((d) => byD[d].v), backgroundColor: corRecorte(), borderRadius: 3 },
+          { label: L('Esperado pelo volume', 'Volume expectation'), data: days.map((d) => Math.round(byD[d].at * convM)), type: 'line', borderColor: C.meta, backgroundColor: C.meta, pointRadius: 2, tension: 0, borderDash: [4, 3] },
         ] }, options: { maintainAspectRatio: false, scales: { x: { grid: { display: false } }, y: { beginAtZero: true } }, plugins: { legend: { position: 'bottom' } } } });
       } else {
         mk('g6', { type: 'bar', data: { labels: dl, datasets: [
-          { label: 'Retidos no plano', data: days.map((d) => byD[d].re), backgroundColor: C.ret, stack: 's' },
-          { label: 'Retidos com downgrade', data: days.map((d) => byD[d].dg), backgroundColor: C.dg, stack: 's' },
-          { label: 'Cancelados', data: days.map((d) => byD[d].ca), backgroundColor: C.canc, stack: 's' },
+          { label: L('Retidos no plano', 'Retained on plan'), data: days.map((d) => byD[d].re), backgroundColor: C.ret, stack: 's' },
+          { label: L('Retidos com downgrade', 'Retained with downgrade'), data: days.map((d) => byD[d].dg), backgroundColor: C.dg, stack: 's' },
+          { label: L('Cancelados', 'Cancelled'), data: days.map((d) => byD[d].ca), backgroundColor: C.canc, stack: 's' },
         ] }, options: { maintainAspectRatio: false, scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, beginAtZero: true } }, plugins: { legend: { position: 'bottom' } } } });
       }
       const tb = document.querySelector('#dt tbody'); tb.replaceChildren();
@@ -485,24 +578,24 @@
     const supsOf = (c) => sups.filter((s) => !c || supCoord[s] === c);
     if (state.orgS && !supsOf(state.orgC).includes(state.orgS)) state.orgS = '';
     const node = (nm, stats, pressed, onClick, all) => { const b = document.createElement('button'); b.className = 'node' + (all ? ' all' : ''); b.setAttribute('aria-pressed', String(pressed)); const h = document.createElement('div'); h.className = 'nm'; h.textContent = nm; if (stats.ating !== undefined) h.appendChild(pill(stats.ating)); const st = document.createElement('div'); st.className = 'st'; st.innerHTML = stats.html; b.append(h, st); b.onclick = onClick; return b; };
-    const stHtml = (x, extra) => x ? `<span>${extra || ''}</span><span><b>${fmtN(x.c)}</b> cons.</span><span><b>${x.conv === null ? '—' : pct(x.conv, 2)}</b> conv.</span><span><b>${x.ret === null ? '—' : pct(x.ret, 0)}</b> ret.</span>` : '<span>sem atendimentos no recorte</span>';
+    const stHtml = (x, extra) => x ? `<span>${extra || ''}</span><span><b>${fmtN(x.c)}</b> cons.</span><span><b>${x.conv === null ? '—' : pct(x.conv, 2)}</b> conv.</span><span><b>${x.ret === null ? '—' : pct(x.ret, 0)}</b> ret.</span>` : `<span>${L('sem atendimentos no recorte', 'no contacts in this slice')}</span>`;
     // coluna 1
     const c1 = $('org-c'); c1.replaceChildren();
-    c1.appendChild(node('Todas', { html: `<span><b>${coords.length}</b> coordenações · <b>${sups.length}</b> supervisores</span>` }, state.orgC === '', () => { state.orgC = ''; state.orgS = ''; renderOrg(); }, true));
+    c1.appendChild(node(L('Todas', 'All'), { html: `<span><b>${coords.length}</b> ${L('coordenações', 'coordinations')} · <b>${sups.length}</b> ${L('supervisores', 'supervisors')}</span>` }, state.orgC === '', () => { state.orgC = ''; state.orgS = ''; renderOrg(); }, true));
     coords.forEach((c) => { const x = S.byCoord[c]; const n = supsOf(c).length; const ating = mOk && x ? x.c / (supMeta * n) : null; c1.appendChild(node(c, { html: stHtml(x, `<b>${n}</b> sup.`), ating }, state.orgC === c, () => { state.orgC = c; state.orgS = ''; renderOrg(); })); });
     // coluna 2
-    const list = supsOf(state.orgC); $('org-s-t').textContent = state.orgC ? `Supervisores · ${state.orgC}` : 'Supervisores';
+    const list = supsOf(state.orgC); $('org-s-t').textContent = state.orgC ? `${L('Supervisores', 'Supervisors')} · ${state.orgC}` : L('Supervisores', 'Supervisors');
     const c2 = $('org-s'); c2.replaceChildren();
-    c2.appendChild(node('Todos', { html: `<span><b>${list.length}</b> supervisores</span>` }, state.orgS === '', () => { state.orgS = ''; renderOrg(); }, true));
-    list.forEach((s) => { const x = S.bySup[s]; const ating = mOk && x ? x.c / supMeta : null; c2.appendChild(node(s, { html: stHtml(x, `<b>${x ? x.n : 0}</b> agentes`), ating }, state.orgS === s, () => { state.orgS = s; renderOrg(); })); });
+    c2.appendChild(node(L('Todos', 'All'), { html: `<span><b>${list.length}</b> ${L('supervisores', 'supervisors')}</span>` }, state.orgS === '', () => { state.orgS = ''; renderOrg(); }, true));
+    list.forEach((s) => { const x = S.bySup[s]; const ating = mOk && x ? x.c / supMeta : null; c2.appendChild(node(s, { html: stHtml(x, `<b>${x ? x.n : 0}</b> ${L('agentes', 'agents')}`), ating }, state.orgS === s, () => { state.orgS = s; renderOrg(); })); });
     // coluna 3
     const ags = agentes.filter((x) => (!state.orgC || x.a[2] === state.orgC) && (!state.orgS || x.a[1] === state.orgS)).sort((a, b) => b.c - a.c || b.v - a.v);
-    $('org-a-t').textContent = `Agentes · ${state.orgS || state.orgC || 'todos'} · ${ags.length}`;
+    $('org-a-t').textContent = `${L('Agentes', 'Agents')} · ${state.orgS || state.orgC || L('todos', 'all')} · ${ags.length}`;
     const tb = document.querySelector('#org-a tbody'); tb.replaceChildren();
     const maxC = Math.max(1, ...ags.map((x) => x.c));
     ags.forEach((x) => { const tr = document.createElement('tr'); const st = document.createElement('td'); const sp = document.createElement('span'); sp.className = 'pill ' + (x.a[6] === 'ATIVO(A)' ? 'ok' : 'na'); sp.textContent = x.a[6]; st.appendChild(sp);
-      tr.append(td(x.a[0], 'l'), td(x.a[3], 'l'), td(fmtN(x.at)), td(fmtN(x.v), 'bar', x.c / maxC), td(fmtN(x.u)), td(x.conv === null ? '—' : pct(x.conv, 2)), td(x.ret === null ? '—' : pct(x.ret, 0), 'bar g', x.ret ?? 0), st); tb.appendChild(tr); });
-    if (!ags.length) { const tr = document.createElement('tr'); const c = document.createElement('td'); c.colSpan = 8; c.className = 'empty'; c.textContent = 'Nenhum agente com atendimento nesse recorte.'; tr.appendChild(c); tb.appendChild(tr); }
+      tr.append(td(x.a[0], 'l'), td(CH(x.a[3]), 'l'), td(fmtN(x.at)), td(fmtN(x.v), 'bar', x.c / maxC), td(fmtN(x.u)), td(x.conv === null ? '—' : pct(x.conv, 2)), td(x.ret === null ? '—' : pct(x.ret, 0), 'bar g', x.ret ?? 0), st); tb.appendChild(tr); });
+    if (!ags.length) { const tr = document.createElement('tr'); const c = document.createElement('td'); c.colSpan = 8; c.className = 'empty'; c.textContent = L('Nenhum agente com atendimento nesse recorte.', 'No agent with contacts in this slice.'); tr.appendChild(c); tb.appendChild(tr); }
   }
 
   function renderTable() {
@@ -514,8 +607,8 @@
     const k = state.sortK, isS = (document.querySelector(`#tb th[data-k="${k}"]`).dataset.t === 's');
     list.sort((a, b) => (isS ? String(a[k]).localeCompare(String(b[k])) : ((a[k] ?? -1) - (b[k] ?? -1))) * state.dir);
     document.querySelectorAll('#tb th').forEach((th) => th.setAttribute('aria-sort', th.dataset.k === k ? (state.dir > 0 ? 'ascending' : 'descending') : 'none'));
-    document.querySelector('#tb th[data-k="nome"]').textContent = { coord: 'Coordenação', sup: 'Supervisor', agente: 'Agente' }[g];
-    document.querySelector('#tb th[data-k="sub"]').textContent = { coord: '', sup: 'Coordenação', agente: 'Supervisor' }[g];
+    document.querySelector('#tb th[data-k="nome"]').textContent = { coord: L('Coordenação', 'Coordination'), sup: 'Supervisor', agente: L('Agente', 'Agent') }[g];
+    document.querySelector('#tb th[data-k="sub"]').textContent = { coord: '', sup: L('Coordenação', 'Coordination'), agente: 'Supervisor' }[g];
     const tb = document.querySelector('#tb tbody'); tb.replaceChildren();
     const maxC = Math.max(1, ...list.map((x) => x.c)); const maxAt = Math.max(1, ...list.map((x) => x.at));
     list.forEach((x) => { const tr = document.createElement('tr'); const a = document.createElement('td'); a.appendChild(pill(x.ating));

@@ -4,9 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Case · Paulo Guilherme Veiga</title>
+  <link rel="icon" href="assets/favicon-cinza.svg" id="fav" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon.png" sizes="64x64">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Paulo Guilherme de Souza Veiga · Cases">
+  <meta property="og:title" content="Case · Paulo Guilherme de Souza Veiga">
+  <meta property="og:description" content="Um case de dados e processos: o problema, o que foi feito, o resultado.">
+  <meta property="og:image" content="https://mmbrosium.github.io/assets/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="lupa.css">
 </head>
 <body>
   <div class="orn l" aria-hidden="true"></div>
@@ -18,6 +29,7 @@
       <div class="topnav" id="topnav"></div>
       <button type="button" class="lang" id="lang" title="English"><img src="assets/flag-br.png" alt=""><span>PT-BR</span></button>
       <button type="button" class="snd" id="snd" aria-pressed="false" title="Som de interface (desligado)">♪</button>
+      <a class="snd nav-log" href="changelog.html" title="Changelog">⚙</a>
     </div>
   </nav>
 
@@ -37,11 +49,11 @@
     </footer>
   </main>
 
-  <div class="lb" id="lb" role="dialog" aria-label="Imagem ampliada"><img id="lb-img" alt=""></div>
-
   <script src="assets/marked.min.js"></script>
   <script src="assets/ornamentos.js"></script>
+  <script src="assets/ornamentos2.js"></script>
   <script src="cases.js"></script>
   <script src="app.js"></script>
+  <script src="lupa.js"></script>
 </body>
 </html>

@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head>
+    <meta charset="UTF-8">
+    <title>Gerenciador de Notas Compartimentado - GNC</title>
+    <style>
+        :root {
+            --bg-principal: #f4f6f9;
+            --bg-card: #ffffff;
+            --texto: #333333;
+            --borda: #cccccc;
+            --item-hover: #e9ecef;
+            --ativo: #007bff;
+            --topo-bg: #2d3748;
+        }
+        .dark-mode {
+            --bg-principal: #1e1e1e;
+            --bg-card: #2d2d2d;
+            --texto: #f0f0f0;
+            --borda: #444444;
+            --item-hover: #3d3d3d;
+            --ativo: #3b82f6;
+            --topo-bg: #111827;
+        }
+        body { 
+            font-family: sans-serif; margin: 0; background: var(--bg-principal); color: var(--texto); 
+            height: 100vh; display: flex; flex-direction: column; transition: background 0.2s; 
+        }
+        .topo { 
+            background: var(--topo-bg); color: white; padding: 10px 20px; display: flex; 
+            justify-content: space-between; align-items: center; z-index: 10;
+            h2 { margin: 0; font-size: 18px; }
+            button { padding: 8px 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+            .btn-tema { background: #6c757d; color: white; margin-right: 8px; }
+            .btn-salvar { background: #28a745; color: white; }
+        }
+        .conteudo-principal { display: flex; flex: 1; overflow: hidden; position: relative; }
+        .lateral { 
+            width: 320px; background: var(--bg-card); border-right: 1px solid var(--borda); 
+            display: flex; flex-direction: column; padding: 15px; box-sizing: border-box; 
+            transition: margin-left 0.3s ease; position: relative; flex-shrink: 0;
+            &.recolhida { margin-left: -320px; }
+            .btn-ocultar { 
+                position: absolute; top: 10px; right: -35px; width: 35px; height: 35px; 
+                background: var(--topo-bg); color: white; border: none; border-radius: 0 4px 4px 0; 
+                cursor: pointer; display: flex; align-items: center; justify-content: center; 
+                font-size: 16px; box-shadow: 2px 0 5px rgba(0,0,0,0.1); z-index: 5; 
+            }
+            .secao-titulo { 
+                font-weight: bold; font-size: 12px; color: #777; text-transform: uppercase; 
+                margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; 
+            }
+            .botoes-acoes { 
+                display: flex; gap: 4px;
+                button { background: var(--bg-principal); border: 1px solid var(--borda); color: var(--texto); cursor: pointer; font-weight: bold; font-size: 11px; padding: 4px 6px; border-radius: 4px; }
+            }
+            .campo-busca { 
+                width: 100%; padding: 8px; margin-bottom: 8px; box-sizing: border-box; border: 1px solid var(--borda); 
+                border-radius: 4px; background: var(--bg-card); color: var(--texto); font-size: 14px; 
+            }
+        }
+        .lista-itens { 
+            flex: 1; overflow-y: auto; 
+            .no-arvore { margin-left: 12px; }
+            .linha-item { 
+                display: flex; justify-content: space-between; align-items: center; padding: 4px 6px; 
+                border-radius: 4px; cursor: pointer; font-size: 14px; margin-top: 2px; user-select: none;
+                &:hover { background: var(--item-hover); }
+                &.ativa { background: var(--ativo); color: white; .seta-pasta { color: white; } }
+            }
+            .info-item { display: flex; align-items: center; gap: 4px; flex: 1; overflow: hidden; }
+            .seta-pasta { display: inline-block; width: 12px; font-size: 10px; text-align: center; cursor: pointer; color: #777; font-style: normal; }
+            .acoes-item { display: flex; gap: 2px; }
+        }
+        .area-edicao { 
+            flex: 1; padding: 20px; display: flex; flex-direction: column; background: var(--bg-principal); z-index: 1; overflow: hidden; 
+            .barra-ferramentas-editor { 
+                display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; 
+                button { padding: 6px 12px; font-size: 12px; font-weight: bold; border: 1px solid var(--borda); border-radius: 4px; cursor: pointer; background: var(--bg-card); color: var(--texto); &:hover { background: var(--item-hover); } }
+                .btn-danger-editor { border-color: #dc3545; color: #dc3545; &:hover { background: #dc3545; color: white; } }
+            }
+            .barra-formatacao { 
+                display: flex; gap: 4px; background: var(--bg-card); border: 1px solid var(--borda); border-bottom: none; padding: 6px; border-radius: 4px 4px 0 0; align-items: center; flex-wrap: wrap; 
+                button { padding: 4px 10px; font-size: 12px; font-weight: bold; border: 1px solid var(--borda); border-radius: 3px; cursor: pointer; background: var(--bg-card); color: var(--texto); }
+                input[type="color"] { border: none; width: 25px; height: 25px; cursor: pointer; background: none; padding: 0; }
+            }
+            .campo-titulo { width: 100%; padding: 10px; font-size: 18px; border: 1px solid var(--borda); border-radius: 4px; margin-bottom: 10px; box-sizing: border-box; background: var(--bg-card); color: var(--texto); }
+        }
+        .editor-split { display: flex; gap: 15px; flex: 1; min-height: 0; }
+        .editor-wrapper { flex: 2; display: flex; flex-direction: column; min-height: 0; }
+        .editor-rico { 
+            width: 100%; flex: 1; font-size: 14px; border: 1px solid var(--borda); border-radius: 0 0 4px 4px; 
+            padding: 12px; box-sizing: border-box; background: var(--bg-card); color: var(--texto); overflow-y: auto; outline: none; 
+            &:focus { border-color: var(--ativo); }
+        }
+        .checklist-wrapper { 
+            width: 260px; background: var(--bg-card); border: 1px solid var(--borda); border-radius: 4px; padding: 12px; display: flex; flex-direction: column; transition: width 0.3s ease; 
+            h4 { margin: 0 0 10px 0; font-size: 14px; text-transform: uppercase; color: #777; }
+            .lista-tasks { flex: 1; overflow-y: auto; margin-bottom: 10px; }
+            .item-task { 
+                display: flex; align-items: center; gap: 6px; margin-bottom: 6px; font-size: 14px; 
+                input[type="text"] { flex: 1; padding: 4px; border: 1px solid var(--borda); border-radius: 3px; background: var(--bg-card); color: var(--texto); font-size: 13px; }
+                input[type="checkbox"]:checked + input[type="text"] { text-decoration: line-through; opacity: 0.6; }
+            }
+            .btn-add-task { width: 100%; padding: 6px; font-size: 12px; background: var(--ativo); color: white; border: none; border-radius: 3px; cursor: pointer; font-weight: bold; }
+        }
+        .rodape { display: flex; justify-content: space-between; font-size: 12px; color: #777; margin-top: 5px; }
+        .status-backup { color: #28a745; font-weight: bold; display: none; }
+        .tela-vazia {
+            flex: 1; display: flex; flex-direction: column; align-items: center; 
+            justify-content: center; color: #777; font-size: 16px; text-align: center;
+            h3 { margin: 0 0 8px 0; color: var(--texto); }
+            p { margin: 0; font-size: 13px; opacity: 0.8; }
+        }
+        .btn-tres-pontinhos {
+            background: none; border: none; color: inherit; cursor: pointer;
+            font-size: 14px; font-weight: bold; padding: 0 6px; opacity: 0.7;
+            &:hover { opacity: 1; }
+        }
+        .menu-contexto-gnc {
+            display: none; position: absolute; background: var(--bg-card);
+            border: 1px solid var(--borda); border-radius: 4px; padding: 4px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15); z-index: 100; min-width: 140px;
+            button {
+                display: flex; width: 100%; background: none; border: none;
+                color: var(--texto); padding: 6px 12px; font-size: 12px;
+                text-align: left; cursor: pointer; gap: 6px;
+                &:hover { background: var(--item-hover); }
+                &.btn-danger-editor { color: #dc3545; &:hover { background: #fdf2f2; } }
+            }
+        }
+    </style>
+</head>
+
+
+
+<body class="dark-mode">
+
+<div class="topo">
+    <h2>📁 Gerenciador de Notas Compartimentado - GNC</h2>
+    <div>
+        <button class="btn-tema" onclick="alternarTema()">🌓 Tema</button>
+        <input type="hidden" id="dados_estruturados" value="W3siaWQiOiAiMSIsICJ0aXR1bG8iOiAiUmV2aXPDo28gwrcgTcOzZHVsbyBGaW5hbmNlaXJvIiwgInRpcG8iOiAicGFzdGEiLCAiaXRlbnMiOiBbeyJpZCI6ICIxMSIsICJ0aXR1bG8iOiAiQm9sZXRvcyB2ZW5jaWRvcyBow6EgbWFpcyBkZSA2MCBkaWFzIiwgInRpcG8iOiAibm90YSIsICJjb250ZXVkbyI6ICI8cD48Yj5Cb2xldG9zIHZlbmNpZG9zIGjDoSBtYWlzIGRlIDYwIGRpYXM8L2I+PC9wPjxwPkRlcG9pcyBkZSA2MCBkaWFzIGRvIHZlbmNpbWVudG8sIG8gYm9sZXRvIG7Do28gw6kgYXR1YWxpemFkbyBubyBwb3J0YWw6IG8gYXNzb2NpYWRvIHByZWNpc2EgcGVkaXIgYSBzZWd1bmRhIHZpYSBwZWxvIGF0ZW5kaW1lbnRvLiBBbnRlcyBkZSBnZXJhciwgY29uZmVyaXIgc2UgaG91dmUgcGFnYW1lbnRvIHBvciBvdXRybyBtZWlvIGUgc2UgbyBwbGFubyBlc3TDoSBhdGl2by48L3A+PHA+4pqg77iPIFNlIGhvdXZlciBkb2lzIGJvbGV0b3MgZW0gYXRyYXNvLCBvIHBsYW5vIGVudHJhIGVtIHN1c3BlbnPDo286IG9yaWVudGFyIHNvYnJlIGEgcmVndWxhcml6YcOnw6NvIGUgbyBwcmF6byBkZSByZWF0aXZhw6fDo28uPC9wPiIsICJ0YXNrcyI6IFtdfSwgeyJpZCI6ICIxMiIsICJ0aXR1bG8iOiAiQ8OhbGN1bG8gZGUgcmVlbWJvbHNvIiwgInRpcG8iOiAibm90YSIsICJjb250ZXVkbyI6ICI8cD48Yj5Dw6FsY3VsbyBkZSByZWVtYm9sc288L2I+PC9wPjxwPk8gdmFsb3Igc2VndWUgYSB0YWJlbGEgZG8gcGxhbm8sIG51bmNhIG8gdmFsb3IgcGFnby4gUGVkaXIgbyByZWNpYm8gY29tIENSTywgcHJvY2VkaW1lbnRvLCBkZW50ZSBvdSByZWdpw6NvIGUgdmFsb3IuIE8gcHJhem8gZGUgYW7DoWxpc2Ugw6kgZGUgYXTDqSAzMCBkaWFzIGEgcGFydGlyIGRvIGVudmlvIGNvbXBsZXRvLjwvcD48cD7ihpIgUHLDqXZpYSBkZSByZWVtYm9sc286IG1lc21vIGZvcm11bMOhcmlvLCBzZW0gY29tcHJvdmFudGUgZGUgcGFnYW1lbnRvLjwvcD4iLCAidGFza3MiOiBbXX0sIHsiaWQiOiAiMTMiLCAidGl0dWxvIjogIlByYXpvIGRlIHZhbGlkYWRlIGRvIGJvbGV0byIsICJ0aXBvIjogIm5vdGEiLCAiY29udGV1ZG8iOiAiPHA+PGI+UHJhem8gZGUgdmFsaWRhZGUgZG8gYm9sZXRvPC9iPjwvcD48cD5PIGJvbGV0byB2YWxlIGF0w6kgYSBkYXRhIGRlIHZlbmNpbWVudG8gaW1wcmVzc2EuIERlcG9pcyBkaXNzbywgYXR1YWxpemFyIHBlbG8gcG9ydGFsIChhdMOpIDYwIGRpYXMpIG91IHBlZGlyIHNlZ3VuZGEgdmlhLjwvcD4iLCAidGFza3MiOiBbXX1dLCAiYWJlcnRhIjogZmFsc2V9LCB7ImlkIjogIjIiLCAidGl0dWxvIjogIlRyZWluYW1lbnRvIiwgInRpcG8iOiAicGFzdGEiLCAiaXRlbnMiOiBbeyJpZCI6ICIyMSIsICJ0aXR1bG8iOiAiSW5kaWNhw6fDo28gZGUgcmVkZSIsICJ0aXBvIjogInBhc3RhIiwgIml0ZW5zIjogW3siaWQiOiAiMjExIiwgInRpdHVsbyI6ICJFeGVtcGxvIDEiLCAidGlwbyI6ICJub3RhIiwgImNvbnRldWRvIjogIjxwPkFzc29jaWFkbyBwZWRlIGRlbnRpc3RhIGRlIHBlcmlvZG9udGlhIGVtIEN1cml0aWJhLCBiYWlycm8gUG9ydMOjby4gQnVzY2FyIGEgZXNwZWNpYWxpZGFkZSwgZmlsdHJhciBwb3IgY2lkYWRlIGUgYmFpcnJvLCBlbnZpYXIgcG9yIFNNUyBvdSBlLW1haWwuIFJlZ2lzdHJhciBhIGZvcm1hIGRlIGVudmlvIG5vIHByb250dcOhcmlvLjwvcD4iLCAidGFza3MiOiBbXX1dLCAiYWJlcnRhIjogZmFsc2V9LCB7ImlkIjogIjIyIiwgInRpdHVsbyI6ICJHdWlhcyBlIGF1dG9yaXphw6fDtWVzIiwgInRpcG8iOiAibm90YSIsICJjb250ZXVkbyI6ICI8cD48Yj5HdWlhcyBlIGF1dG9yaXphw6fDtWVzPC9iPjwvcD48cD5BIGd1aWEgw6kgc29saWNpdGFkYSBwZWxhIGNsw61uaWNhLCBuw6NvIHBlbG8gYXNzb2NpYWRvLiBTZSBhIGNsw61uaWNhIGFpbmRhIG7Do28gc29saWNpdG91LCBvcmllbnRhciBxdWUgc29saWNpdGUgcHJpbWVpcm8uIFZhbGlkYWRlIGRhIGd1aWE6IDEyMCBkaWFzIGEgcGFydGlyIGRhIGF1dG9yaXphw6fDo28uPC9wPjxwPvCfkqEgTmVnYXRpdmEgZGUgZ3VpYTogbyBhc3NvY2lhZG8gcG9kZSBwZWRpciBvIG1vdGl2byBwb3IgcHJvdG9jb2xvLjwvcD4iLCAidGFza3MiOiBbXX0sIHsiaWQiOiAiMjMiLCAidGl0dWxvIjogIlBlcmlvZG9udGlhIiwgInRpcG8iOiAibm90YSIsICJjb250ZXVkbyI6ICI8cD48Yj5QZXJpb2RvbnRpYTwvYj48L3A+PHA+VHJhdGFtZW50byBkZSBnZW5naXZhIGUgZG9zIHRlY2lkb3MgZGUgc3Vwb3J0ZSBkbyBkZW50ZS4gUHJvY2VkaW1lbnRvcyBtYWlzIHBlZGlkb3M6IHJhc3BhZ2VtLCBhanVzdGUgb2NsdXNhbCwgZW54ZXJ0byBnZW5naXZhbC4gQWxndW5zIGV4aWdlbSBjYXLDqm5jaWE7IGNvbmZlcmlyIG5hIGNvYmVydHVyYSBkbyBwbGFubyBhbnRlcyBkZSBjb25maXJtYXIuPC9wPiIsICJ0YXNrcyI6IFtdfV0sICJhYmVydGEiOiBmYWxzZX0sIHsiaWQiOiAiMyIsICJ0aXR1bG8iOiAiR05DIMK3IEdlcmFsIiwgInRpcG8iOiAicGFzdGEiLCAiaXRlbnMiOiBbeyJpZCI6ICIzMSIsICJ0aXR1bG8iOiAiR05DIMK3IENvbW8gdXNhciIsICJ0aXBvIjogIm5vdGEiLCAiY29udGV1ZG8iOiAiPHA+PGI+Q29tbyB1c2FyIG8gR05DPC9iPjwvcD48cD5QYXN0YXMgZSBub3RhcyBuYSBiYXJyYSBkYSBlc3F1ZXJkYS4gT3MgdHLDqnMgcG9udG9zIGFicmVtIG8gbWVudSBkbyBpdGVtOiBzdWJpciwgZGVzY2VyLCBvcmRlbmFyIGRlIEEgYSBaLCBub3ZhIHN1YnBhc3RhLCBub3ZhIG5vdGEsIHJlbm9tZWFyLCBleGNsdWlyLjwvcD48cD5DdHJsICsgUyBzYWx2YSB0dWRvOiBvIGFycXVpdm8gYmFpeGEgZGUgbm92byBjb20gYXMgbm90YXMgZGVudHJvIGRlbGUuPC9wPiIsICJ0YXNrcyI6IFt7InRleHRvIjogIlJldmlzYXIgYSBwYXN0YSBGaW5hbmNlaXJvIiwgImNvbmNsdWlkYSI6IHRydWV9LCB7InRleHRvIjogIlNlcGFyYXIgb3MgZXhlbXBsb3MgZGUgcmVkZSIsICJjb25jbHVpZGEiOiBmYWxzZX0sIHsidGV4dG8iOiAiRXhwb3J0YXIgYSBub3RhIGRlIHBlcmlvZG9udGlhIGVtIFRYVCIsICJjb25jbHVpZGEiOiBmYWxzZX1dfSwgeyJpZCI6ICIzMiIsICJ0aXR1bG8iOiAiQXRhbGhvcyIsICJ0aXBvIjogIm5vdGEiLCAiY29udGV1ZG8iOiAiPHA+Q3RybCArIFMgc2FsdmEgbyBhcnF1aXZvLiBDdHJsICsgQiwgSSBlIFUgZm9ybWF0YW0gYSBzZWxlw6fDo28uIEEgYnVzY2EgcHJvY3VyYSBubyB0w610dWxvIGUgZGVudHJvIGRvIHRleHRvLjwvcD4iLCAidGFza3MiOiBbXX1dLCAiYWJlcnRhIjogZmFsc2V9LCB7ImlkIjogIjQiLCAidGl0dWxvIjogIk5vdmEgbm90YSIsICJ0aXBvIjogIm5vdGEiLCAiY29udGV1ZG8iOiAiPHA+RXNjcmV2YSBzZXUgdGV4dG8gYXF1aS4uLjwvcD4iLCAidGFza3MiOiBbXX1d">
+        <button class="btn-salvar" onclick="baixarTudo()">💾 Salvar Tudo (Ctrl + S)</button>
+    </div>
+</div>
+
+<div class="conteudo-principal">
+    <div class="lateral" id="menuLateral">
+        <button class="btn-ocultar" onclick="alternarMenuLateral()" id="btnGatilhoLateral" title="Ocultar/Exibir Menu">◀</button>
+        <div class="secao-titulo">
+            <span>Estrutura</span>
+            <div class="botoes-acoes">
+                <button onclick="expandirRecolherTudo(true)" title="Expandir Todas as Pastas">↕ Open</button>
+                <button onclick="expandirRecolherTudo(false)" title="Recolher Todas as Pastas">↕ Close</button>
+                <button onclick="criarNoRaiz('pasta')">+ 📁</button>
+                <button onclick="criarNoRaiz('nota')">+ 📄</button>
+            </div>
+        </div>
+        <input type="text" id="filtro_busca" class="campo-busca" oninput="renderizarArvoreCompleta()" placeholder="🔍 Buscar por título ou conteúdo interno...">
+        <div class="lista-itens" id="lista_documentos"></div>
+    </div>
+    
+    <div class="area-edicao" id="container_edicao_principal">
+            <div class="tela-vazia">
+                <h3>📝 Nenhum documento selecionado</h3>
+                <p>Selecione uma nota na barra lateral ou crie uma nova para começar a escrever.</p>
+            </div>
+        </div>
+</div>
+
+
+
+<script>
+let valorInputRaw = document.getElementById('dados_estruturados').value;
+let arvoreArquivos = [];
+let pastasAbertas = {}; 
+let exibirChecklistGlobal = true;
+let itemAtivoId = null;
+let temporizadorDebounce;
+
+function de_b64(str) {
+    try { return decodeURIComponent(escape(atob(str))); } catch(e) { return "[]"; }
+}
+function para_b64(str) {
+    return btoa(unescape(encodeURIComponent(str)));
+}
+
+const backupLocal = localStorage.getItem('backup_seguranca_gerenciador');
+if (backupLocal) {
+    try { arvoreArquivos = JSON.parse(backupLocal); } catch(e) { arvoreArquivos = []; }
+} else {
+    try { arvoreArquivos = JSON.parse(valorInputRaw.startsWith('[') ? valorInputRaw : de_b64(valorInputRaw)); } catch(e) { arvoreArquivos = []; }
+}
+
+if (!arvoreArquivos || arvoreArquivos.length === 0) {
+    arvoreArquivos = [{"id":"1","titulo":"Minhas Notas","tipo":"pasta","itens":[{"id":"2","titulo":"Nota Inicial","tipo":"nota","conteudo":"Escreva seu texto aqui...","tasks":[]}]}];
+}
+
+function padronizarIdsRecursivo(lista) {
+    lista.forEach(item => {
+        item.id = item.id.toString();
+        if (item.tipo === 'pasta' && item.itens) {
+            padronizarIdsRecursivo(item.itens);
+        }
+    });
+}
+padronizarIdsRecursivo(arvoreArquivos);
+
+// Pastas fechadas ao abrir (padrão do GNC)
+
+setTimeout(() => {
+    renderizarArvoreCompleta();
+    carregarItemNoEditor();
+}, 50);
+
+function alternarTema() { document.body.classList.toggle('dark-mode'); }
+
+function alternarMenuLateral() {
+    const lateral = document.getElementById('menuLateral');
+    const botao = document.getElementById('btnGatilhoLateral');
+    lateral.classList.toggle('recolhida');
+    botao.innerText = lateral.classList.contains('recolhida') ? "▶" : "◀";
+}
+
+function alternarPainelChecklist() {
+    exibirChecklistGlobal = !exibirChecklistGlobal;
+    let nota = buscarItemPorId(arvoreArquivos, itemAtivoId);
+    const painel = document.getElementById('painel_checklist');
+    if (nota && nota.tipo === 'nota' && exibirChecklistGlobal) {
+        painel.style.display = 'flex';
+    } else {
+        painel.style.display = 'none';
+    }
+}
+
+function executarFormato(comando, valor = null) {
+    document.execCommand(comando, false, valor);
+    sincronizarCampos();
+}
+
+function normalizarTexto(str) {
+    if (!str) return '';
+    return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '');
+}
+
+function expandirRecolherTudo(expandir) {
+    function marcarRecursivo(lista) {
+        lista.forEach(item => {
+            if (item.tipo === 'pasta') {
+                pastasAbertas[item.id] = expandir;
+                if (item.itens) marcarRecursivo(item.itens);
+            }
+        });
+    }
+    marcarRecursivo(arvoreArquivos);
+    renderizarArvoreCompleta();
+}
+
+function renderizarArvoreCompleta() {
+    const container = document.getElementById('lista_documentos');
+    if (!container) return;
+    container.innerHTML = '';
+    const termoBusca = normalizarTexto(document.getElementById('filtro_busca').value);
+    arvoreArquivos.forEach(item => {
+        const elemento = construirElementoArvore(item, termoBusca);
+        if (elemento) container.appendChild(elemento);
+    });
+}
+
+
+
+function construirElementoArvore(item, termo) {
+    const tituloNormalizado = normalizarTexto(item.titulo);
+    let conteudoLimpoNormalizado = '';
+    
+    if (item.tipo === 'nota' && item.conteudo) {
+        const htmDom = document.createElement('div');
+        htmDom.innerHTML = item.conteudo;
+        conteudoLimpoNormalizado = normalizarTexto(htmDom.innerText || htmDom.textContent || '');
+    }
+
+    if (termo && item.tipo === 'nota' && !tituloNormalizado.includes(termo) && !conteudoLimpoNormalizado.includes(termo)) {
+        return null; 
+    }
+    
+    let elementosFilhosValidos = [];
+    if (item.tipo === 'pasta' && item.itens) {
+        item.itens.forEach(subItem => {
+            const subElemento = construirElementoArvore(subItem, termo);
+            if (subElemento) elementosFilhosValidos.push(subElemento);
+        });
+    }
+    
+    if (termo && item.tipo === 'pasta' && !tituloNormalizado.includes(termo) && elementosFilhosValidos.length === 0) {
+        return null;
+    }
+    
+    const divNo = document.createElement('div');
+    divNo.className = 'no-arvore';
+    const divLinha = document.createElement('div');
+    divLinha.className = "linha-item";
+    divLinha.style.position = "relative";
+    if (item.id.toString() === (itemAtivoId ? itemAtivoId.toString() : '')) divLinha.classList.add('ativa');
+    
+    let setaStr = '';
+    if (item.tipo === 'pasta') {
+        setaStr = (item.itens && item.itens.length > 0) ? (pastasAbertas[item.id] || termo ? '▼ ' : '▶ ') : '• ';
+    }
+
+    divLinha.innerHTML = `
+        <div class="info-item">
+            <span class="seta-pasta">${setaStr}</span>
+            <span class="ico-tipo-item">${item.tipo === 'pasta' ? '📁' : '📄'}</span>
+            <span class="txt-titulo-item">${item.titulo}</span>
+        </div>
+        <div class="acoes-item">
+            <button class="btn-tres-pontinhos" title="Mais ações">⋮</button>
+        </div>
+    `;
+    
+    divNo.appendChild(divLinha);
+    
+    divLinha.onclick = (e) => {
+        e.stopPropagation();
+        if (item.tipo === 'nota') {
+            itemAtivoId = item.id.toString();
+            renderizarArvoreCompleta();
+            carregarItemNoEditor();
+        } else if (item.tipo === 'pasta') {
+            pastasAbertas[item.id] = !pastasAbertas[item.id];
+            renderizarArvoreCompleta();
+        }
+    };
+    
+    const btnMenu = divLinha.querySelector('.btn-tres-pontinhos');
+    btnMenu.onclick = (e) => {
+        e.stopPropagation();
+        document.querySelectorAll('.menu-contexto-gnc').forEach(m => m.remove());
+        
+        const menuFlutuante = document.createElement('div');
+        menuFlutuante.className = 'menu-contexto-gnc';
+        menuFlutuante.style.display = 'block';
+        menuFlutuante.style.right = '10px';
+        menuFlutuante.style.top = '24px';
+        
+        // CORREÇÃO DO CASE: Evita que o clique nos botões borbulhe para a linha pai
+        menuFlutuante.onclick = (event) => { e.stopPropagation(); event.stopPropagation(); };
+        
+        menuFlutuante.innerHTML = `
+            <button onclick="moverPosicaoItem('${item.id}', -1)">🔼 Subir Posição</button>
+            <button onclick="moverPosicaoItem('${item.id}', 1)">🔽 Descer Posição</button>
+        `;
+        
+        if (item.tipo === 'pasta') {
+            menuFlutuante.innerHTML += `
+                <button onclick="ordenarPastaAz('${item.id}')">🔤 Ordenar de A-Z</button>
+                <button onclick="criarNoFilho('${item.id}', 'pasta')">📁+ Nova Subpasta</button>
+                <button onclick="criarNoFilho('${item.id}', 'nota')">📄+ Nova Nota</button>
+            `;
+        }
+        
+        menuFlutuante.innerHTML += `
+            <button onclick="renomearItem('${item.id}')">✏️ Renomear</button>
+            <button class="btn-danger-editor" onclick="deletarItem('${item.id}')">❌ Excluir Item</button>
+        `;
+        
+        divLinha.appendChild(menuFlutuante);
+        
+        setTimeout(() => {
+            const fecharMenu = () => { menuFlutuante.remove(); document.removeEventListener('click', fecharMenu); };
+            document.addEventListener('click', fecharMenu);
+        }, 50);
+    };
+
+    if (item.tipo === 'pasta' && (pastasAbertas[item.id] || termo)) {
+        elementosFilhosValidos.forEach(subElemento => divNo.appendChild(subElemento));
+        if (termo && elementosFilhosValidos.length > 0) {
+            pastasAbertas[item.id] = true;
+        }
+    }
+    return divNo;
+}
+
+
+function buscarItemPorId(lista, id) {
+    if (!id) return null;
+    for (let item of lista) {
+        if (item.id.toString() === id.toString()) return item;
+        if (item.tipo === 'pasta' && item.itens) {
+            let enc = buscarItemPorId(item.itens, id); if (enc) return enc;
+        }
+    }
+    return null;
+}
+
+function moverPosicaoItem(id, direcao) {
+    function buscarEAlternar(lista) {
+        for (let i = 0; i < lista.length; i++) {
+            if (lista[i].id.toString() === id.toString()) {
+                const novaPosicao = i + direcao;
+                if (novaPosicao >= 0 && novaPosicao < lista.length) {
+                    const temp = lista[i];
+                    lista[i] = lista[novaPosicao];
+                    lista[novaPosicao] = temp;
+                    return true;
+                }
+                return false;
+            }
+            if (lista[i].tipo === 'pasta' && lista[i].itens) {
+                if (buscarEAlternar(lista[i].itens)) return true;
+            }
+        }
+        return false;
+    }
+    if (buscarEAlternar(arvoreArquivos)) {
+        renderizarArvoreCompleta();
+        dispararAutoBackup();
+    }
+}
+
+
+
+function fecharNotaAtiva() {
+    itemAtivoId = null;
+    renderizarArvoreCompleta();
+    carregarItemNoEditor();
+}
+
+function inserirSimbolo(simbolo) {
+    const editor = document.getElementById('nota_texto_atual');
+    if (!editor || editor.getAttribute('contenteditable') === 'false') return;
+    editor.focus();
+    document.execCommand('insertText', false, simbolo);
+    sincronizarCampos();
+}
+
+function ordenarPastaAz(pastaId) {
+    const pasta = buscarItemPorId(arvoreArquivos, pastaId);
+    if (pasta && pasta.tipo === 'pasta' && pasta.itens) {
+        pastasAbertas[pastaId.toString()] = true;
+        pasta.itens.sort((a, b) => {
+            if (a.tipo !== b.tipo) return a.tipo === 'pasta' ? -1 : 1;
+            return a.titulo.localeCompare(b.titulo, 'pt-BR', { sensitivity: 'base' });
+        });
+        renderizarArvoreCompleta();
+        dispararAutoBackup();
+    }
+}
+
+function carregarItemNoEditor() {
+    let nota = buscarItemPorId(arvoreArquivos, itemAtivoId);
+    const container = document.getElementById('container_edicao_principal');
+    if (!container) return;
+    
+    if (nota && nota.tipo === 'nota') {
+        container.innerHTML = `
+            <div class="barra-ferramentas-editor" style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <button onclick="copiarConteudoCompleto()">📋 Copiar</button>
+                    <button onclick="exportarNotaTxt()">📤 Exportar (.txt)</button>
+                    <button onclick="alternarPainelChecklist()">☑️ Check</button>
+                    <button class="btn-danger-editor" onclick="apagarConteudoEditor()">🗑️ Apagar Texto</button>
+                </div>
+                <button onclick="fecharNotaAtiva()" style="background: #dc3545; color: white; padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">✕ Fechar Nota</button>
+            </div>
+            <input type="text" id="nota_titulo_atual" class="campo-titulo" oninput="sincronizarCampos()" placeholder="Título da nota...">
+            <div class="editor-split">
+                <div class="editor-wrapper">
+                    <div class="barra-formatacao">
+                        <button type="button" onclick="executarFormato('bold')" title="Negrito (Ctrl+B)"><b>B</b></button>
+                        <button type="button" onclick="executarFormato('italic')" title="Itálico (Ctrl+I)"><i>I</i></button>
+                        <button type="button" onclick="executarFormato('underline')" title="Sublinhado (Ctrl+U)"><u>U</u></button>
+                        <input type="color" onchange="executarFormato('foreColor', this.value)" title="Cor do Texto">
+                        <span style="border-left: 1px solid var(--borda); margin: 0 4px; height: 16px;"></span>
+                        <select onchange="inserirSimbolo(this.value); this.selectedIndex=0;" style="padding: 3px; font-size: 12px; background: var(--bg-card); color: var(--texto); border: 1px solid var(--borda); border-radius: 3px; cursor: pointer;">
+                            <option value="" selected disabled>✨ Símbolos / Emojis</option>
+                            <option value="⭐">⭐ Estrela</option>
+                            <option value="📌">📌 Alfinete</option>
+                            <option value="💡">💡 Ideia</option>
+                            <option value="⚠️">⚠️ Alerta</option>
+                            <option value="✅">✅ Concluído</option>
+                            <option value="❌">❌ Errado</option>
+                            <option value="➔">➔ Seta Direita</option>
+                            <option value="•">• Marcador</option>
+                            <option value="📝">📝 Nota</option>
+                            <option value="📅">📅 Calendário</option>
+                        </select>
+                    </div>
+                    <div id="nota_texto_atual" class="editor-rico" contenteditable="true" oninput="sincronizarCampos()"></div>
+                </div>
+                <div class="checklist-wrapper" id="painel_checklist" style="${exibirChecklistGlobal ? 'display:flex;' : 'display:none;'}">
+                    <h4>☑️ Checklist / Tarefas</h4>
+                    <div class="lista-tasks" id="container_tasks"></div>
+                    <button class="btn-add-task" onclick="adicionarNovaTarefa()">+ Adicionar Item</button>
+                </div>
+            </div>
+            <div class="rodape">
+                <span id="contador">Caracteres: 0 | Palavras: 0 | Leitura: 0 min</span>
+                <span id="txtBackup" class="status-backup">✓ Auto-backup salvo</span>
+                <span>Clique nas pastas para abrir/fechar</span>
+            </div>
+        `;
+        
+        document.getElementById('nota_titulo_atual').value = nota.titulo;
+        document.getElementById('nota_texto_atual').innerHTML = nota.conteudo;
+        
+        document.getElementById('nota_texto_atual').addEventListener('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                if (e.key.toLowerCase() === 'b') { e.preventDefault(); executarFormato('bold'); }
+                if (e.key.toLowerCase() === 'i') { e.preventDefault(); executarFormato('italic'); }
+                if (e.key.toLowerCase() === 'u') { e.preventDefault(); executarFormato('underline'); }
+            }
+        });
+        
+        renderizarChecklist(nota);
+        atualizarContador();
+    } else {
+        container.innerHTML = `
+            <div class="tela-vazia">
+                <h3>📝 Nenhum documento selecionado</h3>
+                <p>Selecione uma nota na barra lateral ou crie uma nova para começar a escrever.</p>
+            </div>
+        `;
+    }
+}
+
+
+
+function dispararAutoBackup() {
+    clearTimeout(temporizadorDebounce);
+    const backupEl = document.getElementById('txtBackup');
+    if (backupEl) {
+        backupEl.style.display = 'inline';
+        backupEl.innerText = '✍️ Digitando...';
+    }
+    temporizadorDebounce = setTimeout(() => {
+        localStorage.setItem('backup_seguranca_gerenciador', JSON.stringify(arvoreArquivos));
+        if (backupEl) backupEl.innerText = '✓ Auto-backup salvo';
+        setTimeout(() => { if (backupEl) backupEl.style.display = 'none'; }, 1500);
+    }, 1000);
+}
+
+function sincronizarCampos() {
+    const t = document.getElementById('nota_titulo_atual').value;
+    const c = document.getElementById('nota_texto_atual').innerHTML;
+    let nota = buscarItemPorId(arvoreArquivos, itemAtivoId);
+    if (nota && nota.tipo === 'nota') { 
+        nota.titulo = t || 'Nota sem título'; 
+        nota.conteudo = c; 
+    }
+    const ativaSpan = document.querySelector('.linha-item.ativa .txt-titulo-item');
+    if (ativaSpan) ativaSpan.innerText = t || 'Nota sem título';
+    atualizarContador();
+    dispararAutoBackup();
+}
+
+function copiarConteudoCompleto() {
+    const txt = document.getElementById('nota_texto_atual');
+    if(!txt || txt.getAttribute('contenteditable') === 'false') return;
+    const range = document.createRange();
+    range.selectNodeContents(txt);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    document.execCommand('copy');
+    sel.removeAllRanges();
+    alert('Conteúdo formatado copiado! 📋');
+}
+
+function apagarConteudoEditor() {
+    const txt = document.getElementById('nota_texto_atual');
+    if(!txt || txt.getAttribute('contenteditable') === 'false') return;
+    if(confirm('Limpar o texto desta nota?')) {
+        txt.innerHTML = '';
+        sincronizarCampos();
+    }
+}
+
+function exportarNotaTxt() {
+    let nota = buscarItemPorId(arvoreArquivos, itemAtivoId);
+    if(!nota) return;
+    const divTemporaria = document.createElement("div");
+    divTemporaria.innerHTML = nota.conteudo;
+    const textoPlano = divTemporaria.innerText || divTemporaria.textContent || "";
+    const blob = new Blob([textoPlano], {type: "text/plain;charset=utf-8"});
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = (nota.titulo || "nota") + ".txt";
+    link.click();
+}
+
+function renderizarChecklist(nota) {
+    const container = document.getElementById('container_tasks');
+    if (!container) return;
+    container.innerHTML = '';
+    if (!nota.tasks) nota.tasks = [];
+    
+    nota.tasks.forEach((task, index) => {
+        const divTask = document.createElement('div');
+        divTask.className = 'item-task';
+        
+        const chk = document.createElement('input');
+        chk.type = 'checkbox';
+        chk.checked = task.concluida;
+        chk.onchange = () => { task.concluida = chk.checked; sincronizarCampos(); carregarItemNoEditor(); };
+        
+        const inp = document.createElement('input');
+        inp.type = 'text';
+        inp.value = task.texto;
+        inp.oninput = () => { task.texto = inp.value; sincronizarCampos(); };
+        
+        const btnDel = document.createElement('button');
+        btnDel.style = 'background:none; border:none; color:#dc3545; cursor:pointer;';
+        btnDel.innerText = '✕';
+        btnDel.onclick = () => { nota.tasks.splice(index, 1); sincronizarCampos(); carregarItemNoEditor(); };
+        
+        divTask.appendChild(chk);
+        divTask.appendChild(inp);
+        divTask.appendChild(btnDel);
+        container.appendChild(divTask);
+    });
+}
+
+function adicionarNovaTarefa() {
+    let nota = buscarItemPorId(arvoreArquivos, itemAtivoId);
+    if (!nota) return;
+    if (!nota.tasks) nota.tasks = [];
+    nota.tasks.push({ texto: '', concluida: false });
+    renderizarChecklist(nota);
+    dispararAutoBackup();
+}
+
+function organizarTipos(lista) {
+    lista.sort((a, b) => {
+        if (a.tipo !== b.tipo) return a.tipo === 'pasta' ? -1 : 1;
+        return 0;
+    });
+}
+
+function criarNoRaiz(tipo) {
+    const novoId = Date.now().toString();
+    const novo = { id: novoId, titulo: tipo === 'pasta' ? 'Nova Pasta' : 'Nova Nota', tipo: tipo, ...(tipo === 'pasta' ? { itens: [] } : { conteudo: '', tasks: [] }) };
+    
+    // Se for uma pasta, garante que ela já nasce aberta na memória
+    if (tipo === 'pasta') pastasAbertas[novoId] = true;
+    
+    arvoreArquivos.push(novo);
+    organizarTipos(arvoreArquivos);
+    if (tipo === 'nota') itemAtivoId = novoId;
+    
+    renderizarArvoreCompleta(); carregarItemNoEditor(); dispararAutoBackup();
+}
+
+function criarNoFilho(paiId, tipo) {
+    const pai = buscarItemPorId(arvoreArquivos, paiId);
+    if (pai && pai.tipo === 'pasta') {
+        const novoId = Date.now().toString();
+        const novo = { id: novoId, titulo: tipo === 'pasta' ? 'Nova Subpasta' : 'Nova Nota', tipo: tipo, ...(tipo === 'pasta' ? { itens: [] } : { conteudo: '', tasks: [] }) };
+        
+        // Mantém a pasta pai aberta E abre a nova subpasta se for o caso
+        pastasAbertas[paiId.toString()] = true;
+        if (tipo === 'pasta') pastasAbertas[novoId] = true;
+        
+        pai.itens.push(novo);
+        organizarTipos(pai.itens);
+        
+        if (tipo === 'nota') itemAtivoId = novoId;
+        renderizarArvoreCompleta(); carregarItemNoEditor(); dispararAutoBackup();
+    }
+}
+
+function renomearItem(id) {
+    const item = buscarItemPorId(arvoreArquivos, id);
+    if (item) {
+        const novoNome = prompt(`Novo nome para "${item.titulo}":`, item.titulo);
+        if (novoNome && novoNome.trim() !== '') { 
+            item.titulo = novoNome.trim(); 
+            renderizarArvoreCompleta(); 
+            if (itemAtivoId === id.toString()) {
+                const inputTitulo = document.getElementById('nota_titulo_atual');
+                if (inputTitulo) inputTitulo.value = item.titulo;
+            }
+            dispararAutoBackup(); 
+        }
+    }
+}
+
+function deletarItem(id) {
+    if (confirm('Deseja apagar? Se for pasta, apagará tudo dentro.')) {
+        function remover(lista) {
+            for (let i = 0; i < lista.length; i++) {
+                if (lista[i].id.toString() === id.toString()) { lista.splice(i, 1); return true; }
+                if (lista[i].tipo === 'pasta' && lista[i].itens) { if (remover(lista[i].itens)) return true; }
+            }
+            return false;
+        }
+        remover(arvoreArquivos); 
+        if (itemAtivoId === id.toString()) itemAtivoId = null;
+        renderizarArvoreCompleta(); carregarItemNoEditor(); dispararAutoBackup();
+    }
+}
+
+function atualizarContador() {
+    const txtEl = document.getElementById('nota_texto_atual');
+    if (!txtEl) return;
+    const textoLimpo = txtEl.innerText || '';
+    const caracteres = textoLimpo.length;
+    const palavras = textoLimpo.trim() === "" ? 0 : textoLimpo.trim().split(/\s+/).length;
+    const tempoLeitura = Math.ceil(palavras / 200); 
+    
+    const contEl = document.getElementById('contador');
+    if (contEl) contEl.textContent = `Caracteres: ${caracteres} | Palavras: ${palavras} | Leitura: ~${tempoLeitura} min`;
+}
+
+document.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); baixarTudo(); }
+});
+
+function baixarTudo() {
+    const stringfiedData = JSON.stringify(arvoreArquivos);
+    const dadosB64 = para_b64(stringfiedData);
+    const classeTema = document.body.className;
+    
+    const container = document.getElementById('container_edicao_principal');
+    if (container) {
+        container.innerHTML = `
+            <div class="tela-vazia">
+                <h3>📝 Nenhum documento selecionado</h3>
+                <p>Selecione uma nota na barra lateral ou crie uma nova para começar a escrever.</p>
+            </div>
+        `;
+    }
+    document.getElementById('lista_documentos').innerHTML = '';
+    document.getElementById('dados_estruturados').value = dadosB64;
+    
+    let codigoFonte = document.documentElement.outerHTML;
+    codigoFonte = codigoFonte.replace(/<body class="([^"]*)"/, `<body class="${classeTema}"`);
+    codigoFonte = codigoFonte.replace(/id="dados_estruturados" value="W3siaWQiOiAiMSIsICJ0aXR1bG8iOiAiUmV2aXPDo28gwrcgTcOzZHVsbyBGaW5hbmNlaXJvIiwgInRpcG8iOiAicGFzdGEiLCAiaXRlbnMiOiBbeyJpZCI6ICIxMSIsICJ0aXR1bG8iOiAiQm9sZXRvcyB2ZW5jaWRvcyBow6EgbWFpcyBkZSA2MCBkaWFzIiwgInRpcG8iOiAibm90YSIsICJjb250ZXVkbyI6ICI8cD48Yj5Cb2xldG9zIHZlbmNpZG9zIGjDoSBtYWlzIGRlIDYwIGRpYXM8L2I+PC9wPjxwPkRlcG9pcyBkZSA2MCBkaWFzIGRvIHZlbmNpbWVudG8sIG8gYm9sZXRvIG7Do28gw6kgYXR1YWxpemFkbyBubyBwb3J0YWw6IG8gYXNzb2NpYWRvIHByZWNpc2EgcGVkaXIgYSBzZWd1bmRhIHZpYSBwZWxvIGF0ZW5kaW1lbnRvLiBBbnRlcyBkZSBnZXJhciwgY29uZmVyaXIgc2UgaG91dmUgcGFnYW1lbnRvIHBvciBvdXRybyBtZWlvIGUgc2UgbyBwbGFubyBlc3TDoSBhdGl2by48L3A+PHA+4pqg77iPIFNlIGhvdXZlciBkb2lzIGJvbGV0b3MgZW0gYXRyYXNvLCBvIHBsYW5vIGVudHJhIGVtIHN1c3BlbnPDo286IG9yaWVudGFyIHNvYnJlIGEgcmVndWxhcml6YcOnw6NvIGUgbyBwcmF6byBkZSByZWF0aXZhw6fDo28uPC9wPiIsICJ0YXNrcyI6IFtdfSwgeyJpZCI6ICIxMiIsICJ0aXR1bG8iOiAiQ8OhbGN1bG8gZGUgcmVlbWJvbHNvIiwgInRpcG8iOiAibm90YSIsICJjb250ZXVkbyI6ICI8cD48Yj5Dw6FsY3VsbyBkZSByZWVtYm9sc288L2I+PC9wPjxwPk8gdmFsb3Igc2VndWUgYSB0YWJlbGEgZG8gcGxhbm8sIG51bmNhIG8gdmFsb3IgcGFnby4gUGVkaXIgbyByZWNpYm8gY29tIENSTywgcHJvY2VkaW1lbnRvLCBkZW50ZSBvdSByZWdpw6NvIGUgdmFsb3IuIE8gcHJhem8gZGUgYW7DoWxpc2Ugw6kgZGUgYXTDqSAzMCBkaWFzIGEgcGFydGlyIGRvIGVudmlvIGNvbXBsZXRvLjwvcD48cD7ihpIgUHLDqXZpYSBkZSByZWVtYm9sc286IG1lc21vIGZvcm11bMOhcmlvLCBzZW0gY29tcHJvdmFudGUgZGUgcGFnYW1lbnRvLjwvcD4iLCAidGFza3MiOiBbXX0sIHsiaWQiOiAiMTMiLCAidGl0dWxvIjogIlByYXpvIGRlIHZhbGlkYWRlIGRvIGJvbGV0byIsICJ0aXBvIjogIm5vdGEiLCAiY29udGV1ZG8iOiAiPHA+PGI+UHJhem8gZGUgdmFsaWRhZGUgZG8gYm9sZXRvPC9iPjwvcD48cD5PIGJvbGV0byB2YWxlIGF0w6kgYSBkYXRhIGRlIHZlbmNpbWVudG8gaW1wcmVzc2EuIERlcG9pcyBkaXNzbywgYXR1YWxpemFyIHBlbG8gcG9ydGFsIChhdMOpIDYwIGRpYXMpIG91IHBlZGlyIHNlZ3VuZGEgdmlhLjwvcD4iLCAidGFza3MiOiBbXX1dLCAiYWJlcnRhIjogZmFsc2V9LCB7ImlkIjogIjIiLCAidGl0dWxvIjogIlRyZWluYW1lbnRvIiwgInRpcG8iOiAicGFzdGEiLCAiaXRlbnMiOiBbeyJpZCI6ICIyMSIsICJ0aXR1bG8iOiAiSW5kaWNhw6fDo28gZGUgcmVkZSIsICJ0aXBvIjogInBhc3RhIiwgIml0ZW5zIjogW3siaWQiOiAiMjExIiwgInRpdHVsbyI6ICJFeGVtcGxvIDEiLCAidGlwbyI6ICJub3RhIiwgImNvbnRldWRvIjogIjxwPkFzc29jaWFkbyBwZWRlIGRlbnRpc3RhIGRlIHBlcmlvZG9udGlhIGVtIEN1cml0aWJhLCBiYWlycm8gUG9ydMOjby4gQnVzY2FyIGEgZXNwZWNpYWxpZGFkZSwgZmlsdHJhciBwb3IgY2lkYWRlIGUgYmFpcnJvLCBlbnZpYXIgcG9yIFNNUyBvdSBlLW1haWwuIFJlZ2lzdHJhciBhIGZvcm1hIGRlIGVudmlvIG5vIHByb250dcOhcmlvLjwvcD4iLCAidGFza3MiOiBbXX1dLCAiYWJlcnRhIjogZmFsc2V9LCB7ImlkIjogIjIyIiwgInRpdHVsbyI6ICJHdWlhcyBlIGF1dG9yaXphw6fDtWVzIiwgInRpcG8iOiAibm90YSIsICJjb250ZXVkbyI6ICI8cD48Yj5HdWlhcyBlIGF1dG9yaXphw6fDtWVzPC9iPjwvcD48cD5BIGd1aWEgw6kgc29saWNpdGFkYSBwZWxhIGNsw61uaWNhLCBuw6NvIHBlbG8gYXNzb2NpYWRvLiBTZSBhIGNsw61uaWNhIGFpbmRhIG7Do28gc29saWNpdG91LCBvcmllbnRhciBxdWUgc29saWNpdGUgcHJpbWVpcm8uIFZhbGlkYWRlIGRhIGd1aWE6IDEyMCBkaWFzIGEgcGFydGlyIGRhIGF1dG9yaXphw6fDo28uPC9wPjxwPvCfkqEgTmVnYXRpdmEgZGUgZ3VpYTogbyBhc3NvY2lhZG8gcG9kZSBwZWRpciBvIG1vdGl2byBwb3IgcHJvdG9jb2xvLjwvcD4iLCAidGFza3MiOiBbXX0sIHsiaWQiOiAiMjMiLCAidGl0dWxvIjogIlBlcmlvZG9udGlhIiwgInRpcG8iOiAibm90YSIsICJjb250ZXVkbyI6ICI8cD48Yj5QZXJpb2RvbnRpYTwvYj48L3A+PHA+VHJhdGFtZW50byBkZSBnZW5naXZhIGUgZG9zIHRlY2lkb3MgZGUgc3Vwb3J0ZSBkbyBkZW50ZS4gUHJvY2VkaW1lbnRvcyBtYWlzIHBlZGlkb3M6IHJhc3BhZ2VtLCBhanVzdGUgb2NsdXNhbCwgZW54ZXJ0byBnZW5naXZhbC4gQWxndW5zIGV4aWdlbSBjYXLDqm5jaWE7IGNvbmZlcmlyIG5hIGNvYmVydHVyYSBkbyBwbGFubyBhbnRlcyBkZSBjb25maXJtYXIuPC9wPiIsICJ0YXNrcyI6IFtdfV0sICJhYmVydGEiOiBmYWxzZX0sIHsiaWQiOiAiMyIsICJ0aXR1bG8iOiAiR05DIMK3IEdlcmFsIiwgInRpcG8iOiAicGFzdGEiLCAiaXRlbnMiOiBbeyJpZCI6ICIzMSIsICJ0aXR1bG8iOiAiR05DIMK3IENvbW8gdXNhciIsICJ0aXBvIjogIm5vdGEiLCAiY29udGV1ZG8iOiAiPHA+PGI+Q29tbyB1c2FyIG8gR05DPC9iPjwvcD48cD5QYXN0YXMgZSBub3RhcyBuYSBiYXJyYSBkYSBlc3F1ZXJkYS4gT3MgdHLDqnMgcG9udG9zIGFicmVtIG8gbWVudSBkbyBpdGVtOiBzdWJpciwgZGVzY2VyLCBvcmRlbmFyIGRlIEEgYSBaLCBub3ZhIHN1YnBhc3RhLCBub3ZhIG5vdGEsIHJlbm9tZWFyLCBleGNsdWlyLjwvcD48cD5DdHJsICsgUyBzYWx2YSB0dWRvOiBvIGFycXVpdm8gYmFpeGEgZGUgbm92byBjb20gYXMgbm90YXMgZGVudHJvIGRlbGUuPC9wPiIsICJ0YXNrcyI6IFt7InRleHRvIjogIlJldmlzYXIgYSBwYXN0YSBGaW5hbmNlaXJvIiwgImNvbmNsdWlkYSI6IHRydWV9LCB7InRleHRvIjogIlNlcGFyYXIgb3MgZXhlbXBsb3MgZGUgcmVkZSIsICJjb25jbHVpZGEiOiBmYWxzZX0sIHsidGV4dG8iOiAiRXhwb3J0YXIgYSBub3RhIGRlIHBlcmlvZG9udGlhIGVtIFRYVCIsICJjb25jbHVpZGEiOiBmYWxzZX1dfSwgeyJpZCI6ICIzMiIsICJ0aXR1bG8iOiAiQXRhbGhvcyIsICJ0aXBvIjogIm5vdGEiLCAiY29udGV1ZG8iOiAiPHA+Q3RybCArIFMgc2FsdmEgbyBhcnF1aXZvLiBDdHJsICsgQiwgSSBlIFUgZm9ybWF0YW0gYSBzZWxlw6fDo28uIEEgYnVzY2EgcHJvY3VyYSBubyB0w610dWxvIGUgZGVudHJvIGRvIHRleHRvLjwvcD4iLCAidGFza3MiOiBbXX1dLCAiYWJlcnRhIjogZmFsc2V9LCB7ImlkIjogIjQiLCAidGl0dWxvIjogIk5vdmEgbm90YSIsICJ0aXBvIjogIm5vdGEiLCAiY29udGV1ZG8iOiAiPHA+RXNjcmV2YSBzZXUgdGV4dG8gYXF1aS4uLjwvcD4iLCAidGFza3MiOiBbXX1d"]*"/, `id="dados_estruturados" value="W3siaWQiOiAiMSIsICJ0aXR1bG8iOiAiUmV2aXPDo28gwrcgTcOzZHVsbyBGaW5hbmNlaXJvIiwgInRpcG8iOiAicGFzdGEiLCAiaXRlbnMiOiBbeyJpZCI6ICIxMSIsICJ0aXR1bG8iOiAiQm9sZXRvcyB2ZW5jaWRvcyBow6EgbWFpcyBkZSA2MCBkaWFzIiwgInRpcG8iOiAibm90YSIsICJjb250ZXVkbyI6ICI8cD48Yj5Cb2xldG9zIHZlbmNpZG9zIGjDoSBtYWlzIGRlIDYwIGRpYXM8L2I+PC9wPjxwPkRlcG9pcyBkZSA2MCBkaWFzIGRvIHZlbmNpbWVudG8sIG8gYm9sZXRvIG7Do28gw6kgYXR1YWxpemFkbyBubyBwb3J0YWw6IG8gYXNzb2NpYWRvIHByZWNpc2EgcGVkaXIgYSBzZWd1bmRhIHZpYSBwZWxvIGF0ZW5kaW1lbnRvLiBBbnRlcyBkZSBnZXJhciwgY29uZmVyaXIgc2UgaG91dmUgcGFnYW1lbnRvIHBvciBvdXRybyBtZWlvIGUgc2UgbyBwbGFubyBlc3TDoSBhdGl2by48L3A+PHA+4pqg77iPIFNlIGhvdXZlciBkb2lzIGJvbGV0b3MgZW0gYXRyYXNvLCBvIHBsYW5vIGVudHJhIGVtIHN1c3BlbnPDo286IG9yaWVudGFyIHNvYnJlIGEgcmVndWxhcml6YcOnw6NvIGUgbyBwcmF6byBkZSByZWF0aXZhw6fDo28uPC9wPiIsICJ0YXNrcyI6IFtdfSwgeyJpZCI6ICIxMiIsICJ0aXR1bG8iOiAiQ8OhbGN1bG8gZGUgcmVlbWJvbHNvIiwgInRpcG8iOiAibm90YSIsICJjb250ZXVkbyI6ICI8cD48Yj5Dw6FsY3VsbyBkZSByZWVtYm9sc288L2I+PC9wPjxwPk8gdmFsb3Igc2VndWUgYSB0YWJlbGEgZG8gcGxhbm8sIG51bmNhIG8gdmFsb3IgcGFnby4gUGVkaXIgbyByZWNpYm8gY29tIENSTywgcHJvY2VkaW1lbnRvLCBkZW50ZSBvdSByZWdpw6NvIGUgdmFsb3IuIE8gcHJhem8gZGUgYW7DoWxpc2Ugw6kgZGUgYXTDqSAzMCBkaWFzIGEgcGFydGlyIGRvIGVudmlvIGNvbXBsZXRvLjwvcD48cD7ihpIgUHLDqXZpYSBkZSByZWVtYm9sc286IG1lc21vIGZvcm11bMOhcmlvLCBzZW0gY29tcHJvdmFudGUgZGUgcGFnYW1lbnRvLjwvcD4iLCAidGFza3MiOiBbXX0sIHsiaWQiOiAiMTMiLCAidGl0dWxvIjogIlByYXpvIGRlIHZhbGlkYWRlIGRvIGJvbGV0byIsICJ0aXBvIjogIm5vdGEiLCAiY29udGV1ZG8iOiAiPHA+PGI+UHJhem8gZGUgdmFsaWRhZGUgZG8gYm9sZXRvPC9iPjwvcD48cD5PIGJvbGV0byB2YWxlIGF0w6kgYSBkYXRhIGRlIHZlbmNpbWVudG8gaW1wcmVzc2EuIERlcG9pcyBkaXNzbywgYXR1YWxpemFyIHBlbG8gcG9ydGFsIChhdMOpIDYwIGRpYXMpIG91IHBlZGlyIHNlZ3VuZGEgdmlhLjwvcD4iLCAidGFza3MiOiBbXX1dLCAiYWJlcnRhIjogZmFsc2V9LCB7ImlkIjogIjIiLCAidGl0dWxvIjogIlRyZWluYW1lbnRvIiwgInRpcG8iOiAicGFzdGEiLCAiaXRlbnMiOiBbeyJpZCI6ICIyMSIsICJ0aXR1bG8iOiAiSW5kaWNhw6fDo28gZGUgcmVkZSIsICJ0aXBvIjogInBhc3RhIiwgIml0ZW5zIjogW3siaWQiOiAiMjExIiwgInRpdHVsbyI6ICJFeGVtcGxvIDEiLCAidGlwbyI6ICJub3RhIiwgImNvbnRldWRvIjogIjxwPkFzc29jaWFkbyBwZWRlIGRlbnRpc3RhIGRlIHBlcmlvZG9udGlhIGVtIEN1cml0aWJhLCBiYWlycm8gUG9ydMOjby4gQnVzY2FyIGEgZXNwZWNpYWxpZGFkZSwgZmlsdHJhciBwb3IgY2lkYWRlIGUgYmFpcnJvLCBlbnZpYXIgcG9yIFNNUyBvdSBlLW1haWwuIFJlZ2lzdHJhciBhIGZvcm1hIGRlIGVudmlvIG5vIHByb250dcOhcmlvLjwvcD4iLCAidGFza3MiOiBbXX1dLCAiYWJlcnRhIjogZmFsc2V9LCB7ImlkIjogIjIyIiwgInRpdHVsbyI6ICJHdWlhcyBlIGF1dG9yaXphw6fDtWVzIiwgInRpcG8iOiAibm90YSIsICJjb250ZXVkbyI6ICI8cD48Yj5HdWlhcyBlIGF1dG9yaXphw6fDtWVzPC9iPjwvcD48cD5BIGd1aWEgw6kgc29saWNpdGFkYSBwZWxhIGNsw61uaWNhLCBuw6NvIHBlbG8gYXNzb2NpYWRvLiBTZSBhIGNsw61uaWNhIGFpbmRhIG7Do28gc29saWNpdG91LCBvcmllbnRhciBxdWUgc29saWNpdGUgcHJpbWVpcm8uIFZhbGlkYWRlIGRhIGd1aWE6IDEyMCBkaWFzIGEgcGFydGlyIGRhIGF1dG9yaXphw6fDo28uPC9wPjxwPvCfkqEgTmVnYXRpdmEgZGUgZ3VpYTogbyBhc3NvY2lhZG8gcG9kZSBwZWRpciBvIG1vdGl2byBwb3IgcHJvdG9jb2xvLjwvcD4iLCAidGFza3MiOiBbXX0sIHsiaWQiOiAiMjMiLCAidGl0dWxvIjogIlBlcmlvZG9udGlhIiwgInRpcG8iOiAibm90YSIsICJjb250ZXVkbyI6ICI8cD48Yj5QZXJpb2RvbnRpYTwvYj48L3A+PHA+VHJhdGFtZW50byBkZSBnZW5naXZhIGUgZG9zIHRlY2lkb3MgZGUgc3Vwb3J0ZSBkbyBkZW50ZS4gUHJvY2VkaW1lbnRvcyBtYWlzIHBlZGlkb3M6IHJhc3BhZ2VtLCBhanVzdGUgb2NsdXNhbCwgZW54ZXJ0byBnZW5naXZhbC4gQWxndW5zIGV4aWdlbSBjYXLDqm5jaWE7IGNvbmZlcmlyIG5hIGNvYmVydHVyYSBkbyBwbGFubyBhbnRlcyBkZSBjb25maXJtYXIuPC9wPiIsICJ0YXNrcyI6IFtdfV0sICJhYmVydGEiOiBmYWxzZX0sIHsiaWQiOiAiMyIsICJ0aXR1bG8iOiAiR05DIMK3IEdlcmFsIiwgInRpcG8iOiAicGFzdGEiLCAiaXRlbnMiOiBbeyJpZCI6ICIzMSIsICJ0aXR1bG8iOiAiR05DIMK3IENvbW8gdXNhciIsICJ0aXBvIjogIm5vdGEiLCAiY29udGV1ZG8iOiAiPHA+PGI+Q29tbyB1c2FyIG8gR05DPC9iPjwvcD48cD5QYXN0YXMgZSBub3RhcyBuYSBiYXJyYSBkYSBlc3F1ZXJkYS4gT3MgdHLDqnMgcG9udG9zIGFicmVtIG8gbWVudSBkbyBpdGVtOiBzdWJpciwgZGVzY2VyLCBvcmRlbmFyIGRlIEEgYSBaLCBub3ZhIHN1YnBhc3RhLCBub3ZhIG5vdGEsIHJlbm9tZWFyLCBleGNsdWlyLjwvcD48cD5DdHJsICsgUyBzYWx2YSB0dWRvOiBvIGFycXVpdm8gYmFpeGEgZGUgbm92byBjb20gYXMgbm90YXMgZGVudHJvIGRlbGUuPC9wPiIsICJ0YXNrcyI6IFt7InRleHRvIjogIlJldmlzYXIgYSBwYXN0YSBGaW5hbmNlaXJvIiwgImNvbmNsdWlkYSI6IHRydWV9LCB7InRleHRvIjogIlNlcGFyYXIgb3MgZXhlbXBsb3MgZGUgcmVkZSIsICJjb25jbHVpZGEiOiBmYWxzZX0sIHsidGV4dG8iOiAiRXhwb3J0YXIgYSBub3RhIGRlIHBlcmlvZG9udGlhIGVtIFRYVCIsICJjb25jbHVpZGEiOiBmYWxzZX1dfSwgeyJpZCI6ICIzMiIsICJ0aXR1bG8iOiAiQXRhbGhvcyIsICJ0aXBvIjogIm5vdGEiLCAiY29udGV1ZG8iOiAiPHA+Q3RybCArIFMgc2FsdmEgbyBhcnF1aXZvLiBDdHJsICsgQiwgSSBlIFUgZm9ybWF0YW0gYSBzZWxlw6fDo28uIEEgYnVzY2EgcHJvY3VyYSBubyB0w610dWxvIGUgZGVudHJvIGRvIHRleHRvLjwvcD4iLCAidGFza3MiOiBbXX1dLCAiYWJlcnRhIjogZmFsc2V9LCB7ImlkIjogIjQiLCAidGl0dWxvIjogIk5vdmEgbm90YSIsICJ0aXBvIjogIm5vdGEiLCAiY29udGV1ZG8iOiAiPHA+RXNjcmV2YSBzZXUgdGV4dG8gYXF1aS4uLjwvcD4iLCAidGFza3MiOiBbXX1d"`);
+
+    renderizarArvoreCompleta();
+    carregarItemNoEditor();
+
+    const blob = new Blob(["<!DOCTYPE html>\n" + codigoFonte], {type: "text/html;charset=utf-8"});
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "gerenciador_pro.html";
+    link.click();
+}
+</script>
+
+
+</body></html>

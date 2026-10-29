@@ -28,6 +28,28 @@ A planilha não guardava histórico de um dia pro outro, então eu copiava a pá
 - Usada por mim durante quatro meses, no treinamento e na operação, até o encerramento do turno da madrugada.
 - Foi a segunda vez que resolvi o mesmo problema (a primeira foi o Meus Voos, no Projeto Smiles), e a solução ficou mais enxuta: menos abas, uma linha por atendimento, e o log já pronto pra virar métrica.
 
+## Dashboard
+
+O log de uma linha por ticket é a base; o dashboard é a leitura. A versão de uso era o mini-painel na aba Analysis da planilha. Pro portfólio, refiz em HTML, CSS e JavaScript, arquivo único, preto e branco com dourado, do jeito que a Uber se apresenta. Dados fictícios, quatro meses, um agente.
+
+![Visão geral: tickets, dias atendidos, TMA, status, CAR, Scout, pushback e PSAT, mais os tickets por dia e o TMA caindo mês a mês](11-dash-visao-geral.png)
+
+**Visão geral.** Os números que eu olhava no fim do dia: quantos tickets, em quantos dias, quanto tempo por ticket. Encerrado na primeira resposta, aguardando resposta do passageiro, em aberto em outra área. CAR (ajuste de valor), Scout (revisão), pushback (o passageiro voltou) e elegíveis a PSAT. A linha do TMA por mês é o case em um gráfico: de 5 minutos pra menos de 1.
+
+![Mapa de calor: dia da semana × hora, e o dia a dia do mês com tickets e TMA](12-dash-calor.png)
+
+**Mapa de calor.** Quando os tickets chegam: terça a sábado, das 14h às 22h, com o pico no fim da tarde. Embaixo, o dia a dia do mês escolhido, com o TMA de cada dia.
+
+![Problemas: por grupo, top 10 siglas e o catálogo da base B com desfecho e marcadores](13-dash-problemas.png)
+
+**Problemas.** O que o passageiro pede, por grupo (Overpaid, taxa de limpeza, taxa de cancelamento, transferência de LOB, pushback) e por sigla da base B. O catálogo mostra, pra cada sigla, o desfecho esperado e os marcadores (CAR, pushback, PSAT).
+
+![Status e TMA: status por mês, marcadores por mês e a distribuição do tempo por ticket](14-dash-status.png)
+
+**Status e TMA.** Como os tickets terminam, mês a mês, e a distribuição do tempo por ticket: a curva anda pra esquerda conforme o fluxo de perguntas vira log.
+
+[Abrir o dashboard](dashboards/cambio.html)
+
 ## A versão para testar
 
 O arquivo da empresa ficou na empresa. O que está aqui é uma reconstrução com dados fictícios: 27 tipos de problema, 897 atendimentos num mês, links placeholder. A Home e a base são as mesmas; o Cash 1 ganhou a árvore completa, navegável (responde Sim/Não e a próxima pergunta aparece sozinha, até a resolução), e a aba Analysis, que na época ficou na ideia, está feita: atendimentos por dia e por status, mapa de calor hora × dia, flags e tipos de problema. O mapa de calor só tem movimento entre 0h e 5h porque era isso que eu fazia.
@@ -82,6 +104,28 @@ The spreadsheet did not keep history from one day to the next, so at the end of 
 - With Home, it dropped to under 1 minute and never went back: about 15 seconds of checking in the system, 15 of copy and paste.
 - Used by me for four months, in training and in production, until the overnight shift was closed.
 - It was the second time I solved the same problem (the first was Meus Voos, on the Smiles Project), and the solution came out leaner: fewer tabs, one row per contact, and the log already fit to become metrics.
+
+## Dashboard
+
+The one-row-per-ticket log is the base; the dashboard is the reading. The working version was the mini-panel in the spreadsheet's Analysis tab. For the portfolio I rebuilt it in HTML, CSS and JavaScript, single file, black and white with gold, the way Uber presents itself. Fictitious data, four months, one agent.
+
+![Overview: tickets, days worked, AHT, status, CAR, Scout, pushback and PSAT, plus tickets per day and AHT falling month by month](11-dash-visao-geral.png)
+
+**Overview.** The numbers I looked at at the end of the day: how many tickets, over how many days, how long per ticket. Closed on first reply, awaiting the rider, open in another area. CAR (fare adjustment), Scout (review), pushback (the rider wrote back) and PSAT-eligible. The AHT-by-month line is the case in one chart: from 5 minutes to under 1.
+
+![Heat map: weekday × hour, and the day-by-day of the month with tickets and AHT](12-dash-calor.png)
+
+**Heat map.** When the tickets come in: Tuesday to Saturday, 2 pm to 10 pm, peaking late afternoon. Below, the day by day of the chosen month, with each day's AHT.
+
+![Issues: by group, top 10 codes and the base B catalog with outcome and flags](13-dash-problemas.png)
+
+**Issues.** What the rider asks for, by group (Overpaid, cleaning fee, cancellation fee, LOB transfer, pushback) and by base B code. The catalog shows, for each code, the expected outcome and the flags (CAR, pushback, PSAT).
+
+![Status and AHT: status by month, flags by month and the distribution of time per ticket](14-dash-status.png)
+
+**Status and AHT.** How tickets end, month by month, and the distribution of time per ticket: the curve moves left as the question flow becomes a log.
+
+[Open the dashboard](dashboards/cambio.html)
 
 ## The version you can try
 

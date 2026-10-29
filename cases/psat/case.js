@@ -57,19 +57,39 @@ Em cima dela, cinco visões:
 
 ## Dashboard
 
-Com a camada de agregação pronta, montei uma versão inicial de dashboard para a coordenação, com filtros combináveis (mês, coordenação, supervisor, frente, tipo de cliente e turno) e três leituras:
+Com a camada de agregação pronta, montei uma primeira versão de dashboard para a coordenação, com filtros combináveis (mês, coordenação, supervisor, frente, tipo de cliente e turno). A versão foi apresentada à coordenação e não chegou a ser implementada na operação. Para o portfólio, refiz o dashboard como arquivo HTML único, com os dados do ano embutidos, que abre sem internet. Os filtros valem para todas as seções, e o recorte ativo colore a tela: Chat em ciano, Voz em laranja, manhã e tarde, Ouro/Diamante e Bronze/Prata/Visitante, cada um com a sua cor.
 
-1. **Qualidade**: PSAT e DSAT por mês, uma linha por frente, contra a meta de 90%.
-2. **Resposta**: quem não avaliou, separando *recusou avaliar* de *não avaliou*. São dois diagnósticos diferentes: o primeiro é abordagem do agente, o segundo é canal ou pesquisa. Cada um pede uma ação.
-3. **Detalhe**: tabela por coordenação, supervisor ou agente no recorte escolhido.
+**Mapa de calor.** A leitura da planilha original, agora interativa: PSAT por supervisão, dia a dia, verde na meta (90% ou mais), amarelo entre 80% e 90%, vermelho abaixo. Dia sem avaliação fica em branco. Clica num supervisor e o mapa abre os agentes dele, no mesmo formato. É por onde a coordenação começa: a mancha vermelha diz onde olhar.
 
-![Dashboard: filtros combináveis e indicadores do mês](09-dash-filtros-kpis.png)
+![Mapa de calor: supervisão × dia, com os indicadores do período em cima](12-dash-mapa.png)
 
-![Dashboard: PSAT e DSAT por mês, por frente, contra a meta](10-dash-qualidade.png)
+**Qualidade.** PSAT por mês, uma linha por frente, contra a linha pontilhada da meta. Responde se o problema é de uma frente ou da operação inteira, e se está melhorando ou piorando.
 
-![Dashboard: resposta, distribuição e detalhe por supervisor](11-dash-resposta-tabela.png)
+![Qualidade: PSAT por mês, por frente, contra a meta](13-dash-qualidade.png)
 
-A versão foi apresentada à coordenação e não chegou a ser implementada na operação. O dashboard lê da camada agregada, não da base bruta, o que o mantém leve mesmo com o ano inteiro carregado.
+**DSAT por mês e PSAT por supervisão.** O DSAT é a mesma régua invertida: quanto maior, pior. As barras por supervisão mostram quem está a que distância da meta, no período filtrado.
+
+![DSAT por mês e PSAT por supervisão](14-dash-dsat-supervisao.png)
+
+**Os quatro segmentos.** Chat e Voz cruzados com Ouro/Diamante e Bronze/Prata/Visitante. Separa "o Chat vai mal" de "o Chat vai mal com cliente Bronze", que pedem ações diferentes.
+
+![PSAT e DSAT por frente e tipo de cliente](15-dash-segmentos.png)
+
+**Resposta.** Quem não avaliou, e por quê. *Recusou avaliar* é abordagem do agente; *não avaliou* é canal ou pesquisa. Dois diagnósticos, duas ações. A distribuição das notas mostra a composição do PSAT, e a recusa por supervisão aponta onde a abordagem precisa de treino.
+
+![Resposta: respondeu, recusou e não avaliou por mês; distribuição das notas; recusa por supervisão](16-dash-resposta.png)
+
+**Ranking.** Top 10 e os 10 de baixo, com mínimo de 20 respondentes para não premiar nem punir amostra pequena. A lista de baixo é a lista de acompanhamento individual do supervisor.
+
+![Ranking: top 10 e 10 agentes abaixo](17-dash-ranking.png)
+
+![Supervisões: PSAT, DSAT, respondentes e recusa](18-dash-supervisoes.png)
+
+**Detalhe.** A tabela por trás dos gráficos, agrupada por coordenação, supervisor, agente ou mês, com as contagens de cada nota.
+
+![Detalhe por supervisor](19-dash-detalhe.png)
+
+[Abrir o dashboard](dashboards/psat.html)
 
 ---
 
@@ -136,19 +156,39 @@ On top of it, five views:
 
 ## Dashboard
 
-With the aggregation layer in place, I built a first dashboard for coordination, with combinable filters (month, coordination, supervisor, channel, customer type and shift) and three readings:
+With the aggregation layer in place, I built a first dashboard for coordination, with combinable filters (month, coordination, supervisor, channel, customer type and shift). It was presented to coordination and was not rolled out to the operation. For the portfolio, I rebuilt it as a single HTML file with the year's data embedded, which opens without internet. The filters apply to every section, and the active cut colors the screen: Chat in cyan, Voice in orange, morning and afternoon, Gold/Diamond and Bronze/Silver/Visitor, each with its own color. The interface is in Portuguese.
 
-1. **Quality**: PSAT and DSAT by month, one line per channel, against the 90% target.
-2. **Response**: who did not rate, separating *declined to rate* from *did not rate*. Two different diagnoses: the first is the agent's approach, the second is the channel or the survey. Each calls for a different action.
-3. **Detail**: a table by coordination, supervisor or agent in the chosen cut.
+**Heat map.** The original spreadsheet's reading, now interactive: PSAT by supervision team, day by day, green on target (90% or more), yellow between 80% and 90%, red below. A day with no rating stays blank. Click a supervisor and the map opens their agents in the same format. It is where coordination starts: the red patch says where to look.
 
-![Dashboard: combinable filters and month indicators](09-dash-filtros-kpis.png)
+![Heat map: supervision × day, with the period's indicators on top](12-dash-mapa.png)
 
-![Dashboard: PSAT and DSAT by month, by channel, against the target](10-dash-qualidade.png)
+**Quality.** PSAT by month, one line per channel, against the dotted target line. It answers whether the problem belongs to one channel or the whole operation, and whether it is getting better or worse.
 
-![Dashboard: response, distribution and detail by supervisor](11-dash-resposta-tabela.png)
+![Quality: PSAT by month, by channel, against the target](13-dash-qualidade.png)
 
-This version was presented to coordination and was not rolled out to the operation. The dashboard reads from the aggregated layer, not the raw base, which keeps it light even with the whole year loaded.
+**DSAT by month and PSAT by supervision.** DSAT is the same ruler inverted: the higher, the worse. The bars by supervision show who is how far from the target in the filtered period.
+
+![DSAT by month and PSAT by supervision](14-dash-dsat-supervisao.png)
+
+**The four segments.** Chat and Voice crossed with Gold/Diamond and Bronze/Silver/Visitor. It separates "Chat is doing badly" from "Chat is doing badly with Bronze customers", which call for different actions.
+
+![PSAT and DSAT by channel and customer type](15-dash-segmentos.png)
+
+**Response.** Who did not rate, and why. *Declined to rate* is the agent's approach; *did not rate* is the channel or the survey. Two diagnoses, two actions. The rating distribution shows what the PSAT is made of, and declines by supervision point to where the approach needs training.
+
+![Response: answered, declined and did not rate by month; rating distribution; declines by supervision](16-dash-resposta.png)
+
+**Ranking.** Top 10 and bottom 10, with a minimum of 20 respondents so small samples are neither rewarded nor punished. The bottom list is the supervisor's individual follow-up list.
+
+![Ranking: top 10 and bottom 10 agents](17-dash-ranking.png)
+
+![Supervisions: PSAT, DSAT, respondents and declines](18-dash-supervisoes.png)
+
+**Detail.** The table behind the charts, grouped by coordination, supervisor, agent or month, with the count of each rating.
+
+![Detail by supervisor](19-dash-detalhe.png)
+
+[Open the dashboard](dashboards/psat.html)
 
 ---
 
