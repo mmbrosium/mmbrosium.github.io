@@ -51,6 +51,17 @@ Vaga de analista de dados, processos, BI ou melhoria contínua, e estou abrindo 
 
 Fora do trabalho: jogos. Foi querendo fazer um que eu comecei a programar, e o visual deste site é uma lembrança disso.
 
+## Referências
+
+Pessoas que acompanharam o trabalho de perto e autorizaram a citação. Contato mediante solicitação.
+
+- **Leidy Almeida**, gerente de operações, Concentrix (projeto Smiles): acompanhou o PSAT e a esteira de processos feitos a partir da operação.
+- **Amanda Soares**, coordenadora, Smiles: foi quem levou a planilha do Meus Voos pro turno da manhã, depois de ver o tempo de resposta cair de 15–30 minutos pra menos de 5.
+- **Henrique Vital**, analista de melhoria contínua, Concentrix: trabalhou junto nos projetos de processo; coberto por mim nas férias, antes de a função ficar comigo.
+- **Lívia Nowacyzk**, coordenadora de operações, Concentrix: coordenação direta durante o período dos projetos.
+- **Crhistopher Lino**, coordenador de operações, Concentrix.
+- **Eduardo Hauck**, coordenador financeiro, Indaiá Restaurantes: responsável pelo período no financeiro, em 2023.
+
 ## Contato
 
 - E-mail: [gp.pgsveiga@gmail.com](mailto:gp.pgsveiga@gmail.com)
@@ -106,6 +117,17 @@ I learned spreadsheets, SQL and Power BI on my own: documentation, trial and err
 A data, process, BI or continuous improvement analyst role, and I am working my way into software development. I like large operations, where a well-built indicator changes the week of many people. On-site, hybrid or remote, in Curitiba, Brazil, and the surrounding region.
 
 Outside work: games. I started programming because I wanted to make one, and the look of this site is a reminder of that.
+
+## References
+
+People who followed the work closely and authorized being named. Contact details on request.
+
+- **Leidy Almeida**, operations manager, Concentrix (Smiles project): followed the PSAT and the process pipeline built from the floor.
+- **Amanda Soares**, coordinator, Smiles: the one who took the Meus Voos spreadsheet to the morning shift after seeing response time drop from 15–30 minutes to under 5.
+- **Henrique Vital**, continuous improvement analyst, Concentrix: worked together on the process projects; I covered his vacation before the role became mine.
+- **Lívia Nowacyzk**, operations coordinator, Concentrix: direct coordination during the projects.
+- **Crhistopher Lino**, operations coordinator, Concentrix.
+- **Eduardo Hauck**, finance coordinator, Indaiá Restaurantes: in charge during the finance period, in 2023.
 
 ## Contact
 

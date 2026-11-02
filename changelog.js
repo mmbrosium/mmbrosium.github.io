@@ -2,6 +2,11 @@
 // Cada item: versao, data (AAAA-MM-DD), itens (PT) e itens_en (EN). Edite à vontade.
 window.CHANGELOG = [
   {
+    versao: "1.9", data: "2026-11-02",
+    itens: ["Sobre: seção Referências, com seis pessoas que acompanharam o trabalho e autorizaram a citação (gerente, coordenadores e analista de melhoria contínua)."],
+    itens_en: ["About: References section, with six people who followed the work and authorized being named (manager, coordinators and continuous improvement analyst)."]
+  },
+  {
     versao: "1.8", data: "2026-10-28",
     itens: [
       "Dois sistemas novos na coluna Sistemas: GNC (gerenciador de notas: pastas, checklist, o arquivo é o banco) e Game Center (jogo da velha, campo minado e batalha naval). Ambos abrem ao vivo dentro do portfólio, numa moldura de versão de teste com botão de volta.",
