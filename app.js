@@ -54,8 +54,8 @@
   document.documentElement.lang = lang === "en" ? "en-US" : "pt-BR";
   const T = (o, k) => (lang === "en" && o && o[k + "_en"]) ? o[k + "_en"] : ((o || {})[k]);
   const UI = {
-    pt: { cases: "Cases", about: "Sobre", aboutMe: "Sobre mim", open: "Abrir case", soon: "Em breve.", home: "Página inicial", back: "Voltar aos cases", full: "Ver o case completo →", loading: "Carregando…", notFound: "Case não encontrado", noText: "O texto deste case ainda não existe.", foot: "Feito em HTML, CSS e JavaScript, sem framework. Abre em qualquer navegador.", sndOn: "Som de interface (ligado)", sndOff: "Som de interface (desligado)", langBtn: "EN-US", langTitle: "Switch to English", logTitle: "O que mudou", logSub: "Versão, data e o que entrou. Mais recente primeiro.", logNow: "atual" },
-    en: { cases: "Cases", about: "About", aboutMe: "About me", open: "Open case", soon: "Coming soon.", home: "Home", back: "Back to cases", full: "See the full case →", loading: "Loading…", notFound: "Case not found", noText: "This case has no text yet.", foot: "Built with HTML, CSS and JavaScript, no framework. Opens in any browser.", sndOn: "Interface sound (on)", sndOff: "Interface sound (off)", langBtn: "PT-BR", langTitle: "Mudar para português", logTitle: "What changed", logSub: "Version, date and what went in. Most recent first.", logNow: "current" },
+    pt: { cases: "Cases", about: "Sobre", aboutMe: "Sobre mim", open: "Abrir case", soon: "Em breve.", home: "Página inicial", back: "Voltar aos cases", full: "Ver o case completo →", loading: "Carregando…", notFound: "Case não encontrado", noText: "O texto deste case ainda não existe.", foot: "Feito em HTML, CSS e JavaScript, sem framework. Abre em qualquer navegador.", sndOn: "Som de interface (ligado)", sndOff: "Som de interface (desligado)", langBtn: "EN-US", langTitle: "Switch to English", logTitle: "O que mudou", logSub: "Versão, data e o que entrou. Mais recente primeiro.", logNow: "atual", enlarge: "Ampliar a foto" },
+    en: { cases: "Cases", about: "About", aboutMe: "About me", open: "Open case", soon: "Coming soon.", home: "Home", back: "Back to cases", full: "See the full case →", loading: "Loading…", notFound: "Case not found", noText: "This case has no text yet.", foot: "Built with HTML, CSS and JavaScript, no framework. Opens in any browser.", sndOn: "Interface sound (on)", sndOff: "Interface sound (off)", langBtn: "PT-BR", langTitle: "Mudar para português", logTitle: "What changed", logSub: "Version, date and what went in. Most recent first.", logNow: "current", enlarge: "Enlarge photo" },
   };
   const t = (k) => UI[lang][k];
   document.querySelectorAll("[data-ui]").forEach((el) => { el.textContent = t(el.dataset.ui); });
@@ -270,12 +270,31 @@
       sec.appendChild(n);
     });
     root.querySelectorAll("a[href^='http'], a[href^='mailto']").forEach((a) => { a.target = "_blank"; a.rel = "noopener"; });
-    // Referências: grade de cartões com foto, na seção "referencias"/"references"
+    // Referências: por nível (1 gerência, 2 coordenação, 3 análise), com foto que amplia ao clicar
     const secRef = root.querySelector("#sec-referencias, #sec-references");
     if (secRef && (window.REFERENCIAS || []).length) {
+      const niv = (lang === "en" && window.REF_NIVEIS_EN) || window.REF_NIVEIS || {};
+      const texto = (p) => marked.parseInline(T(p, "texto") || "").replace(/href="case:([a-z0-9-]+)"/g, 'href="case.html?c=$1"');
+      const flor = { 1: "vermelho", 2: "roxo", 3: "amarelo" };
+      const canto = (n) => (window.ORN2 && ORN2.cantos && ORN2.cantos[flor[n]]) || "";
+      const card = (p, i) => `<article class="ref n${p.nivel || 3}"><button type="button" class="ref-f" data-i="${i}" title="${esc(t("enlarge"))}"><img src="${esc(p.foto)}" alt="${esc(p.nome)}" loading="lazy">${p.nivel === 1 ? `<span class="canto tr">${canto(1)}</span><span class="canto bl">${canto(1)}</span>` : ""}</button><div class="ref-t"><b>${esc(p.nome)}</b><span>${esc(T(p, "cargo"))}</span><small>${esc(p.empresa)}</small><p>${texto(p)}</p></div></article>`;
       const g = document.createElement("div"); g.className = "refs";
-      g.innerHTML = window.REFERENCIAS.map((p) => `<article class="ref"><img src="${esc(p.foto)}" alt="${esc(p.nome)}" loading="lazy"><div class="ref-t"><b>${esc(p.nome)}</b><span>${esc(T(p, "cargo"))}</span><small>${esc(p.empresa)}</small><p>${esc(T(p, "texto"))}</p></div></article>`).join("");
+      [1, 2, 3].forEach((n) => {
+        const ps = window.REFERENCIAS.map((p, i) => [p, i]).filter(([p]) => (p.nivel || 3) === n); if (!ps.length) return;
+        g.innerHTML += `<div class="ref-nivel n${n}"><h3>${esc(niv[n] || "")}</h3><div class="ref-grid">${ps.map(([p, i]) => card(p, i)).join("")}</div></div>`;
+      });
       secRef.appendChild(g);
+      // ampliar a foto
+      const ov = document.createElement("div"); ov.className = "ref-ov"; ov.innerHTML = `<figure><img alt=""><figcaption></figcaption></figure>`; document.body.appendChild(ov);
+      const fechar = () => ov.classList.remove("on");
+      ov.addEventListener("click", fechar); document.addEventListener("keydown", (e) => { if (e.key === "Escape") fechar(); });
+      g.addEventListener("click", (e) => {
+        const b = e.target.closest(".ref-f"); if (!b) return;
+        const p = window.REFERENCIAS[+b.dataset.i]; if (!p) return;
+        ov.querySelector("img").src = p.foto; ov.querySelector("img").alt = p.nome;
+        ov.querySelector("figcaption").innerHTML = `<b>${esc(p.nome)}</b><span>${esc(T(p, "cargo"))}</span><small>${esc(p.empresa)}</small>`;
+        ov.classList.add("on");
+      });
     }
     const secsFoto = [...root.querySelectorAll(".sec")].filter((s) => s !== secRef);
     (window.SOBRE_FOTOS || []).forEach((src, i) => {

@@ -3,15 +3,29 @@
 // Fotos: uma por seção, na ordem das seções, alternando esquerda e direita. Apague uma linha pra tirar.
 window.SOBRE_FOTOS = ["assets/foto-3.jpg", "assets/foto-1.jpg", "assets/foto-2.jpg"];
 
-// Referências: foto (preto e branco, quadrada), nome, cargo e empresa, e o que a pessoa viu de perto.
-// A grade aparece na seção "## Referências". Apague uma linha pra tirar alguém.
+// Referências, por hierarquia (nivel 1 = gerência, 2 = coordenação, 3 = análise). Quanto maior o nível, mais moldura.
+// Em "texto", [Nome do case](case:id) vira link pro case (ids em cases.js). Apague uma linha pra tirar alguém.
+window.REF_NIVEIS = { 1: "Gerência", 2: "Coordenação", 3: "Análise" };
+window.REF_NIVEIS_EN = { 1: "Management", 2: "Coordination", 3: "Analysis" };
 window.REFERENCIAS = [
-  { foto: "assets/refs/leidy.jpg", nome: "Leidy Almeida", cargo: "Gerente de operações", cargo_en: "Operations manager", empresa: "Concentrix · projeto Smiles", texto: "Acompanhou o PSAT e a esteira de processos feitos a partir da operação.", texto_en: "Followed the PSAT and the process pipeline built from the floor." },
-  { foto: "assets/refs/amanda.jpg", nome: "Amanda Soares", cargo: "Coordenadora", cargo_en: "Coordinator", empresa: "Smiles", texto: "Levou a planilha do Meus Voos pro turno da manhã depois de ver o tempo de resposta cair de 15–30 minutos pra menos de 5.", texto_en: "Took the Meus Voos spreadsheet to the morning shift after seeing response time drop from 15–30 minutes to under 5." },
-  { foto: "assets/refs/henrique.jpg", nome: "Henrique Vital", cargo: "Analista de melhoria contínua", cargo_en: "Continuous improvement analyst", empresa: "Concentrix", texto: "Trabalhou junto nos projetos de processo; cobri as férias dele antes de a função ficar comigo.", texto_en: "Worked together on the process projects; I covered his vacation before the role became mine." },
-  { foto: "assets/refs/livia.jpg", nome: "Lívia Nowacyzk", cargo: "Coordenadora de operações", cargo_en: "Operations coordinator", empresa: "Concentrix", texto: "Coordenação direta durante o período dos projetos.", texto_en: "Direct coordination during the projects." },
-  { foto: "assets/refs/lino.jpg", nome: "Crhistopher Lino", cargo: "Coordenador de operações", cargo_en: "Operations coordinator", empresa: "Concentrix", texto: "Coordenação da operação no período do Smiles.", texto_en: "Coordinated the operation during the Smiles period." },
-  { foto: "assets/refs/eduardo.jpg", nome: "Eduardo Hauck", cargo: "Coordenador financeiro", cargo_en: "Finance coordinator", empresa: "Indaiá Restaurantes", texto: "Responsável pelo período no financeiro, em 2023, onde a planilha virou ferramenta de trabalho.", texto_en: "In charge during the finance period, in 2023, where spreadsheets became a working tool." },
+  { nivel: 1, foto: "assets/refs/leidy.jpg", nome: "Leidy Almeida", cargo: "Gerente sênior de canais de atendimento, eficiência operacional e customer experience", cargo_en: "Senior manager of service channels, operational efficiency and customer experience", empresa: "Concentrix · projeto Smiles",
+    texto: "Acompanhou o conjunto do trabalho no Smiles: o [PSAT e DSAT](case:psat), a [esteira de vendas, cancelamentos e retenções](case:esteira), o [ABS](case:abs), o relatório de reorientações e o controle de acessos ([projetos pontuais](case:pontuais)), além dos relatórios que subiam pra diretoria.",
+    texto_en: "Followed the whole body of work at Smiles: [PSAT and DSAT](case:psat), the [sales, cancellation and retention pipeline](case:esteira), [ABS](case:abs), the re-routing report and access control ([one-off projects](case:pontuais)), plus the reports that went up to the board." },
+  { nivel: 2, foto: "assets/refs/amanda.jpg", nome: "Amanda Soares", cargo: "Coordenadora de Customer Experience Management e Customer Service", cargo_en: "Customer Experience Management and Customer Service coordinator", empresa: "Smiles",
+    texto: "Só o [Meus Voos](case:meusvoos): foi quem levou a planilha pro turno da manhã depois de ver o tempo de resposta cair de 15–30 minutos pra menos de 5.",
+    texto_en: "Only [Meus Voos](case:meusvoos): the one who took the spreadsheet to the morning shift after seeing response time drop from 15–30 minutes to under 5." },
+  { nivel: 2, foto: "assets/refs/livia.jpg", nome: "Lívia Nowacyzk", cargo: "Coordenadora de operações, analista de processos e Customer Experience Management", cargo_en: "Operations coordinator, process analyst and Customer Experience Management", empresa: "Concentrix · projeto Smiles",
+    texto: "Coordenação direta nos mesmos projetos: [PSAT](case:psat), [esteira](case:esteira), [ABS](case:abs), reorientações e controle de acessos.",
+    texto_en: "Direct coordination on the same projects: [PSAT](case:psat), [pipeline](case:esteira), [ABS](case:abs), re-routing and access control." },
+  { nivel: 2, foto: "assets/refs/lino.jpg", nome: "Crhistopher Lino", cargo: "Coordenador de operações, gestão de pessoas, planejamento estratégico e otimização de processos", cargo_en: "Operations coordinator, people management, strategic planning and process optimization", empresa: "Concentrix · projeto Smiles",
+    texto: "Os mesmos projetos da coordenação, mais pedidos pontuais de análise: vouchers de parceiro, controle de pausas e consultas no Zendesk e no Callflex.",
+    texto_en: "The same projects as the coordination, plus one-off analysis requests: partner vouchers, break control and lookups in Zendesk and Callflex." },
+  { nivel: 2, foto: "assets/refs/eduardo.jpg", nome: "Eduardo Hauck", cargo: "Coordenador financeiro", cargo_en: "Finance coordinator", empresa: "Indaiá Restaurantes",
+    texto: "A rotina do financeiro, em 2023: emissão e controle de notas e recibos, abertura e fechamento de caixa, conferência e correção de dados em planilha.",
+    texto_en: "The finance routine, in 2023: issuing and tracking invoices and receipts, opening and closing the till, checking and fixing data in spreadsheets." },
+  { nivel: 3, foto: "assets/refs/henrique.jpg", nome: "Henrique Vital", cargo: "Analista de melhoria contínua", cargo_en: "Continuous improvement analyst", empresa: "Concentrix · projeto Smiles",
+    texto: "O [ABS](case:abs) e o relatório de reorientações, feitos em dupla, e a aprovação de reembolsos manuais (assento, bagagem, assunto especial), que chegava a ele por GP e localizador. Cobri as férias dele antes de a função ficar comigo.",
+    texto_en: "[ABS](case:abs) and the re-routing report, done as a pair, and the approval of manual refunds (seat, baggage, special subject), which reached him by GP and locator. I covered his vacation before the role became mine." },
 ];
 
 

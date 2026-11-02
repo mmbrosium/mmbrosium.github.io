@@ -2,6 +2,11 @@
 // Cada item: versao, data (AAAA-MM-DD), itens (PT) e itens_en (EN). Edite à vontade.
 window.CHANGELOG = [
   {
+    versao: "1.11", data: "2026-11-02",
+    itens: ["Referências por hierarquia: gerência, coordenação e análise, com moldura mais trabalhada quanto mais alto o nível. Fotos 50% maiores e ampliáveis com um clique. Cargos como no LinkedIn de cada pessoa e os projetos que cada uma acompanhou, com link pro case."],
+    itens_en: ["References by hierarchy: management, coordination and analysis, with a more elaborate frame the higher the level. Photos 50% larger and enlargeable with a click. Roles as on each person's LinkedIn and the projects each one followed, linked to the case."]
+  },
+  {
     versao: "1.10", data: "2026-11-02",
     itens: ["Sobre: Referências subiu pra logo depois de Quem sou e virou uma grade de cartões, com foto em preto e branco, cargo, empresa e o que cada pessoa acompanhou."],
     itens_en: ["About: References moved up to right after Who I am and became a card grid, with black-and-white photo, role, company and what each person followed."]
