@@ -2,6 +2,11 @@
 // Cada item: versao, data (AAAA-MM-DD), itens (PT) e itens_en (EN). Edite à vontade.
 window.CHANGELOG = [
   {
+    versao: "1.10", data: "2026-11-02",
+    itens: ["Sobre: Referências subiu pra logo depois de Quem sou e virou uma grade de cartões, com foto em preto e branco, cargo, empresa e o que cada pessoa acompanhou."],
+    itens_en: ["About: References moved up to right after Who I am and became a card grid, with black-and-white photo, role, company and what each person followed."]
+  },
+  {
     versao: "1.9", data: "2026-11-02",
     itens: ["Sobre: seção Referências, com seis pessoas que acompanharam o trabalho e autorizaram a citação (gerente, coordenadores e analista de melhoria contínua)."],
     itens_en: ["About: References section, with six people who followed the work and authorized being named (manager, coordinators and continuous improvement analyst)."]

@@ -3,12 +3,28 @@
 // Fotos: uma por seção, na ordem das seções, alternando esquerda e direita. Apague uma linha pra tirar.
 window.SOBRE_FOTOS = ["assets/foto-3.jpg", "assets/foto-1.jpg", "assets/foto-2.jpg"];
 
+// Referências: foto (preto e branco, quadrada), nome, cargo e empresa, e o que a pessoa viu de perto.
+// A grade aparece na seção "## Referências". Apague uma linha pra tirar alguém.
+window.REFERENCIAS = [
+  { foto: "assets/refs/leidy.jpg", nome: "Leidy Almeida", cargo: "Gerente de operações", cargo_en: "Operations manager", empresa: "Concentrix · projeto Smiles", texto: "Acompanhou o PSAT e a esteira de processos feitos a partir da operação.", texto_en: "Followed the PSAT and the process pipeline built from the floor." },
+  { foto: "assets/refs/amanda.jpg", nome: "Amanda Soares", cargo: "Coordenadora", cargo_en: "Coordinator", empresa: "Smiles", texto: "Levou a planilha do Meus Voos pro turno da manhã depois de ver o tempo de resposta cair de 15–30 minutos pra menos de 5.", texto_en: "Took the Meus Voos spreadsheet to the morning shift after seeing response time drop from 15–30 minutes to under 5." },
+  { foto: "assets/refs/henrique.jpg", nome: "Henrique Vital", cargo: "Analista de melhoria contínua", cargo_en: "Continuous improvement analyst", empresa: "Concentrix", texto: "Trabalhou junto nos projetos de processo; cobri as férias dele antes de a função ficar comigo.", texto_en: "Worked together on the process projects; I covered his vacation before the role became mine." },
+  { foto: "assets/refs/livia.jpg", nome: "Lívia Nowacyzk", cargo: "Coordenadora de operações", cargo_en: "Operations coordinator", empresa: "Concentrix", texto: "Coordenação direta durante o período dos projetos.", texto_en: "Direct coordination during the projects." },
+  { foto: "assets/refs/lino.jpg", nome: "Crhistopher Lino", cargo: "Coordenador de operações", cargo_en: "Operations coordinator", empresa: "Concentrix", texto: "Coordenação da operação no período do Smiles.", texto_en: "Coordinated the operation during the Smiles period." },
+  { foto: "assets/refs/eduardo.jpg", nome: "Eduardo Hauck", cargo: "Coordenador financeiro", cargo_en: "Finance coordinator", empresa: "Indaiá Restaurantes", texto: "Responsável pelo período no financeiro, em 2023, onde a planilha virou ferramenta de trabalho.", texto_en: "In charge during the finance period, in 2023, where spreadsheets became a working tool." },
+];
+
+
 window.SOBRE_MD = `
 ## Quem sou
 
 Analista de dados e processos em operações de atendimento de alto volume. Pego rotina manual, entendo onde ela trava e devolvo uma planilha, um dashboard ou uma ferramenta que a equipe usa todo dia. Comecei na operação, do lado de quem atende, e é de lá que vem o meu jeito de construir: a solução tem que caber na rotina de quem vai usar, senão ela não é solução.
 
 Se tiver que resumir numa frase: se eu não sei a resposta, eu vou atrás até ter. Não descanso com problema aberto.
+
+## Referências
+
+Pessoas que acompanharam o trabalho de perto e autorizaram a citação. Contato mediante solicitação.
 
 ## Como cheguei aqui {Trajetória}
 
@@ -51,17 +67,6 @@ Vaga de analista de dados, processos, BI ou melhoria contínua, e estou abrindo 
 
 Fora do trabalho: jogos. Foi querendo fazer um que eu comecei a programar, e o visual deste site é uma lembrança disso.
 
-## Referências
-
-Pessoas que acompanharam o trabalho de perto e autorizaram a citação. Contato mediante solicitação.
-
-- **Leidy Almeida**, gerente de operações, Concentrix (projeto Smiles): acompanhou o PSAT e a esteira de processos feitos a partir da operação.
-- **Amanda Soares**, coordenadora, Smiles: foi quem levou a planilha do Meus Voos pro turno da manhã, depois de ver o tempo de resposta cair de 15–30 minutos pra menos de 5.
-- **Henrique Vital**, analista de melhoria contínua, Concentrix: trabalhou junto nos projetos de processo; coberto por mim nas férias, antes de a função ficar comigo.
-- **Lívia Nowacyzk**, coordenadora de operações, Concentrix: coordenação direta durante o período dos projetos.
-- **Crhistopher Lino**, coordenador de operações, Concentrix.
-- **Eduardo Hauck**, coordenador financeiro, Indaiá Restaurantes: responsável pelo período no financeiro, em 2023.
-
 ## Contato
 
 - E-mail: [gp.pgsveiga@gmail.com](mailto:gp.pgsveiga@gmail.com)
@@ -76,6 +81,10 @@ window.SOBRE_MD_EN = `
 Data and process analyst in high-volume customer service operations. I take a manual routine, find where it jams, and hand back a spreadsheet, a dashboard or a tool the team uses every day. I started in the operation, on the side of the people who take the calls, and that is where my way of building comes from: the solution has to fit the routine of whoever will use it, or it is not a solution.
 
 In one sentence: if I don't know the answer, I go after it until I do. I don't rest with an open problem.
+
+## References
+
+People who followed the work closely and authorized being named. Contact details on request.
 
 ## How I got here {Path}
 
@@ -117,17 +126,6 @@ I learned spreadsheets, SQL and Power BI on my own: documentation, trial and err
 A data, process, BI or continuous improvement analyst role, and I am working my way into software development. I like large operations, where a well-built indicator changes the week of many people. On-site, hybrid or remote, in Curitiba, Brazil, and the surrounding region.
 
 Outside work: games. I started programming because I wanted to make one, and the look of this site is a reminder of that.
-
-## References
-
-People who followed the work closely and authorized being named. Contact details on request.
-
-- **Leidy Almeida**, operations manager, Concentrix (Smiles project): followed the PSAT and the process pipeline built from the floor.
-- **Amanda Soares**, coordinator, Smiles: the one who took the Meus Voos spreadsheet to the morning shift after seeing response time drop from 15–30 minutes to under 5.
-- **Henrique Vital**, continuous improvement analyst, Concentrix: worked together on the process projects; I covered his vacation before the role became mine.
-- **Lívia Nowacyzk**, operations coordinator, Concentrix: direct coordination during the projects.
-- **Crhistopher Lino**, operations coordinator, Concentrix.
-- **Eduardo Hauck**, finance coordinator, Indaiá Restaurantes: in charge during the finance period, in 2023.
 
 ## Contact
 

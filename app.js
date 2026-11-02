@@ -270,8 +270,16 @@
       sec.appendChild(n);
     });
     root.querySelectorAll("a[href^='http'], a[href^='mailto']").forEach((a) => { a.target = "_blank"; a.rel = "noopener"; });
+    // Referências: grade de cartões com foto, na seção "referencias"/"references"
+    const secRef = root.querySelector("#sec-referencias, #sec-references");
+    if (secRef && (window.REFERENCIAS || []).length) {
+      const g = document.createElement("div"); g.className = "refs";
+      g.innerHTML = window.REFERENCIAS.map((p) => `<article class="ref"><img src="${esc(p.foto)}" alt="${esc(p.nome)}" loading="lazy"><div class="ref-t"><b>${esc(p.nome)}</b><span>${esc(T(p, "cargo"))}</span><small>${esc(p.empresa)}</small><p>${esc(T(p, "texto"))}</p></div></article>`).join("");
+      secRef.appendChild(g);
+    }
+    const secsFoto = [...root.querySelectorAll(".sec")].filter((s) => s !== secRef);
     (window.SOBRE_FOTOS || []).forEach((src, i) => {
-      const sec = root.querySelectorAll(".sec")[i]; if (!sec) return;
+      const sec = secsFoto[i]; if (!sec) return;
       const f = document.createElement("figure"); const flor = ["vermelho", "roxo", "amarelo"][i % 3];
       f.className = "foto " + (i % 2 ? "r" : "l") + " f-" + flor;
       const fl = (window.ORN2 && ORN2.cantos && ORN2.cantos[flor]) || (window.ORN ? ORN.canto : "");
