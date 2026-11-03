@@ -2,6 +2,21 @@
 // Cada item: versao, data (AAAA-MM-DD), itens (PT) e itens_en (EN). Edite à vontade.
 window.CHANGELOG = [
   {
+    versao: "1.15", data: "2026-11-03",
+    itens: [
+      "Case novo em Sistemas: Ônibus Curitiba, app de celular com os horários reais do transporte (GTFS reduzido por extratores em Python). Abre ao vivo e tem link pro repositório.",
+      "Cards e cabeçalhos dos cases mostram o período (2023, 2024–2025, 2025–2026, 2026).",
+      "Currículo no idioma da página: PT-BR ou EN, com Ver e Baixar no Sobre. Resume em inglês novo.",
+      "Rótulos das colunas e Projetos pessoais alinhados com os títulos. Formação com previsão de conclusão."
+    ],
+    itens_en: [
+      "New case under Systems: Ônibus Curitiba, a phone app with the city's real transit timetables (GTFS reduced by Python extractors). Opens live and links to the repository.",
+      "Case cards and headers show the period (2023, 2024–2025, 2025–2026, 2026).",
+      "Résumé follows the page language: PT-BR or EN, with View and Download in About. New English résumé.",
+      "Column labels and Personal projects aligned with the titles. Education with expected completion."
+    ]
+  },
+  {
     versao: "1.14", data: "2026-11-03",
     itens: ["Home: foto maior, com a moldura completa, e clique amplia. Todas as fotos do Sobre ampliam com um clique. Mais respiro nos rótulos das colunas e no subgrupo Projetos pessoais. Cases do Smiles e do Uber avisam que nomes e números nas telas são fictícios. O que busco inclui desenvolvimento júnior."],
     itens_en: ["Home: larger photo, full frame, click to enlarge. Every About photo enlarges on click. More breathing room in column labels and the Personal projects subgroup. Smiles and Uber cases state that names and figures in the screenshots are fictional. What I'm looking for now includes junior development."]

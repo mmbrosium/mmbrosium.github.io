@@ -5,6 +5,7 @@ window.CASES = {
     "cargo": "Analista de Processos e Melhoria Contínua · construo as próprias ferramentas",
     "foto": "assets/foto-home.jpg",
     "cv": "assets/cv/Paulo-Guilherme-Veiga-CV.pdf",
+    "cv_en": "assets/cv/Paulo-Guilherme-Veiga-Resume-EN.pdf",
     "cargo_en": "Process & Continuous Improvement Analyst · I build my own tools",
     "descricao": "Entro pela operação, mapeio onde a rotina trava e devolvo a planilha, o dashboard ou o sistema que a equipe passa a usar todo dia. Dados e processo são o ofício; programar é como eu chego lá quando a planilha não basta. Cada case abaixo saiu de um problema real, com o número de antes e o de depois.",
     "descricao_en": "I come in through the operation, map where the routine jams and hand back the spreadsheet, dashboard or system the team starts using every day. Data and process are the trade; programming is how I get there when a spreadsheet is not enough. Every case below came from a real problem, with the before and after numbers.",
@@ -53,6 +54,7 @@ window.CASES = {
   "cases": [
     {
       "id": "psat",
+      "periodo": "2024–2025",
       "ficticio": true,
       "nome": "Sextante",
       "nome_en": "Sextant",
@@ -77,6 +79,7 @@ window.CASES = {
     },
     {
       "id": "esteira",
+      "periodo": "2024–2025",
       "ficticio": true,
       "nome": "Cruzeiro",
       "nome_en": "Cruise",
@@ -101,6 +104,7 @@ window.CASES = {
     },
     {
       "id": "meusvoos",
+      "periodo": "2024–2025",
       "ficticio": true,
       "nome": "Manche",
       "nome_en": "Manche",
@@ -122,6 +126,7 @@ window.CASES = {
     },
     {
       "id": "abs",
+      "periodo": "2024–2025",
       "ficticio": true,
       "nome": "Pulso",
       "nome_en": "Pulse",
@@ -146,6 +151,7 @@ window.CASES = {
     },
     {
       "id": "pontuais",
+      "periodo": "2024–2025",
       "ficticio": true,
       "nome": "Hangar",
       "nome_en": "Hangar",
@@ -165,6 +171,7 @@ window.CASES = {
     },
     {
       "id": "ridercash",
+      "periodo": "2025–2026",
       "ficticio": true,
       "nome": "Câmbio",
       "nome_en": "Shift",
@@ -186,12 +193,13 @@ window.CASES = {
     },
     {
       "id": "sisgeral",
+      "periodo": "2026",
       "nome": "SisGeral",
       "nome_en": "SysGem",
       "titulo_en": "SisGeral · general contact system, standardized logging",
       "curto_en": "SisGeral",
       "ferramentas_en": "HTML, CSS and JavaScript, no install; Node.js for tests",
-      "resumo_en": "A contact manager in a single HTML file: procedure catalog, compiled record, history with TXT export, calendar and a productivity panel. v3.25, fifty-plus iterations.",
+      "resumo_en": "A contact manager in a single HTML file: procedure catalog, compiled record, history with TXT export, calendar and a productivity panel. v3.29 (Nov 2026), fifty-plus iterations.",
       "destaque_en": "Contact from 5–10 min to under 5",
       "titulo": "SisGeral · sistema geral de atendimento, registro padronizado",
       "curto": "SisGeral",
@@ -200,12 +208,35 @@ window.CASES = {
       ],
       "empresa": "Amil Dental",
       "ferramentas": "HTML, CSS e JavaScript, sem instalação; Node.js para testes",
-      "resumo": "Gerenciador de atendimento num arquivo HTML: catálogo de procedimentos, prontuário compilado, histórico com exportação em TXT, calendário e painel de produtividade. v3.25, mais de cinquenta iterações.",
+      "resumo": "Gerenciador de atendimento num arquivo HTML: catálogo de procedimentos, prontuário compilado, histórico com exportação em TXT, calendário e painel de produtividade. v3.29 (nov/2026), mais de cinquenta iterações.",
       "destaque": "Atendimento de 5–10 min para menos de 5",
       "capa": "00-capa.png"
     },
     {
+      "id": "onibus",
+      "periodo": "2026",
+      "nome": "Ônibus Curitiba",
+      "nome_en": "Ônibus Curitiba",
+      "titulo": "Ônibus Curitiba · o trajeto casa–trabalho com os horários reais da cidade",
+      "titulo_en": "Ônibus Curitiba · the home–work route with the city's real timetables",
+      "curto": "Ônibus",
+      "curto_en": "Bus app",
+      "categorias": ["sistemas"],
+      "empresa": "Projeto próprio",
+      "empresa_en": "Own project",
+      "ferramentas": "HTML, CSS e JavaScript; Python pra extrair o GTFS; Leaflet pro mapa",
+      "ferramentas_en": "HTML, CSS and JavaScript; Python to extract the GTFS; Leaflet for the map",
+      "resumo": "App de celular pra ver a próxima saída do trajeto casa–trabalho, com baldeação, uma passagem só e mapa das linhas. Os horários vêm do GTFS oficial (78 MB), reduzidos por extratores em Python a JSONs que o app lê. 309 linhas na busca. v0.9, em andamento.",
+      "resumo_en": "A phone app for the next departure on the home–work route, with transfer, single fare and a map of the lines. Timetables come from the official GTFS (78 MB), reduced by Python extractors to JSONs the app reads. 309 lines in the search. v0.9, in progress.",
+      "destaque": "78 MB de GTFS viraram 55 KB de JSON",
+      "destaque_en": "78 MB of GTFS became 55 KB of JSON",
+      "capa": "00-capa.png",
+      "demo": "https://mmbrosium.github.io/onibus-curitiba/",
+      "repo": "https://github.com/mmbrosium/onibus-curitiba"
+    },
+    {
       "id": "gnc",
+      "periodo": "2025",
       "grupo": "Projetos pessoais", "grupo_en": "Personal projects",
       "nome": "GNC",
       "nome_en": "GNC",
@@ -226,6 +257,7 @@ window.CASES = {
     },
     {
       "id": "gamecenter",
+      "periodo": "2025",
       "grupo": "Projetos pessoais", "grupo_en": "Personal projects",
       "nome": "Game Center",
       "nome_en": "Game Center",

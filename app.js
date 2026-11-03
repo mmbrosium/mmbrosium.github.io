@@ -53,6 +53,8 @@
   try { lang = localStorage.getItem("lang") === "en" ? "en" : "pt"; } catch (e) {}
   document.documentElement.lang = lang === "en" ? "en-US" : "pt-BR";
   const T = (o, k) => (lang === "en" && o && o[k + "_en"]) ? o[k + "_en"] : ((o || {})[k]);
+  // Currículo no idioma da página (cv / cv_en em cases.js)
+  const cvDe = (o) => (lang === "en" && o.cv_en) || o.cv || "";
 
   // Foto ampliada (referências, foto da home e fotos do Sobre): overlay escuro, Esc ou clique fecha
   let ovFoto = null;
@@ -75,8 +77,8 @@
   const bordas = (k, lados) => lados.map((p) => `<span class="rorn b s-${p}">${SVG[k]}</span>`).join("");
   const moldura = { 1: cantos("canto") + bordas("borda", ["t", "r", "b", "l"]), 2: cantos("cantoMini") + bordas("marca", ["t", "b"]), 3: bordas("marca", ["t", "r", "b", "l"]) };
   const UI = {
-    pt: { cases: "Cases", about: "Sobre", aboutMe: "Sobre mim", open: "Abrir case", soon: "Em breve.", home: "Página inicial", back: "Voltar aos cases", full: "Ver o case completo →", loading: "Carregando…", notFound: "Case não encontrado", noText: "O texto deste case ainda não existe.", foot: "Feito em HTML, CSS e JavaScript, sem framework. Abre em qualquer navegador.", sndOn: "Som de interface (ligado)", sndOff: "Som de interface (desligado)", langBtn: "EN-US", langTitle: "Switch to English", logTitle: "O que mudou", logSub: "Versão, data e o que entrou. Mais recente primeiro.", logNow: "atual", enlarge: "Ampliar a foto", cv: "Currículo (PDF)" },
-    en: { cases: "Cases", about: "About", aboutMe: "About me", open: "Open case", soon: "Coming soon.", home: "Home", back: "Back to cases", full: "See the full case →", loading: "Loading…", notFound: "Case not found", noText: "This case has no text yet.", foot: "Built with HTML, CSS and JavaScript, no framework. Opens in any browser.", sndOn: "Interface sound (on)", sndOff: "Interface sound (off)", langBtn: "PT-BR", langTitle: "Mudar para português", logTitle: "What changed", logSub: "Version, date and what went in. Most recent first.", logNow: "current", enlarge: "Enlarge photo", cv: "Résumé (PDF)" },
+    pt: { cases: "Cases", about: "Sobre", aboutMe: "Sobre mim", open: "Abrir case", soon: "Em breve.", home: "Página inicial", back: "Voltar aos cases", full: "Ver o case completo →", loading: "Carregando…", notFound: "Case não encontrado", noText: "O texto deste case ainda não existe.", foot: "Feito em HTML, CSS e JavaScript, sem framework. Abre em qualquer navegador.", sndOn: "Som de interface (ligado)", sndOff: "Som de interface (desligado)", langBtn: "EN-US", langTitle: "Switch to English", logTitle: "O que mudou", logSub: "Versão, data e o que entrou. Mais recente primeiro.", logNow: "atual", enlarge: "Ampliar a foto", cv: "Currículo (PDF)", cvVer: "Ver currículo (PDF)", cvBaixar: "Baixar" },
+    en: { cases: "Cases", about: "About", aboutMe: "About me", open: "Open case", soon: "Coming soon.", home: "Home", back: "Back to cases", full: "See the full case →", loading: "Loading…", notFound: "Case not found", noText: "This case has no text yet.", foot: "Built with HTML, CSS and JavaScript, no framework. Opens in any browser.", sndOn: "Interface sound (on)", sndOff: "Interface sound (off)", langBtn: "PT-BR", langTitle: "Mudar para português", logTitle: "What changed", logSub: "Version, date and what went in. Most recent first.", logNow: "current", enlarge: "Enlarge photo", cv: "Résumé (PDF)", cvVer: "View résumé (PDF)", cvBaixar: "Download" },
   };
   const t = (k) => UI[lang][k];
   document.querySelectorAll("[data-ui]").forEach((el) => { el.textContent = t(el.dataset.ui); });
@@ -130,7 +132,7 @@
     $("cargo").textContent = T(autor, "cargo") || "";
     $("desc").textContent = T(autor, "descricao") || "";
     $("links").innerHTML = (autor.links || []).map((l) => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.rotulo)}</a>`).join("")
-      + (autor.cv ? `<a href="${esc(autor.cv)}" class="cv-link" download>${t("cv")}</a>` : "")
+      + (cvDe(autor) ? `<a href="${esc(cvDe(autor))}" class="cv-link" target="_blank" rel="noopener">${t("cv")}</a>` : "")
       + (autor.sobre === false ? "" : `<a href="sobre.html" class="sobre-link">${t("aboutMe")}</a>`);
     if (autor.foto && $("hero")) { const f = document.createElement("button"); f.type = "button"; f.className = "hero-foto ref-f"; f.title = t("enlarge"); f.innerHTML = `<img src="${esc(autor.foto)}" alt="${esc(autor.nome || "")}">` + moldura[1]; f.addEventListener("click", () => ampliarFoto(autor.foto, `<b>${esc(autor.nome || "")}</b><span>${esc(T(autor, "cargo") || "")}</span>`)); $("hero").prepend(f); }
 
@@ -160,7 +162,7 @@
         return rot + `<li class="case" data-href="${esc(href)}" data-id="${esc(c.id)}" data-capa="${capaArq ? `cases/${encodeURIComponent(c.id)}/${esc(capaArq)}` : ""}" data-cat="${esc(cat.id)}">
           <button type="button" class="case-btn" aria-expanded="false">
             <span class="t">${esc(T(c, "nome") || T(c, "curto") || T(c, "titulo"))}${gemas(c)}</span>
-            <span class="m">${T(c, "nome") ? esc(T(c, "curto") || "") + " · " : ""}${esc(c.empresa || "")}</span>
+            <span class="m">${T(c, "nome") ? esc(T(c, "curto") || "") + " · " : ""}${esc(T(c, "empresa") || "")}${c.periodo ? ` · ${esc(c.periodo)}` : ""}</span>
             <span class="r2">${esc(T(c, "resumo") || "")}</span>
           </button>
           <div class="drawer"><div class="drawer-in">
@@ -276,7 +278,7 @@
     if ($("brand")) $("brand").textContent = autor.nome || "";
     $("s-nome").textContent = autor.nome || "";
     $("s-cargo").textContent = T(autor, "cargo") || "";
-    if (autor.cv) { const cv = document.createElement("a"); cv.className = "cv-btn"; cv.href = autor.cv; cv.download = ""; cv.innerHTML = `${esc(t("cv"))} <span>↓</span>`; $("s-cargo").insertAdjacentElement("afterend", cv); }
+    if (cvDe(autor)) { const w = document.createElement("div"); w.className = "cv-links"; w.innerHTML = `<a href="${esc(cvDe(autor))}" target="_blank" rel="noopener">${esc(t("cvVer"))}</a><a href="${esc(cvDe(autor))}" download>${esc(t("cvBaixar"))} ↓</a>`; $("s-cargo").insertAdjacentElement("afterend", w); }
     document.title = `${t("about")} · ${autor.nome || ""}`;
     const slugOf = (s) => String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
     const r = new marked.Renderer();
@@ -401,7 +403,7 @@
   setCaseCat(catId);
   $("c-titulo").innerHTML = T(c, "nome") ? `${esc(T(c, "nome"))}<small>${esc(T(c, "titulo"))}</small>` : esc(T(c, "titulo"));
   document.title = `${T(c, "nome") || T(c, "curto") || T(c, "titulo")} · ${autor.nome || ""}`;
-  $("c-meta").innerHTML = `${c.empresa ? `<b>${esc(c.empresa)}</b>` : ""}${T(c, "ferramentas") ? ` · ${esc(T(c, "ferramentas"))}` : ""}`;
+  $("c-meta").innerHTML = `${c.empresa ? `<b>${esc(T(c, "empresa"))}</b>` : ""}${c.periodo ? ` · ${esc(c.periodo)}` : ""}${T(c, "ferramentas") ? ` · ${esc(T(c, "ferramentas"))}` : ""}${c.repo ? ` · <a href="${esc(c.repo)}" target="_blank" rel="noopener">GitHub ↗</a>` : ""}`;
   if (T(c, "destaque")) { $("c-destaque").textContent = T(c, "destaque"); $("c-destaque").hidden = false; }
   if (c.ficticio) { const n = document.createElement("p"); n.className = "aviso-dados"; n.textContent = lang === "en" ? "Names and figures in the screenshots are fictional, generated to reproduce the structure of the real data." : "Nomes e números nas telas são fictícios, gerados pra reproduzir a estrutura dos dados reais."; $("c-destaque").insertAdjacentElement("afterend", n); }
   // Sistema com versão de teste: botão "abrir ao vivo" no cabeçalho (abre em demo.html, com faixa e volta)

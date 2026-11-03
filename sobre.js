@@ -78,7 +78,7 @@ Aprendi planilha, SQL e Power BI por conta: documentação, tentativa e erro, Yo
 
 ## Formação e idiomas {Formação}
 
-- Tecnólogo em Análise e Desenvolvimento de Sistemas, Unicesumar. Em curso, com matrícula pausada em 2026; retomo assim que der.
+- Tecnólogo em Análise e Desenvolvimento de Sistemas, Unicesumar. Conclusão prevista entre 2026 e 2027, com cursos complementares conforme a grade pedir.
 - Inglês fluente (conversação, entrevistas e tradução de documentos). Espanhol intermediário.
 
 **Cursos (LinkedIn Learning):**
@@ -143,7 +143,7 @@ I learned spreadsheets, SQL and Power BI on my own: documentation, trial and err
 
 ## Education and languages {Education}
 
-- Associate degree in Systems Analysis and Development, Unicesumar. In progress, enrollment paused in 2026; resuming as soon as possible.
+- Associate degree in Systems Analysis and Development, Unicesumar. Expected completion between 2026 and 2027, with complementary courses as the program requires.
 - Fluent English (conversation, interviews and document translation). Intermediate Spanish.
 
 **Courses (LinkedIn Learning):**
