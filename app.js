@@ -431,6 +431,9 @@
     const src = /^(https?:)?\/\//.test(h) ? h : `cases/${encodeURIComponent(c.id)}/${h}`;
     return `<figure class="md-wide"><img src="${esc(src)}" alt="${esc(t)}" loading="lazy" data-zoom>${t ? `<figcaption>${esc(t)}</figcaption>` : ""}</figure>`;
   };
+  // Tela de celular (mais alta que larga) não ocupa a coluna inteira: fica estreita e centralizada
+  const retrato = (img) => { if (img.naturalHeight > img.naturalWidth * 1.2) img.closest("figure").classList.add("retrato"); };
+  new MutationObserver(() => document.querySelectorAll("#md figure img:not([data-rt])").forEach((im) => { im.dataset.rt = 1; im.complete && im.naturalWidth ? retrato(im) : im.addEventListener("load", () => retrato(im), { once: true }); })).observe($("md"), { childList: true, subtree: true });
   // Títulos ganham id pra âncora (#dashboard, #resultado...)
   renderer.heading = function (text, level) {
     const txt = typeof text === "object" ? text.text : text;

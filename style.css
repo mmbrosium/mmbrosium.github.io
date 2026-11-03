@@ -377,3 +377,7 @@ body.leaving .orn { animation: none; opacity: 0; transition: opacity .24s ease; 
 .cv-links { display: inline-flex; gap: 8px; margin-top: 10px; }
 .cv-links a { font-size: .85rem; letter-spacing: .04em; color: var(--c); border: 1px solid var(--c); padding: 4px 12px; text-decoration: none; transition: background .15s, color .15s; }
 .cv-links a:hover { background: var(--c); color: var(--bg); }
+
+/* Telas de celular nos cases: estreitas e centralizadas, não a coluna inteira */
+.md figure.retrato { width: min(100%, 340px); margin-left: auto; margin-right: auto; }
+.md figure.retrato img { border-radius: 14px; }

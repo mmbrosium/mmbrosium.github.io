@@ -2,6 +2,19 @@
 // Cada item: versao, data (AAAA-MM-DD), itens (PT) e itens_en (EN). Edite à vontade.
 window.CHANGELOG = [
   {
+    versao: "1.16", data: "2026-11-03",
+    itens: [
+      "Pontos explicados em todas as telas de Planilhas e Dashboards: Sextante, Cruzeiro, Manche, Pulso, Hangar e Câmbio ganharam o mesmo esquema do SisGeral, com 597 pontos em 79 telas. Clique na tela, passe o mouse no número.",
+      "Telas de celular (Ônibus Curitiba) ficam estreitas e centralizadas, em vez de ocupar a coluna inteira.",
+      "Currículo com o histórico completo desde 2020, períodos exatos e lacunas explicadas; em PT e EN."
+    ],
+    itens_en: [
+      "Explained points on every Spreadsheets and Dashboards screen: Sextante, Cruzeiro, Manche, Pulso, Hangar and Câmbio got the same scheme as SisGeral, with 597 points over 79 screens. Click the screen, hover the number.",
+      "Phone screens (Ônibus Curitiba) are now narrow and centered instead of filling the column.",
+      "Résumé with the full history since 2020, exact periods and explained gaps; in PT and EN."
+    ]
+  },
+  {
     versao: "1.15", data: "2026-11-03",
     itens: [
       "Case novo em Sistemas: Ônibus Curitiba, app de celular com os horários reais do transporte (GTFS reduzido por extratores em Python). Abre ao vivo e tem link pro repositório.",
