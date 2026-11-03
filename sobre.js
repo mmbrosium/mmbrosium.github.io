@@ -89,7 +89,7 @@ Aprendi planilha, SQL e Power BI por conta: documentação, tentativa e erro, Yo
 
 ## O que busco {Busco}
 
-Vaga de analista de dados, processos, BI ou melhoria contínua, e estou abrindo caminho pra desenvolvimento. Gosto de operação grande, onde um indicador bem feito muda a semana de muita gente. Presencial, híbrido ou remoto, em Curitiba e região.
+Vaga de analista de dados, processos, BI ou melhoria contínua; também desenvolvimento júnior, onde o diferencial é conhecer a operação por dentro. Gosto de operação grande, onde um indicador bem feito muda a semana de muita gente. Presencial, híbrido ou remoto, em Curitiba e região.
 
 Fora do trabalho: jogos. Foi querendo fazer um que eu comecei a programar, e o visual deste site é uma lembrança disso.
 
@@ -154,7 +154,7 @@ I learned spreadsheets, SQL and Power BI on my own: documentation, trial and err
 
 ## What I'm looking for {Looking for}
 
-A data, process, BI or continuous improvement analyst role, and I am working my way into software development. I like large operations, where a well-built indicator changes the week of many people. On-site, hybrid or remote, in Curitiba, Brazil, and the surrounding region.
+A data, process, BI or continuous-improvement analyst role; also junior development, where knowing the operation from the inside is the edge. I like large operations, where a well-built indicator changes the week of many people. On-site, hybrid or remote, in Curitiba, Brazil, and the surrounding region.
 
 Outside work: games. I started programming because I wanted to make one, and the look of this site is a reminder of that.
 

@@ -53,6 +53,7 @@ window.CASES = {
   "cases": [
     {
       "id": "psat",
+      "ficticio": true,
       "nome": "Sextante",
       "nome_en": "Sextant",
       "titulo_en": "PSAT/DSAT: customer satisfaction by agent, supervisor and coordination",
@@ -76,6 +77,7 @@ window.CASES = {
     },
     {
       "id": "esteira",
+      "ficticio": true,
       "nome": "Cruzeiro",
       "nome_en": "Cruise",
       "titulo_en": "Sales, cancellations and retention pipeline",
@@ -99,6 +101,7 @@ window.CASES = {
     },
     {
       "id": "meusvoos",
+      "ficticio": true,
       "nome": "Manche",
       "nome_en": "Manche",
       "titulo_en": "Meus Voos: guided e-mail support",
@@ -119,6 +122,7 @@ window.CASES = {
     },
     {
       "id": "abs",
+      "ficticio": true,
       "nome": "Pulso",
       "nome_en": "Pulse",
       "titulo_en": "ABS: the daily attendance routine, end to end",
@@ -142,6 +146,7 @@ window.CASES = {
     },
     {
       "id": "pontuais",
+      "ficticio": true,
       "nome": "Hangar",
       "nome_en": "Hangar",
       "titulo_en": "One-off and single-use projects",
@@ -160,6 +165,7 @@ window.CASES = {
     },
     {
       "id": "ridercash",
+      "ficticio": true,
       "nome": "Câmbio",
       "nome_en": "Shift",
       "titulo_en": "Rider Cash: from a question tree to a one-minute log",

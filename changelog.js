@@ -2,6 +2,11 @@
 // Cada item: versao, data (AAAA-MM-DD), itens (PT) e itens_en (EN). Edite à vontade.
 window.CHANGELOG = [
   {
+    versao: "1.14", data: "2026-11-03",
+    itens: ["Home: foto maior, com a moldura completa, e clique amplia. Todas as fotos do Sobre ampliam com um clique. Mais respiro nos rótulos das colunas e no subgrupo Projetos pessoais. Cases do Smiles e do Uber avisam que nomes e números nas telas são fictícios. O que busco inclui desenvolvimento júnior."],
+    itens_en: ["Home: larger photo, full frame, click to enlarge. Every About photo enlarges on click. More breathing room in column labels and the Personal projects subgroup. Smiles and Uber cases state that names and figures in the screenshots are fictional. What I'm looking for now includes junior development."]
+  },
+  {
     versao: "1.13", data: "2026-11-02",
     itens: [
       "Posicionamento: título da home virou \"Analista de Processos e Melhoria Contínua · construo as próprias ferramentas\"; cada coluna ganhou o rótulo do perfil (Análise e melhoria contínua / Desenvolvimento) e GNC e Game Center ficaram num subgrupo \"Projetos pessoais\".",

@@ -53,6 +53,27 @@
   try { lang = localStorage.getItem("lang") === "en" ? "en" : "pt"; } catch (e) {}
   document.documentElement.lang = lang === "en" ? "en-US" : "pt-BR";
   const T = (o, k) => (lang === "en" && o && o[k + "_en"]) ? o[k + "_en"] : ((o || {})[k]);
+
+  // Foto ampliada (referências, foto da home e fotos do Sobre): overlay escuro, Esc ou clique fecha
+  let ovFoto = null;
+  const ampliarFoto = (src, legendaHtml) => {
+    if (!ovFoto) {
+      ovFoto = document.createElement("div"); ovFoto.className = "ref-ov"; ovFoto.innerHTML = `<figure><img alt=""><figcaption></figcaption></figure>`; document.body.appendChild(ovFoto);
+      const fechar = () => ovFoto.classList.remove("on");
+      ovFoto.addEventListener("click", fechar); document.addEventListener("keydown", (e) => { if (e.key === "Escape") fechar(); });
+    }
+    ovFoto.querySelector("img").src = src; ovFoto.querySelector("figcaption").innerHTML = legendaHtml || "";
+    ovFoto.classList.add("on");
+  };
+  const SVG = {
+    canto: `<svg viewBox="0 0 28 28" aria-hidden="true"><path d="M2 26V7Q2 2 7 2h19" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M7 7q5 0 5 4.5T8.5 15q-2.5 0-2.5-2.2 0-1.8 1.8-1.8" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M26 2l-3 2 3 2zM2 26l2-3 2 3z" fill="currentColor"/><circle cx="12.5" cy="12.5" r="1.3" fill="currentColor"/></svg>`,
+    cantoMini: `<svg viewBox="0 0 28 28" aria-hidden="true"><path d="M2 20V7Q2 2 7 2h13" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M20 2l-2.5 2 2.5 2zM2 20l2-2.5 2 2.5z" fill="currentColor"/><circle cx="8" cy="8" r="1.6" fill="currentColor"/></svg>`,
+    borda: `<svg viewBox="0 0 48 14" aria-hidden="true"><path d="M0 7h15M33 7h48" stroke="currentColor" stroke-width="1.2"/><path d="M24 1l6 6-6 6-6-6z" fill="currentColor"/><path d="M24 4l3 3-3 3-3-3z" fill="var(--bg)"/><circle cx="16" cy="7" r="1.6" fill="currentColor"/><circle cx="32" cy="7" r="1.6" fill="currentColor"/></svg>`,
+    marca: `<svg viewBox="0 0 20 10" aria-hidden="true"><path d="M10 1l4 4-4 4-4-4z" fill="currentColor"/><path d="M0 5h5M15 5h5" stroke="currentColor" stroke-width="1.2"/></svg>`,
+  };
+  const cantos = (k) => ["tl", "tr", "bl", "br"].map((p) => `<span class="rorn c k-${p}">${SVG[k]}</span>`).join("");
+  const bordas = (k, lados) => lados.map((p) => `<span class="rorn b s-${p}">${SVG[k]}</span>`).join("");
+  const moldura = { 1: cantos("canto") + bordas("borda", ["t", "r", "b", "l"]), 2: cantos("cantoMini") + bordas("marca", ["t", "b"]), 3: bordas("marca", ["t", "r", "b", "l"]) };
   const UI = {
     pt: { cases: "Cases", about: "Sobre", aboutMe: "Sobre mim", open: "Abrir case", soon: "Em breve.", home: "Página inicial", back: "Voltar aos cases", full: "Ver o case completo →", loading: "Carregando…", notFound: "Case não encontrado", noText: "O texto deste case ainda não existe.", foot: "Feito em HTML, CSS e JavaScript, sem framework. Abre em qualquer navegador.", sndOn: "Som de interface (ligado)", sndOff: "Som de interface (desligado)", langBtn: "EN-US", langTitle: "Switch to English", logTitle: "O que mudou", logSub: "Versão, data e o que entrou. Mais recente primeiro.", logNow: "atual", enlarge: "Ampliar a foto", cv: "Currículo (PDF)" },
     en: { cases: "Cases", about: "About", aboutMe: "About me", open: "Open case", soon: "Coming soon.", home: "Home", back: "Back to cases", full: "See the full case →", loading: "Loading…", notFound: "Case not found", noText: "This case has no text yet.", foot: "Built with HTML, CSS and JavaScript, no framework. Opens in any browser.", sndOn: "Interface sound (on)", sndOff: "Interface sound (off)", langBtn: "PT-BR", langTitle: "Mudar para português", logTitle: "What changed", logSub: "Version, date and what went in. Most recent first.", logNow: "current", enlarge: "Enlarge photo", cv: "Résumé (PDF)" },
@@ -111,7 +132,7 @@
     $("links").innerHTML = (autor.links || []).map((l) => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.rotulo)}</a>`).join("")
       + (autor.cv ? `<a href="${esc(autor.cv)}" class="cv-link" download>${t("cv")}</a>` : "")
       + (autor.sobre === false ? "" : `<a href="sobre.html" class="sobre-link">${t("aboutMe")}</a>`);
-    if (autor.foto && $("hero")) { const f = document.createElement("a"); f.className = "hero-foto"; f.href = "sobre.html"; f.title = t("aboutMe"); f.innerHTML = `<img src="${esc(autor.foto)}" alt="">`; $("hero").prepend(f); }
+    if (autor.foto && $("hero")) { const f = document.createElement("button"); f.type = "button"; f.className = "hero-foto ref-f"; f.title = t("enlarge"); f.innerHTML = `<img src="${esc(autor.foto)}" alt="${esc(autor.nome || "")}">` + moldura[1]; f.addEventListener("click", () => ampliarFoto(autor.foto, `<b>${esc(autor.nome || "")}</b><span>${esc(T(autor, "cargo") || "")}</span>`)); $("hero").prepend(f); }
 
     // "Por onde começar": os três cases de entrada, em cases.js (autor.comecar)
     if ($("start") && (autor.comecar || []).length) {
@@ -283,15 +304,6 @@
       const niv = (lang === "en" && window.REF_NIVEIS_EN) || window.REF_NIVEIS || {};
       const texto = (p) => marked.parseInline(T(p, "texto") || "").replace(/href="case:([a-z0-9-]+)"/g, 'href="case.html?c=$1"');
       // adornos próprios das referências (não os das fotos do autor): cantos, medalhões de borda e marcas
-      const SVG = {
-        canto: `<svg viewBox="0 0 28 28" aria-hidden="true"><path d="M2 26V7Q2 2 7 2h19" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M7 7q5 0 5 4.5T8.5 15q-2.5 0-2.5-2.2 0-1.8 1.8-1.8" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M26 2l-3 2 3 2zM2 26l2-3 2 3z" fill="currentColor"/><circle cx="12.5" cy="12.5" r="1.3" fill="currentColor"/></svg>`,
-        cantoMini: `<svg viewBox="0 0 28 28" aria-hidden="true"><path d="M2 20V7Q2 2 7 2h13" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M20 2l-2.5 2 2.5 2zM2 20l2-2.5 2 2.5z" fill="currentColor"/><circle cx="8" cy="8" r="1.6" fill="currentColor"/></svg>`,
-        borda: `<svg viewBox="0 0 48 14" aria-hidden="true"><path d="M0 7h15M33 7h48" stroke="currentColor" stroke-width="1.2"/><path d="M24 1l6 6-6 6-6-6z" fill="currentColor"/><path d="M24 4l3 3-3 3-3-3z" fill="var(--bg)"/><circle cx="16" cy="7" r="1.6" fill="currentColor"/><circle cx="32" cy="7" r="1.6" fill="currentColor"/></svg>`,
-        marca: `<svg viewBox="0 0 20 10" aria-hidden="true"><path d="M10 1l4 4-4 4-4-4z" fill="currentColor"/><path d="M0 5h5M15 5h5" stroke="currentColor" stroke-width="1.2"/></svg>`,
-      };
-      const cantos = (k) => ["tl", "tr", "bl", "br"].map((p) => `<span class="rorn c k-${p}">${SVG[k]}</span>`).join("");
-      const bordas = (k, lados) => lados.map((p) => `<span class="rorn b s-${p}">${SVG[k]}</span>`).join("");
-      const moldura = { 1: cantos("canto") + bordas("borda", ["t", "r", "b", "l"]), 2: cantos("cantoMini") + bordas("marca", ["t", "b"]), 3: bordas("marca", ["t", "r", "b", "l"]) };
       const cita = (p) => T(p, "citacao") ? `<blockquote class="ref-q"><span class="q">${esc(T(p, "citacao"))}</span><footer>— ${esc(p.nome)}</footer></blockquote>` : "";
       const card = (p, i) => `<article class="ref n${p.nivel || 3}"><button type="button" class="ref-f" data-i="${i}" title="${esc(t("enlarge"))}"><img src="${esc(p.foto)}" alt="${esc(p.nome)}" loading="lazy">${moldura[p.nivel || 3]}</button><div class="ref-t"><b>${esc(p.nome)}</b><span>${esc(T(p, "cargo"))}</span><small>${esc(p.empresa)}</small><p>${texto(p)}</p></div>${cita(p)}</article>`;
       const g = document.createElement("div"); g.className = "refs";
@@ -300,16 +312,10 @@
         g.innerHTML += `<div class="ref-nivel n${n}"><h3>${esc(niv[n] || "")}</h3><div class="ref-grid">${ps.map(([p, i]) => card(p, i)).join("")}</div></div>`;
       });
       secRef.appendChild(g);
-      // ampliar a foto
-      const ov = document.createElement("div"); ov.className = "ref-ov"; ov.innerHTML = `<figure><img alt=""><figcaption></figcaption></figure>`; document.body.appendChild(ov);
-      const fechar = () => ov.classList.remove("on");
-      ov.addEventListener("click", fechar); document.addEventListener("keydown", (e) => { if (e.key === "Escape") fechar(); });
       g.addEventListener("click", (e) => {
         const b = e.target.closest(".ref-f"); if (!b) return;
         const p = window.REFERENCIAS[+b.dataset.i]; if (!p) return;
-        ov.querySelector("img").src = p.foto; ov.querySelector("img").alt = p.nome;
-        ov.querySelector("figcaption").innerHTML = `<b>${esc(p.nome)}</b><span>${esc(T(p, "cargo"))}</span><small>${esc(p.empresa)}</small>`;
-        ov.classList.add("on");
+        ampliarFoto(p.foto, `<b>${esc(p.nome)}</b><span>${esc(T(p, "cargo"))}</span><small>${esc(p.empresa)}</small>`);
       });
     }
     const secsFoto = [...root.querySelectorAll(".sec")].filter((s) => s !== secRef);
@@ -320,6 +326,7 @@
       const fl = (window.ORN2 && ORN2.cantos && ORN2.cantos[flor]) || (window.ORN ? ORN.canto : "");
       f.innerHTML = `<img src="${esc(src)}" alt="" loading="lazy"><span class="canto tr">${fl}</span><span class="canto bl">${fl}</span>`;
       const h2 = sec.querySelector("h2"); h2 ? h2.insertAdjacentElement("afterend", f) : sec.prepend(f);
+      f.title = t("enlarge"); f.addEventListener("click", () => ampliarFoto(src, `<b>${esc(autor.nome || "")}</b><span>${esc(T(autor, "cargo") || "")}</span>`));
     });
     if ($("topnav")) {
       $("topnav").innerHTML = `<a href="index.html" class="nav-ico" title="${t("home")}" aria-label="${t("home")}">⌂</a>`
@@ -396,6 +403,7 @@
   document.title = `${T(c, "nome") || T(c, "curto") || T(c, "titulo")} · ${autor.nome || ""}`;
   $("c-meta").innerHTML = `${c.empresa ? `<b>${esc(c.empresa)}</b>` : ""}${T(c, "ferramentas") ? ` · ${esc(T(c, "ferramentas"))}` : ""}`;
   if (T(c, "destaque")) { $("c-destaque").textContent = T(c, "destaque"); $("c-destaque").hidden = false; }
+  if (c.ficticio) { const n = document.createElement("p"); n.className = "aviso-dados"; n.textContent = lang === "en" ? "Names and figures in the screenshots are fictional, generated to reproduce the structure of the real data." : "Nomes e números nas telas são fictícios, gerados pra reproduzir a estrutura dos dados reais."; $("c-destaque").insertAdjacentElement("afterend", n); }
   // Sistema com versão de teste: botão "abrir ao vivo" no cabeçalho (abre em demo.html, com faixa e volta)
   if (c.demo) { const a = document.createElement("a"); a.className = "ao-vivo"; a.href = `demo.html?app=${encodeURIComponent(c.id)}`; a.textContent = lang === "en" ? "Open live →" : "Abrir ao vivo →"; a.title = lang === "en" ? "Test version, opens inside the portfolio" : "Versão de teste, abre dentro do portfólio"; $("c-destaque").insertAdjacentElement("afterend", a); }
   if ($("c-capa") && c.capa) { $("c-capa").src = `cases/${encodeURIComponent(c.id)}/${c.capa}`; $("c-capa").hidden = false; }
