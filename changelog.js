@@ -2,6 +2,21 @@
 // Cada item: versao, data (AAAA-MM-DD), itens (PT) e itens_en (EN). Edite à vontade.
 window.CHANGELOG = [
   {
+    versao: "1.13", data: "2026-11-02",
+    itens: [
+      "Posicionamento: título da home virou \"Analista de Processos e Melhoria Contínua · construo as próprias ferramentas\"; cada coluna ganhou o rótulo do perfil (Análise e melhoria contínua / Desenvolvimento) e GNC e Game Center ficaram num subgrupo \"Projetos pessoais\".",
+      "Cases: a seção Resultado passou a vir logo depois da introdução, destacada; o resto segue abaixo pra quem quiser aprofundar.",
+      "Currículo em PDF, com botão na home e abaixo do nome no Sobre. Foto na home.",
+      "Sobre: cursos do LinkedIn Learning por área, situação da faculdade atualizada, versão do SisGeral com data."
+    ],
+    itens_en: [
+      "Positioning: home title became \"Process & Continuous Improvement Analyst · I build my own tools\"; each column got its profile label (Analysis and continuous improvement / Development) and GNC and Game Center moved into a \"Personal projects\" subgroup.",
+      "Cases: the Result section now comes right after the introduction, highlighted; the rest follows for whoever wants depth.",
+      "Résumé as PDF, with a button on the home page and under the name in About. Photo on the home page.",
+      "About: LinkedIn Learning courses by area, college status updated, SisGeral version with date."
+    ]
+  },
+  {
     versao: "1.12", data: "2026-11-02",
     itens: ["Referências: cada pessoa ganhou a recomendação nas próprias palavras, em citação. Molduras próprias por nível (cantos e medalhões na gerência, cantos na coordenação, marcas na análise), títulos das faixas no padrão das seções, e os cases citados com o nome atual entre parênteses: Sextante, Cruzeiro, Pulso, Hangar, Manche."],
     itens_en: ["References: each person now has their recommendation in their own words, as a quote. Frames of their own per level (corners and medallions for management, corners for coordination, marks for analysis), band titles in the section style, and the cases named with their current name in parentheses: Sextante, Cruzeiro, Pulso, Hangar, Manche."]

@@ -57,7 +57,7 @@ Pouco depois cobri as férias do analista de melhoria contínua. Ele saiu da emp
 
 Na Foundever, no Projeto Uber, repeti a receita no treinamento: uma planilha que guia o atendimento, da escolha do problema até a resposta padronizada. Consulta de cerca de 10 minutos para 30 segundos. O projeto encerrou o turno em que eu atuava em março de 2026.
 
-Hoje estou numa operação de atendimento de plano odontológico. No papel, atendente; na prática, foi ali que construí o projeto mais ambicioso que já fiz, o SisGeral: um gerenciador de atendimentos em HTML, CSS e JavaScript que abre sem instalar nada, com catálogo de procedimentos, prontuário compilado, histórico, calendário e painel de produtividade. Está na versão 3.24 depois de mais de cinquenta iterações, já foi apresentado à supervisão, e é o case da coluna Sistemas. O padrão se repete em todo lugar que passei: entro pela operação, enxergo o que trava, e construo a ferramenta que faltava. É isso que eu quero fazer de ofício.
+Hoje estou numa operação de atendimento de plano odontológico. No papel, atendente; na prática, foi ali que construí o projeto mais ambicioso que já fiz, o SisGeral: um gerenciador de atendimentos em HTML, CSS e JavaScript que abre sem instalar nada, com catálogo de procedimentos, prontuário compilado, histórico, calendário e painel de produtividade. Está na versão 3.29 (novembro de 2026) depois de mais de cinquenta iterações, já foi apresentado à supervisão, e é o case da coluna Sistemas. O padrão se repete em todo lugar que passei: entro pela operação, enxergo o que trava, e construo a ferramenta que faltava. É isso que eu quero fazer de ofício.
 
 ## Como trabalho {Método}
 
@@ -78,9 +78,14 @@ Aprendi planilha, SQL e Power BI por conta: documentação, tentativa e erro, Yo
 
 ## Formação e idiomas {Formação}
 
-- Tecnólogo em Análise e Desenvolvimento de Sistemas, Unicesumar, conclusão prevista para 2026.
+- Tecnólogo em Análise e Desenvolvimento de Sistemas, Unicesumar. Em curso, com matrícula pausada em 2026; retomo assim que der.
 - Inglês fluente (conversação, entrevistas e tradução de documentos). Espanhol intermediário.
-- Cursos: Power BI (formação executiva, técnicas avançadas), SQL para análise de dados, fundamentos de engenharia de dados, análise de negócios, gestão de projetos.
+
+**Cursos (LinkedIn Learning):**
+
+- Processos e negócios: Fundamentos de análise de negócios · Modelagem de processos de negócios · Fundamentos de Lean Six Sigma · Aspectos essenciais da análise estratégica de negócios · Análise de negócios: profissão, competências e disciplina de pesquisa · Estratégia de tomada de decisão (dois cursos, instrutores diferentes) · Fundamentos de gestão de projetos · Fundamentos de gestão de operações.
+- Dados e BI: Análise de dados com SQL Server · Power BI: técnicas avançadas · Power BI: como criar um dashboard de logística · Excel: Power Query · Primeiros passos no Excel: análise de dados · Linguagem R para ciência de dados (formação básica) · Fundamentos de engenharia de dados · Fundamentos de programação: bancos de dados.
+- Ferramentas: Descubra o Microsoft Office (Word, Excel, PowerPoint, Outlook).
 
 ## O que busco {Busco}
 
@@ -117,7 +122,7 @@ Shortly after, I covered the continuous improvement analyst's vacation. He left 
 
 At Foundever, on the Uber Project, I repeated the recipe during training: a spreadsheet that guides the contact, from picking the issue to the standardized reply. Lookup from about 10 minutes to 30 seconds. The project closed my shift in March 2026.
 
-Today I am in a dental-plan customer-service operation. On paper, an agent; in practice, that is where I built the most ambitious project I have done, SisGeral: a contact manager in HTML, CSS and JavaScript that opens with no install, with a procedure catalog, a compiled record, history, calendar and a productivity panel. It is on version 3.24 after more than fifty iterations, it has been presented to supervision, and it is the case in the Systems column. The pattern repeats everywhere I have been: I come in through the operation, see what jams, and build the tool that was missing. That is what I want to do for a living.
+Today I am in a dental-plan customer-service operation. On paper, an agent; in practice, that is where I built the most ambitious project I have done, SisGeral: a contact manager in HTML, CSS and JavaScript that opens with no install, with a procedure catalog, a compiled record, history, calendar and a productivity panel. It is at version 3.29 (November 2026) after more than fifty iterations, it has been presented to supervision, and it is the case in the Systems column. The pattern repeats everywhere I have been: I come in through the operation, see what jams, and build the tool that was missing. That is what I want to do for a living.
 
 ## How I work {Method}
 
@@ -138,9 +143,14 @@ I learned spreadsheets, SQL and Power BI on my own: documentation, trial and err
 
 ## Education and languages {Education}
 
-- Associate degree in Systems Analysis and Development, Unicesumar, expected completion 2026.
+- Associate degree in Systems Analysis and Development, Unicesumar. In progress, enrollment paused in 2026; resuming as soon as possible.
 - Fluent English (conversation, interviews and document translation). Intermediate Spanish.
-- Courses: Power BI (executive track, advanced techniques), SQL for data analysis, data engineering fundamentals, business analysis, project management.
+
+**Courses (LinkedIn Learning):**
+
+- Process and business: Business analysis foundations · Business process modeling · Lean Six Sigma foundations · Strategic business analysis essentials · Business analysis: profession, skills and research discipline · Decision-making strategy (two courses, different instructors) · Project management foundations · Operations management foundations.
+- Data and BI: Data analysis with SQL Server · Power BI: advanced techniques · Power BI: building a logistics dashboard · Excel: Power Query · First steps in Excel: data analysis · R for data science (basic track) · Data engineering foundations · Programming foundations: databases.
+- Tools: Discover Microsoft Office (Word, Excel, PowerPoint, Outlook).
 
 ## What I'm looking for {Looking for}
 

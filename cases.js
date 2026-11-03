@@ -2,10 +2,12 @@
 window.CASES = {
   "autor": {
     "nome": "Paulo Guilherme de Souza Veiga",
-    "cargo": "Analista de Dados e Processos · Melhoria Contínua",
-    "cargo_en": "Data & Process Analyst · Continuous Improvement",
-    "descricao": "Transformo rotinas manuais de operação em planilhas, dashboards e ferramentas que a equipe usa todo dia. Cada case abaixo saiu de um problema real, com o número de antes e o de depois.",
-    "descricao_en": "I turn manual operations routines into spreadsheets, dashboards and tools the team uses every day. Every case below came from a real problem, with the before and after numbers.",
+    "cargo": "Analista de Processos e Melhoria Contínua · construo as próprias ferramentas",
+    "foto": "assets/foto-home.jpg",
+    "cv": "assets/cv/Paulo-Guilherme-Veiga-CV.pdf",
+    "cargo_en": "Process & Continuous Improvement Analyst · I build my own tools",
+    "descricao": "Entro pela operação, mapeio onde a rotina trava e devolvo a planilha, o dashboard ou o sistema que a equipe passa a usar todo dia. Dados e processo são o ofício; programar é como eu chego lá quando a planilha não basta. Cada case abaixo saiu de um problema real, com o número de antes e o de depois.",
+    "descricao_en": "I come in through the operation, map where the routine jams and hand back the spreadsheet, dashboard or system the team starts using every day. Data and process are the trade; programming is how I get there when a spreadsheet is not enough. Every case below came from a real problem, with the before and after numbers.",
     "comecar": ["psat", "abs", "sisgeral"],
     "links": [
       {
@@ -25,6 +27,7 @@ window.CASES = {
   "categorias": [
     {
       "id": "planilhas",
+      "perfil": "Análise e melhoria contínua", "perfil_en": "Analysis and continuous improvement",
       "titulo": "Planilhas",
       "titulo_en": "Spreadsheets",
       "sub": "Google Sheets e Excel em produção",
@@ -32,6 +35,7 @@ window.CASES = {
     },
     {
       "id": "dashboards",
+      "perfil": "Análise e melhoria contínua", "perfil_en": "Analysis and continuous improvement",
       "titulo": "Dashboards",
       "titulo_en": "Dashboards",
       "sub": "Dashboards vivos: abra e filtre",
@@ -39,9 +43,10 @@ window.CASES = {
     },
     {
       "id": "sistemas",
+      "perfil": "Desenvolvimento", "perfil_en": "Development",
       "titulo": "Sistemas",
       "titulo_en": "Systems",
-      "sub": "Ferramentas em HTML, CSS e JS",
+      "sub": "Ferramentas em HTML, CSS e JS, sem servidor",
       "sub_en": "Tools in HTML, CSS and JS"
     }
   ],
@@ -195,6 +200,7 @@ window.CASES = {
     },
     {
       "id": "gnc",
+      "grupo": "Projetos pessoais", "grupo_en": "Personal projects",
       "nome": "GNC",
       "nome_en": "GNC",
       "titulo": "GNC · gerenciador de notas compartimentado, pastas e checklists",
@@ -214,6 +220,7 @@ window.CASES = {
     },
     {
       "id": "gamecenter",
+      "grupo": "Projetos pessoais", "grupo_en": "Personal projects",
       "nome": "Game Center",
       "nome_en": "Game Center",
       "titulo": "Game Center · três jogos com adversário de máquina",

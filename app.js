@@ -54,8 +54,8 @@
   document.documentElement.lang = lang === "en" ? "en-US" : "pt-BR";
   const T = (o, k) => (lang === "en" && o && o[k + "_en"]) ? o[k + "_en"] : ((o || {})[k]);
   const UI = {
-    pt: { cases: "Cases", about: "Sobre", aboutMe: "Sobre mim", open: "Abrir case", soon: "Em breve.", home: "Página inicial", back: "Voltar aos cases", full: "Ver o case completo →", loading: "Carregando…", notFound: "Case não encontrado", noText: "O texto deste case ainda não existe.", foot: "Feito em HTML, CSS e JavaScript, sem framework. Abre em qualquer navegador.", sndOn: "Som de interface (ligado)", sndOff: "Som de interface (desligado)", langBtn: "EN-US", langTitle: "Switch to English", logTitle: "O que mudou", logSub: "Versão, data e o que entrou. Mais recente primeiro.", logNow: "atual", enlarge: "Ampliar a foto" },
-    en: { cases: "Cases", about: "About", aboutMe: "About me", open: "Open case", soon: "Coming soon.", home: "Home", back: "Back to cases", full: "See the full case →", loading: "Loading…", notFound: "Case not found", noText: "This case has no text yet.", foot: "Built with HTML, CSS and JavaScript, no framework. Opens in any browser.", sndOn: "Interface sound (on)", sndOff: "Interface sound (off)", langBtn: "PT-BR", langTitle: "Mudar para português", logTitle: "What changed", logSub: "Version, date and what went in. Most recent first.", logNow: "current", enlarge: "Enlarge photo" },
+    pt: { cases: "Cases", about: "Sobre", aboutMe: "Sobre mim", open: "Abrir case", soon: "Em breve.", home: "Página inicial", back: "Voltar aos cases", full: "Ver o case completo →", loading: "Carregando…", notFound: "Case não encontrado", noText: "O texto deste case ainda não existe.", foot: "Feito em HTML, CSS e JavaScript, sem framework. Abre em qualquer navegador.", sndOn: "Som de interface (ligado)", sndOff: "Som de interface (desligado)", langBtn: "EN-US", langTitle: "Switch to English", logTitle: "O que mudou", logSub: "Versão, data e o que entrou. Mais recente primeiro.", logNow: "atual", enlarge: "Ampliar a foto", cv: "Currículo (PDF)" },
+    en: { cases: "Cases", about: "About", aboutMe: "About me", open: "Open case", soon: "Coming soon.", home: "Home", back: "Back to cases", full: "See the full case →", loading: "Loading…", notFound: "Case not found", noText: "This case has no text yet.", foot: "Built with HTML, CSS and JavaScript, no framework. Opens in any browser.", sndOn: "Interface sound (on)", sndOff: "Interface sound (off)", langBtn: "PT-BR", langTitle: "Mudar para português", logTitle: "What changed", logSub: "Version, date and what went in. Most recent first.", logNow: "current", enlarge: "Enlarge photo", cv: "Résumé (PDF)" },
   };
   const t = (k) => UI[lang][k];
   document.querySelectorAll("[data-ui]").forEach((el) => { el.textContent = t(el.dataset.ui); });
@@ -109,7 +109,9 @@
     $("cargo").textContent = T(autor, "cargo") || "";
     $("desc").textContent = T(autor, "descricao") || "";
     $("links").innerHTML = (autor.links || []).map((l) => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.rotulo)}</a>`).join("")
+      + (autor.cv ? `<a href="${esc(autor.cv)}" class="cv-link" download>${t("cv")}</a>` : "")
       + (autor.sobre === false ? "" : `<a href="sobre.html" class="sobre-link">${t("aboutMe")}</a>`);
+    if (autor.foto && $("hero")) { const f = document.createElement("a"); f.className = "hero-foto"; f.href = "sobre.html"; f.title = t("aboutMe"); f.innerHTML = `<img src="${esc(autor.foto)}" alt="">`; $("hero").prepend(f); }
 
     // "Por onde começar": os três cases de entrada, em cases.js (autor.comecar)
     if ($("start") && (autor.comecar || []).length) {
@@ -123,14 +125,18 @@
 
     $("cols").innerHTML = cats.map((cat, ci) => {
       const itens = (data.cases || []).filter((c) => (c.categorias || []).includes(cat.id));
+      let grupoAtual = "";
       const lis = itens.map((c) => {
+        // Subgrupo dentro da coluna (ex.: "Projetos pessoais"): um rótulo antes do primeiro item do grupo
+        const grupo = T(c, "grupo") || "";
+        const rot = grupo !== grupoAtual ? `<li class="grupo">${esc(grupo)}</li>` : ""; grupoAtual = grupo;
         // Card de uma categoria secundária: abre direto o arquivo (link_<cat>) ou só aquela seção do case (ancora_<cat>).
         const href = c[`link_${cat.id}`] ? c[`link_${cat.id}`]
           : c[`ancora_${cat.id}`] ? `case.html?c=${encodeURIComponent(c.id)}&sec=${encodeURIComponent(c[`ancora_${cat.id}`])}`
           : `case.html?c=${encodeURIComponent(c.id)}`;
         const capaArq = c[`capa_${cat.id}`] || c.capa;
         const capa = capaArq ? `<img class="capa" src="cases/${encodeURIComponent(c.id)}/${esc(capaArq)}" alt="" loading="lazy">` : "";
-        return `<li class="case" data-href="${esc(href)}" data-id="${esc(c.id)}" data-capa="${capaArq ? `cases/${encodeURIComponent(c.id)}/${esc(capaArq)}` : ""}" data-cat="${esc(cat.id)}">
+        return rot + `<li class="case" data-href="${esc(href)}" data-id="${esc(c.id)}" data-capa="${capaArq ? `cases/${encodeURIComponent(c.id)}/${esc(capaArq)}` : ""}" data-cat="${esc(cat.id)}">
           <button type="button" class="case-btn" aria-expanded="false">
             <span class="t">${esc(T(c, "nome") || T(c, "curto") || T(c, "titulo"))}${gemas(c)}</span>
             <span class="m">${T(c, "nome") ? esc(T(c, "curto") || "") + " · " : ""}${esc(c.empresa || "")}</span>
@@ -145,7 +151,7 @@
         </li>`;
       }).join("");
       return `<section class="col" id="cat-${esc(cat.id)}" data-cat="${esc(cat.id)}" style="--i:${ci}">
-        <div class="col-head"><h2>${esc(T(cat, "titulo"))}</h2>
+        <div class="col-head">${T(cat, "perfil") ? `<p class="perfil">${esc(T(cat, "perfil"))}</p>` : ""}<h2>${esc(T(cat, "titulo"))}</h2>
         <p class="sub">${esc(T(cat, "sub") || "")}</p></div>
         ${lis ? `<ul>${lis}</ul>` : `<p class="vazio">${t("soon")}</p>`}
       </section>`;
@@ -249,6 +255,7 @@
     if ($("brand")) $("brand").textContent = autor.nome || "";
     $("s-nome").textContent = autor.nome || "";
     $("s-cargo").textContent = T(autor, "cargo") || "";
+    if (autor.cv) { const cv = document.createElement("a"); cv.className = "cv-btn"; cv.href = autor.cv; cv.download = ""; cv.innerHTML = `${esc(t("cv"))} <span>↓</span>`; $("s-cargo").insertAdjacentElement("afterend", cv); }
     document.title = `${t("about")} · ${autor.nome || ""}`;
     const slugOf = (s) => String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
     const r = new marked.Renderer();
@@ -432,6 +439,10 @@
       if (!sec) { sec = document.createElement("section"); sec.className = "sec"; root.appendChild(sec); }
       sec.appendChild(n);
     });
+    // Ordem de leitura: a primeira seção (o que é / contexto), depois o Resultado, depois o resto.
+    const secs = [...root.querySelectorAll(".sec")];
+    const res = secs.find((x, i) => i > 0 && /^sec-(resultado|result|o-que-saiu-do-processo|what-was-cut-from-the-process)$/.test(x.id));
+    if (res && secs.length > 2) { res.classList.add("sec-resultado"); secs[0].insertAdjacentElement("afterend", res); }
   })();
   // Modo "só uma seção" (case.html?c=psat&sec=dashboard): mostra o cabeçalho e aquela seção, com link pro case completo.
   if (secOnly) {
