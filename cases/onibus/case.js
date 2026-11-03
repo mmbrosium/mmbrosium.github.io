@@ -5,7 +5,7 @@ window.CASE_MD["onibus"] = `
 
 Um app de celular pra uma pergunta só: a que horas sai o próximo ônibus do meu trajeto. Ida e volta entre casa e trabalho, com a baldeação no terminal, o aviso de que dá pra ir com uma passagem só e o mapa das linhas que entram no caminho. Além do trajeto, a busca em todas as 309 linhas da cidade, por número ou nome.
 
-É um projeto próprio, em andamento, na versão 0.9. Nasceu de uma irritação de todo dia: o app oficial responde a tudo, menos à pergunta de quem já sabe o caminho e só quer o horário. Está no ar, em uso, e o [código é público](https://github.com/mmbrosium/onibus-curitiba).
+É um projeto próprio, em andamento, na versão 0.9. Nasceu de uma irritação de todo dia: o app oficial responde a tudo, menos à pergunta de quem já sabe o caminho e só quer o horário. [Está no ar](https://mmbrosium.github.io/onibus-curitiba/), em uso, e o [código é público](https://github.com/mmbrosium/onibus-curitiba).
 
 ![O mapa do trajeto, com o troncal em vermelho e as alimentadoras em laranja. O trecho que você usa é linha cheia; o resto do percurso, pontilhado](01-mapa.png)
 
@@ -54,7 +54,7 @@ window.CASE_MD_EN["onibus"] = `
 
 A phone app for a single question: what time is the next bus on my route. Outbound and return between home and work, with the transfer at the terminal, the notice that a single fare covers it, and a map of the lines on the way. Beyond the route, a search across all 309 lines in the city, by number or name.
 
-It is an own project, in progress, at version 0.9. It came from a daily annoyance: the official app answers everything except the question of someone who already knows the way and only wants the time. It is live, in use, and the [code is public](https://github.com/mmbrosium/onibus-curitiba).
+It is an own project, in progress, at version 0.9. It came from a daily annoyance: the official app answers everything except the question of someone who already knows the way and only wants the time. It is [live](https://mmbrosium.github.io/onibus-curitiba/), in use, and the [code is public](https://github.com/mmbrosium/onibus-curitiba).
 
 ![The route map, trunk line in red and feeders in orange. The stretch you use is solid; the rest of the route, dotted](01-mapa.png)
 
