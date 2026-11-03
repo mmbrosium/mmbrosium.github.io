@@ -3,9 +3,9 @@ window.CASE_MD = window.CASE_MD || {};
 window.CASE_MD["onibus"] = `
 ## O que é
 
-Um app de celular pra uma pergunta só: a que horas sai o próximo ônibus do meu trajeto. Ida e volta entre casa e trabalho, com a baldeação no terminal, o aviso de que dá pra ir com uma passagem só e o mapa das linhas que entram no caminho. Além do trajeto, a busca em todas as 309 linhas da cidade, por número ou nome.
+Um app de celular pra uma pergunta só: a que horas sai o próximo ônibus do seu trajeto. Ida e volta entre casa e trabalho, com a baldeação no terminal, o aviso de que dá pra ir com uma passagem só e o mapa das linhas que entram no caminho. Além do trajeto, a busca em todas as 309 linhas da cidade, por número ou nome.
 
-É um projeto próprio, em andamento, na versão 0.9. Nasceu de uma irritação de todo dia: o app oficial responde a tudo, menos à pergunta de quem já sabe o caminho e só quer o horário. [Está no ar](https://mmbrosium.github.io/onibus-curitiba/), em uso, e o [código é público](https://github.com/mmbrosium/onibus-curitiba).
+É um projeto próprio, em evolução contínua. Nasceu de uma irritação de todo dia: o app oficial responde a tudo, menos à pergunta de quem já sabe o caminho e só quer o horário. [Está no ar](https://mmbrosium.github.io/onibus-curitiba/), em uso, e o [código é público](https://github.com/mmbrosium/onibus-curitiba).
 
 ![O mapa do trajeto, com o troncal em vermelho e as alimentadoras em laranja. O trecho que você usa é linha cheia; o resto do percurso, pontilhado](01-mapa.png)
 
@@ -14,7 +14,7 @@ Um app de celular pra uma pergunta só: a que horas sai o próximo ônibus do me
 - Horários reais da cidade num app que abre em dois segundos no celular, sem instalar nada.
 - O feed oficial tem 78 MB. O que o app carrega são três JSONs que somam 55 KB.
 - Ida e Volta calculadas a partir da hora que você sai: estimativa de chegada no tubo, no terminal e em casa.
-- Nove versões em quatro dias, cada uma registrada no changelog do repositório, do protótipo com horário fixo no código até o mapa com os traçados reais das ruas.
+- Evoluiu rápido, do protótipo com o horário fixo no código até o mapa com os traçados reais das ruas — cada passo registrado no changelog.
 
 ## Como funciona
 
@@ -52,9 +52,9 @@ window.CASE_MD_EN = window.CASE_MD_EN || {};
 window.CASE_MD_EN["onibus"] = `
 ## What it is
 
-A phone app for a single question: what time is the next bus on my route. Outbound and return between home and work, with the transfer at the terminal, the notice that a single fare covers it, and a map of the lines on the way. Beyond the route, a search across all 309 lines in the city, by number or name.
+A phone app for a single question: what time is the next bus on your route. Outbound and return between home and work, with the transfer at the terminal, the notice that a single fare covers it, and a map of the lines on the way. Beyond the route, a search across all 309 lines in the city, by number or name.
 
-It is an own project, in progress, at version 0.9. It came from a daily annoyance: the official app answers everything except the question of someone who already knows the way and only wants the time. It is [live](https://mmbrosium.github.io/onibus-curitiba/), in use, and the [code is public](https://github.com/mmbrosium/onibus-curitiba).
+It is an own project, in continuous evolution. It came from a daily annoyance: the official app answers everything except the question of someone who already knows the way and only wants the time. It is [live](https://mmbrosium.github.io/onibus-curitiba/), in use, and the [code is public](https://github.com/mmbrosium/onibus-curitiba).
 
 ![The route map, trunk line in red and feeders in orange. The stretch you use is solid; the rest of the route, dotted](01-mapa.png)
 
@@ -63,7 +63,7 @@ It is an own project, in progress, at version 0.9. It came from a daily annoyanc
 - The city's real timetables in an app that opens in two seconds on a phone, nothing to install.
 - The official feed is 78 MB. What the app loads is three JSONs adding up to 55 KB.
 - Outbound and return computed from the time you leave: estimated arrival at the tube stop, the terminal and home.
-- Nine versions in four days, each one recorded in the repository changelog, from the prototype with timetables hardcoded to the map with the real street shapes.
+- It evolved fast, from the prototype with hardcoded timetables to the map with real street shapes — each step recorded in the changelog.
 
 ## How it works
 
