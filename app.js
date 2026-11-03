@@ -275,9 +275,18 @@
     if (secRef && (window.REFERENCIAS || []).length) {
       const niv = (lang === "en" && window.REF_NIVEIS_EN) || window.REF_NIVEIS || {};
       const texto = (p) => marked.parseInline(T(p, "texto") || "").replace(/href="case:([a-z0-9-]+)"/g, 'href="case.html?c=$1"');
-      const flor = { 1: "vermelho", 2: "roxo", 3: "amarelo" };
-      const canto = (n) => (window.ORN2 && ORN2.cantos && ORN2.cantos[flor[n]]) || "";
-      const card = (p, i) => `<article class="ref n${p.nivel || 3}"><button type="button" class="ref-f" data-i="${i}" title="${esc(t("enlarge"))}"><img src="${esc(p.foto)}" alt="${esc(p.nome)}" loading="lazy">${p.nivel === 1 ? `<span class="canto tr">${canto(1)}</span><span class="canto bl">${canto(1)}</span>` : ""}</button><div class="ref-t"><b>${esc(p.nome)}</b><span>${esc(T(p, "cargo"))}</span><small>${esc(p.empresa)}</small><p>${texto(p)}</p></div></article>`;
+      // adornos próprios das referências (não os das fotos do autor): cantos, medalhões de borda e marcas
+      const SVG = {
+        canto: `<svg viewBox="0 0 28 28" aria-hidden="true"><path d="M2 26V7Q2 2 7 2h19" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M7 7q5 0 5 4.5T8.5 15q-2.5 0-2.5-2.2 0-1.8 1.8-1.8" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M26 2l-3 2 3 2zM2 26l2-3 2 3z" fill="currentColor"/><circle cx="12.5" cy="12.5" r="1.3" fill="currentColor"/></svg>`,
+        cantoMini: `<svg viewBox="0 0 28 28" aria-hidden="true"><path d="M2 20V7Q2 2 7 2h13" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M20 2l-2.5 2 2.5 2zM2 20l2-2.5 2 2.5z" fill="currentColor"/><circle cx="8" cy="8" r="1.6" fill="currentColor"/></svg>`,
+        borda: `<svg viewBox="0 0 48 14" aria-hidden="true"><path d="M0 7h15M33 7h48" stroke="currentColor" stroke-width="1.2"/><path d="M24 1l6 6-6 6-6-6z" fill="currentColor"/><path d="M24 4l3 3-3 3-3-3z" fill="var(--bg)"/><circle cx="16" cy="7" r="1.6" fill="currentColor"/><circle cx="32" cy="7" r="1.6" fill="currentColor"/></svg>`,
+        marca: `<svg viewBox="0 0 20 10" aria-hidden="true"><path d="M10 1l4 4-4 4-4-4z" fill="currentColor"/><path d="M0 5h5M15 5h5" stroke="currentColor" stroke-width="1.2"/></svg>`,
+      };
+      const cantos = (k) => ["tl", "tr", "bl", "br"].map((p) => `<span class="rorn c k-${p}">${SVG[k]}</span>`).join("");
+      const bordas = (k, lados) => lados.map((p) => `<span class="rorn b s-${p}">${SVG[k]}</span>`).join("");
+      const moldura = { 1: cantos("canto") + bordas("borda", ["t", "r", "b", "l"]), 2: cantos("cantoMini") + bordas("marca", ["t", "b"]), 3: bordas("marca", ["t", "r", "b", "l"]) };
+      const cita = (p) => T(p, "citacao") ? `<blockquote class="ref-q"><span class="q">${esc(T(p, "citacao"))}</span><footer>— ${esc(p.nome)}</footer></blockquote>` : "";
+      const card = (p, i) => `<article class="ref n${p.nivel || 3}"><button type="button" class="ref-f" data-i="${i}" title="${esc(t("enlarge"))}"><img src="${esc(p.foto)}" alt="${esc(p.nome)}" loading="lazy">${moldura[p.nivel || 3]}</button><div class="ref-t"><b>${esc(p.nome)}</b><span>${esc(T(p, "cargo"))}</span><small>${esc(p.empresa)}</small><p>${texto(p)}</p></div>${cita(p)}</article>`;
       const g = document.createElement("div"); g.className = "refs";
       [1, 2, 3].forEach((n) => {
         const ps = window.REFERENCIAS.map((p, i) => [p, i]).filter(([p]) => (p.nivel || 3) === n); if (!ps.length) return;

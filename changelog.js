@@ -2,6 +2,11 @@
 // Cada item: versao, data (AAAA-MM-DD), itens (PT) e itens_en (EN). Edite à vontade.
 window.CHANGELOG = [
   {
+    versao: "1.12", data: "2026-11-02",
+    itens: ["Referências: cada pessoa ganhou a recomendação nas próprias palavras, em citação. Molduras próprias por nível (cantos e medalhões na gerência, cantos na coordenação, marcas na análise), títulos das faixas no padrão das seções, e os cases citados com o nome atual entre parênteses: Sextante, Cruzeiro, Pulso, Hangar, Manche."],
+    itens_en: ["References: each person now has their recommendation in their own words, as a quote. Frames of their own per level (corners and medallions for management, corners for coordination, marks for analysis), band titles in the section style, and the cases named with their current name in parentheses: Sextante, Cruzeiro, Pulso, Hangar, Manche."]
+  },
+  {
     versao: "1.11", data: "2026-11-02",
     itens: ["Referências por hierarquia: gerência, coordenação e análise, com moldura mais trabalhada quanto mais alto o nível. Fotos 50% maiores e ampliáveis com um clique. Cargos como no LinkedIn de cada pessoa e os projetos que cada uma acompanhou, com link pro case."],
     itens_en: ["References by hierarchy: management, coordination and analysis, with a more elaborate frame the higher the level. Photos 50% larger and enlargeable with a click. Roles as on each person's LinkedIn and the projects each one followed, linked to the case."]
