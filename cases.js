@@ -192,6 +192,27 @@ window.CASES = {
       "capa": "04-nova-home.png"
     },
     {
+      "id": "caixazen",
+      "periodo": "2023",
+      "ficticio": true,
+      "nome": "Caixa Zen",
+      "nome_en": "Caixa Zen",
+      "titulo": "Caixa Zen · o fechamento de caixa de uma rede de restaurantes e o primeiro script",
+      "titulo_en": "Caixa Zen · a restaurant chain's cash closing and the first script",
+      "curto": "Fechamento de caixa",
+      "curto_en": "Cash closing",
+      "categorias": ["planilhas"],
+      "empresa": "Indaiá Restaurantes",
+      "empresa_en": "Indaiá Restaurantes",
+      "ferramentas": "Google Sheets e Google Apps Script",
+      "ferramentas_en": "Google Sheets and Google Apps Script",
+      "resumo": "Conferência diária de caixa de uma rede com 15 restaurantes: batimento das máquinas de cartão contra o sistema, auditoria de comandas (couvert, taxa de serviço, descontos) e plano de contas. O primeiro script que escrevi gerava as observações da auditoria: a redação caiu de 1–2 horas pra 20–40 minutos. Reconstruído com dados fictícios.",
+      "resumo_en": "Daily cash reconciliation for a 15-restaurant chain: card machines against the POS, tab audit (cover, service fee, discounts) and chart of accounts. The first script I wrote generated the audit observations: writing dropped from 1–2 hours to 20–40 minutes. Rebuilt with fictional data.",
+      "destaque": "Observações da auditoria: de 1–2 h pra 20–40 min",
+      "destaque_en": "Audit observations: from 1–2 h to 20–40 min",
+      "capa": "00-capa.png"
+    },
+    {
       "id": "sisgeral",
       "periodo": "2026",
       "nome": "SisGeral",

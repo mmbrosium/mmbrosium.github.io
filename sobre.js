@@ -26,8 +26,8 @@ window.REFERENCIAS = [
     texto_en: "The same projects as the coordination, plus one-off analysis requests: partner vouchers, break control and lookups in Zendesk and Callflex.",
     citacao: "Sempre que precisava de uma análise fora da rotina, vouchers, controle de pausas, uma consulta no Zendesk ou no Callflex, era pro Paulo que eu pedia. Voltava com a resposta e, quase sempre, com uma planilha pra não precisar pedir de novo.", citacao_en: "Whenever I needed an analysis outside the routine, vouchers, break control, a lookup in Zendesk or Callflex, Paulo was who I asked. He came back with the answer and, almost always, with a spreadsheet so I would not need to ask again." },
   { nivel: 2, foto: "assets/refs/eduardo.jpg", nome: "Eduardo Hauck", cargo: "Coordenador financeiro", cargo_en: "Finance coordinator", empresa: "Indaiá Restaurantes",
-    texto: "A rotina do financeiro, em 2023: emissão e controle de notas e recibos, abertura e fechamento de caixa, conferência e correção de dados em planilha.",
-    texto_en: "The finance routine, in 2023: issuing and tracking invoices and receipts, opening and closing the till, checking and fixing data in spreadsheets.",
+    texto: "Coordenou o financeiro em 2023, onde fiz a conferência diária de caixa e escrevi meu primeiro script, o das observações da auditoria ([Caixa Zen](case:caixazen)). Aprovou e implementou a planilha revisada.",
+    texto_en: "Coordinated finance in 2023, where I did the daily cash reconciliation and wrote my first script, the audit observations one ([Caixa Zen](case:caixazen)). Approved and implemented the revised spreadsheet.",
     citacao: "No financeiro, o Paulo cuidou de notas, recibos, caixa e conferência de dados com atenção e sem retrabalho. Foi onde ele descobriu que gostava de planilha, e já ali resolvia com fórmula o que antes era feito na mão.", citacao_en: "In finance, Paulo handled invoices, receipts, the till and data checks with attention and no rework. It was where he found out he liked spreadsheets, and already there he solved with a formula what used to be done by hand." },
   { nivel: 3, foto: "assets/refs/henrique.jpg", nome: "Henrique Vital", cargo: "Analista de melhoria contínua", cargo_en: "Continuous improvement analyst", empresa: "Concentrix · projeto Smiles",
     texto: "O [ABS (Pulso)](case:abs) e o relatório de reorientações, feitos em dupla, e a aprovação de reembolsos manuais (assento, bagagem, assunto especial), que chegava a ele por GP e localizador. Cobri as férias dele antes de a função ficar comigo.",
@@ -49,7 +49,7 @@ Pessoas que acompanharam o trabalho de perto e autorizaram a citação. Contato 
 
 ## Como cheguei aqui {Trajetória}
 
-O primeiro contato com planilha pra valer foi no financeiro de uma rede de restaurantes em Santa Catarina, em 2023. Gostei de uma coisa que não esperava gostar: a fórmula certa resolve de vez um problema que antes era resolvido todo dia, na mão.
+O primeiro contato com planilha pra valer foi no financeiro de uma rede de restaurantes em Santa Catarina, em 2023: conferência diária de caixa de quinze unidades. Foi lá que escrevi meu primeiro script, sem saber programar, pra gerar as observações da auditoria que eu redigia à mão todo dia ([Caixa Zen](case.html?c=caixazen)). Gostei de uma coisa que não esperava gostar: a fórmula certa resolve de vez um problema que antes era resolvido todo dia, na mão.
 
 A virada veio na Concentrix, no Projeto Smiles, em 2024. Entrei como operador de atendimento. Na frente de e-mail, a resposta exigia preencher o sistema por partes, e meus colegas levavam de 15 a 30 minutos por caso. Propus montar uma planilha guiada e ensinar o time a usar. Toparam. O tempo caiu pra menos de 5 minutos. Apresentei à coordenação, que pediu pra levar pro turno da manhã também.
 
@@ -114,7 +114,7 @@ People who followed the work closely and authorized being named. Contact details
 
 ## How I got here {Path}
 
-My first real contact with spreadsheets was in the finance team of a restaurant chain in Santa Catarina, in 2023. I liked something I did not expect to like: the right formula solves for good a problem that used to be solved every day, by hand.
+My first real contact with spreadsheets was in the finance team of a restaurant chain in Santa Catarina, in 2023: daily cash reconciliation for fifteen units. That is where I wrote my first script, without knowing how to program, to generate the audit observations I used to write by hand every day ([Caixa Zen](case.html?c=caixazen)). I liked something I did not expect to like: the right formula solves for good a problem that used to be solved every day, by hand.
 
 The turning point came at Concentrix, on the Smiles Project, in 2024. I joined as a support agent. On the e-mail channel, a reply required filling the system in parts, and my colleagues took 15 to 30 minutes per case. I proposed building a guided spreadsheet and teaching the team to use it. They said yes. Time dropped to under 5 minutes. I presented it to coordination, who asked to roll it out to the morning shift too.
 

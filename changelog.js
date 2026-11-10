@@ -2,6 +2,11 @@
 // Cada item: versao, data (AAAA-MM-DD), itens (PT) e itens_en (EN). Edite à vontade.
 window.CHANGELOG = [
   {
+    versao: "1.17", data: "2026-11-10",
+    itens: ["Case novo em Planilhas: Caixa Zen, o fechamento de caixa de uma rede de restaurantes (2023) e o primeiro script de automação. Planilha reconstruída com dados fictícios, disponível pra baixar, e o script em Apps Script. O Sobre e a referência do Eduardo Hauck apontam pra ele."],
+    itens_en: ["New case under Spreadsheets: Caixa Zen, a restaurant chain's cash closing (2023) and the first automation script. Spreadsheet rebuilt with fictional data, available for download, plus the Apps Script. About and Eduardo Hauck's reference now point to it."]
+  },
+  {
     versao: "1.16", data: "2026-11-03",
     itens: [
       "Pontos explicados em todas as telas de Planilhas e Dashboards: Sextante, Cruzeiro, Manche, Pulso, Hangar e Câmbio ganharam o mesmo esquema do SisGeral, com 597 pontos em 79 telas. Clique na tela, passe o mouse no número.",
